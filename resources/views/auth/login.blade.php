@@ -1,3 +1,21 @@
+<head>
+<style>
+    .backdrop-filter {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+    
+    .bg-white\/30 {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .card.backdrop-filter {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+</style>
+
+<head>
 @extends('layouts.app')
 
 @section('content')
@@ -14,7 +32,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                            <div class="card card-plain">
+                        <div class="card card-plain backdrop-filter backdrop-blur-lg bg-white/30">
                                 <div class="card-header pb-0 text-start">
                                     <h4 class="font-weight-bolder">Sign In</h4>
                                     <p class="mb-0">Enter your email and password to sign in</p>
@@ -53,6 +71,7 @@
                                     </p>
                                 </div>
                             </div>
+
                         </div>
                         <div
                             class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
