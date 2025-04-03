@@ -8,7 +8,7 @@
             </div>
         </div>
     </div>
-    <main class="main-content  mt-0">
+    <main class="main-content  mt-0" style="background-image: url('/img/login-bg.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <section>
             <div class="page-header min-vh-100">
                 <div class="container">
