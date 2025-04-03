@@ -72,7 +72,7 @@
         <div class="page-header"></div>
         <div class="container" >
             <div class="card-container backdrop-blur-lg bg-white/30 shadow-lg rounded-lg p-4" style="margin-top: 40px;">
-                <div class="card shadow-lg" style = "background: linear-gradient(135deg, rgba(240, 250, 255, 0.7) 0%, rgba(230, 245, 255, 0.5) 100%); border-radius: 10px;">
+                <div class="card shadow-lg" style = "background: linear-gradient(135deg, rgba(173, 250, 255, 0.7) 0%, rgba(230, 245, 255, 0.5) 100%); border-radius: 10px;">
                     <div class="text-center pt-4">
                         <h5>Register</h5>
                     </div>

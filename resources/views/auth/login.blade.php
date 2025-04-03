@@ -1,8 +1,8 @@
 <head>
 <style>
     .backdrop-filter {
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
     }
     
     .bg-white\/30 {
@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <main class="main-content  mt-0" style="background-image: url('/img/login-bg1.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <main class="main-content  mt-0" style="background-image: url('/img/login-bg.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <section>
             <div class="page-header min-vh-100">
                 <div class="container">
