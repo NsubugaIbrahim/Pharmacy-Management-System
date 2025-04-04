@@ -1,3 +1,11 @@
+<head><style>
+    #sidenav-collapse-main {
+    height: 60%;
+    overflow-y: auto; /* Enables scrolling if needed */
+}
+
+</style></head>
+
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
     id="sidenav-main">
     <div class="sidenav-header">
@@ -25,7 +33,6 @@
                 <div class="ps-4">
                     <i class="fab fa-laravel" style="color: #f4645f;"></i>
                 </div>
-                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Laravel Examples</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
@@ -115,7 +122,7 @@
             </li>
         </ul>
     </div>
-    <div class="sidenav-footer mx-3" style="margin-top: 80px;">
+    <div class="sidenav-footer mx-3" style="margin-top: 0px;">
         <div class="card card-plain shadow-none" id="sidenavCard">
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg"
                 alt="sidebar_illustration">
