@@ -1,5 +1,5 @@
 <head>
-<style>
+{{-- <style>
     .backdrop-filter {
         -webkit-backdrop-filter: blur(15px);
         backdrop-filter: blur(15px);
@@ -13,7 +13,7 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }
-</style>
+</style> --}}
 
 <head>
 @extends('layouts.app')
@@ -42,11 +42,11 @@
                                         @csrf
                                         @method('post')
                                         <div class="flex flex-col mb-3">
-                                            <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email') ?? 'admin@argon.com' }}" aria-label="Email">
+                                            <input type="email" placeholder="Email" name="email" class="form-control form-control-lg" value="{{ old('email') ?? 'admin@argon.com' }}" aria-label="Email">
                                             @error('email') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                         </div>
                                         <div class="flex flex-col mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg" aria-label="Password" value="secret" >
+                                            <input type="password" placeholder="Password" name="password" class="form-control form-control-lg" aria-label="Password" value="secret" >
                                             @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                         </div>
                                         <div class="form-check form-switch">
