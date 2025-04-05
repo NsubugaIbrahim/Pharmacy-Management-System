@@ -46,4 +46,25 @@ class LoginController extends Controller
 
         return redirect('/login');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        $roleName = $user->role->name ?? '';
+
+        switch ($roleName) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'pharmacist':
+                return redirect()->route('pharmacist.dashboard');
+            case 'medical-assistant':
+                return redirect()->route('medical-assistant.dashboard');
+            case 'cashier':
+                return redirect()->route('cashier.dashboard');
+            case 'accountant':
+                return redirect()->route('accountant.dashboard');
+            default:
+                return redirect('/home');
+        }
+    }
+
 }
