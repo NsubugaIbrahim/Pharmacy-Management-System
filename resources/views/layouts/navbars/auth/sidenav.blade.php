@@ -4,6 +4,24 @@
     overflow-y: auto; /* Enables scrolling if needed */
 }
 
+.navbar-nav .nav-item .nav-link:hover {
+        background-color: rgba(199, 199, 199, 0.2);
+        border-radius: 0.5rem;
+        transition: all 0.15s ease;
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+    
+    .navbar-nav .nav-item .nav-link:hover .icon-shape {
+        transform: scale(1.1);
+        transition: all 0.15s ease;
+    }
+    
+    .navbar-nav .nav-item .nav-link:hover .nav-link-text {
+        font-weight: 600;
+        transition: all 0.15s ease;
+    }
+
 </style></head>
 
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
