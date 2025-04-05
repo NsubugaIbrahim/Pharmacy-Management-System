@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RegisterController;
@@ -29,7 +24,9 @@ use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\MedicalAssistantController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\AccountantController;           
-            
+   Route::get('/', function () {
+    return view('welcome');
+    });         
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 	Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
 	Route::get('/login', [LoginController::class, 'show'])->middleware('guest')->name('login');
