@@ -23,7 +23,12 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ResetPassword;
-use App\Http\Controllers\ChangePassword;            
+use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\MedicalAssistantController;
+use App\Http\Controllers\CashierController;
+use App\Http\Controllers\AccountantController;           
             
 
 Route::get('/', function () {return redirect('/dashboard');})->middleware('auth');
@@ -46,4 +51,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static'); 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+
+	Route::get('/admin/dashboard', [AdminController::class, 'index']);
+	Route::get('/pharmacist/dashboard', [PharmacistController::class, 'index']);
+	Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'index']);
+	Route::get('/cashier/dashboard', [CashierController::class, 'index']);
+	Route::get('/accountant/dashboard', [AccountantController::class, 'index']);
+
 });
