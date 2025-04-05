@@ -28,14 +28,30 @@ class LoginController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
+            $user = Auth::user();
+        $role = $user->role->name ?? '';
 
-            return redirect()->intended('dashboard');
+        switch ($role) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'pharmacist':
+                return redirect()->route('pharmacist.dashboard');
+            case 'medical-assistant':
+                return redirect()->route('medical-assistant.dashboard');
+            case 'cashier':
+                return redirect()->route('cashier.dashboard');
+            case 'accountant':
+                return redirect()->route('accountant.dashboard');
+            default:
+                return redirect()->route('home');
+
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+}
 
     public function logout(Request $request)
     {

@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\User;
 
 use Illuminate\Support\Facades\URL;
 
@@ -44,10 +45,12 @@ class ForgotPassword extends Notification
 
     public function toMail($notifiable)
     {
+        $username = $notifiable->username ;
+
         $url = URL::temporarySignedRoute('change-password', now()->addHours(12) ,['id' => $this->token]);
         return (new MailMessage)
-                    ->line('Hi!')
-                    ->subject('Reset Password')
+                    ->greeting("Hi, " .$username)
+                    ->subject('PASSWORD RESET')
                     ->line('You are receiving this email so you can reset the password for your account')
                     ->action('Reset Password', $url )
                     ->line("If you didn't request this, please ignore this email.")
