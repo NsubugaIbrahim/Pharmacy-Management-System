@@ -26,10 +26,13 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
+            // Redirect based on user role
+            $this->authenticated($request, Auth::user());
+            //  1. Check if the user is authenticated
 
-            return redirect()->intended('dashboard');
+            //return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
@@ -46,7 +49,23 @@ class LoginController extends Controller
 
         return redirect('/login');
     }
+    protected function authenticated(Request $request, $user)
+    {
+        $roleName = $user->role->name ?? '';
 
-    
-
+        switch ($roleName) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'pharmacist':
+                return redirect()->route('pharmacist.dashboard');
+            case 'medical-assistant':
+                return redirect()->route('medical-assistant.dashboard');
+            case 'cashier':
+                return redirect()->route('cashier.dashboard');
+            case 'accountant':
+                return redirect()->route('accountant.dashboard');
+            default:
+                return redirect()->route('home');
+        }
+    }
 }
