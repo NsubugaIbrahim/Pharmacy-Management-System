@@ -1,6 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\ResetPassword;
+use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\MedicalAssistantController;
+use App\Http\Controllers\CashierController;
+use App\Http\Controllers\AccountantController;  
 
 /*
 |--------------------------------------------------------------------------
@@ -17,18 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\ResetPassword;
-use App\Http\Controllers\ChangePassword;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PharmacistController;
-use App\Http\Controllers\MedicalAssistantController;
-use App\Http\Controllers\CashierController;
-use App\Http\Controllers\AccountantController;           
+         
             
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 	Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
