@@ -30,8 +30,6 @@ use App\Http\Controllers\MedicalAssistantController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\AccountantController;           
             
-
-	
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 	Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
 	Route::get('/login', [LoginController::class, 'show'])->middleware('guest')->name('login');
@@ -42,11 +40,7 @@ use App\Http\Controllers\AccountantController;
 	Route::post('/change-password', [ChangePassword::class, 'update'])->middleware('guest')->name('change.perform');
 	
 Route::group(['middleware' => 'auth'], function () {
-
-
-	Route::get('/', function () {return redirect('/dashboard');});
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
-	Route::get('/dashboard2', [HomeController::class, 'index2'])->name('home2');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
