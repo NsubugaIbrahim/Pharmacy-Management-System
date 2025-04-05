@@ -1,9 +1,4 @@
 <head><style>
-    .custom-modal-height .modal-content {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
 </style></head>
 @extends('layouts.app')
 
@@ -24,7 +19,7 @@
                                 <h5 class="modal-title" id="addUserModalLabel">Register New User</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                            <div class="modal-body" style="max-height: 540px; overflow-y: auto;">
                                 <form method="POST"  enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3 text-center">
@@ -33,7 +28,7 @@
                                                 <label for="user-image" style="cursor: pointer; margin-bottom: 0;">
                                                     <img id="preview-image" src="{{ asset('img/avatar.jpg') }}" alt="User Image" 
                                                         class="avatar avatar-xl rounded-circle mb-2" 
-                                                        style="width: 100px; height: 100px; object-fit: cover;">
+                                                        style="width: 50px; height: 50px; object-fit: cover;">
                                                     
                                                 </label>
                                                 <input type="file" name="image" id="user-image" class="d-none" accept="image/*" onchange="previewImage(this)">
