@@ -1,3 +1,29 @@
+<head><style>
+    #sidenav-collapse-main {
+    height: 60%;
+    overflow-y: auto; /* Enables scrolling if needed */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+        background-color: rgba(199, 199, 199, 0.2);
+        border-radius: 0.5rem;
+        transition: all 0.15s ease;
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+    
+    .navbar-nav .nav-item .nav-link:hover .icon-shape {
+        transform: scale(1.1);
+        transition: all 0.15s ease;
+    }
+    
+    .navbar-nav .nav-item .nav-link:hover .nav-link-text {
+        font-weight: 600;
+        transition: all 0.15s ease;
+    }
+
+</style></head>
+
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
     id="sidenav-main">
     <div class="sidenav-header">
@@ -21,12 +47,11 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            {{-- <li class="nav-item mt-3 d-flex align-items-center">
+            <li class="nav-item mt-3 d-flex align-items-center">
                 <div class="ps-4">
                     <i class="fab fa-laravel" style="color: #f4645f;"></i>
                 </div>
-                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Laravel Examples</h6>
-            </li> --}}
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
                     <div
@@ -44,34 +69,13 @@
                     <span class="nav-link-text ms-1">User Management</span>
                 </a>
             </li>
-            {{-- <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Pages</h6>
-            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ str_contains(request()->url(), 'tables') == true ? 'active' : '' }}" href="{{ route('page', ['page' => 'tables']) }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Tables</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{  str_contains(request()->url(), 'billing') == true ? 'active' : '' }}" href="{{ route('page', ['page' => 'billing']) }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Billing</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'virtual-reality' ? 'active' : '' }}" href="{{ route('virtual-reality') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-info text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Virtual Reality</span>
+                    <span class="nav-link-text ms-1">Inventory</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -80,42 +84,32 @@
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">RTL</span>
-                </a>
-            </li>
-            {{-- <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-            </li> --}}
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'profile-static' ? 'active' : '' }}" href="{{ route('profile-static') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
+                    <span class="nav-link-text ms-1">Restock Reports</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{{ route('sign-in-static') }}">
+                <a class="nav-link {{  str_contains(request()->url(), 'billing') == true ? 'active' : '' }}" href="{{ route('page', ['page' => 'billing']) }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Sign In</span>
+                    <span class="nav-link-text ms-1">Promotional Pricing</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{{ route('sign-up-static') }}">
+                <a class="nav-link {{ Route::currentRouteName() == 'virtual-reality' ? 'active' : '' }}" href="{{ route('virtual-reality') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-collection text-info text-sm opacity-10"></i>
+                        <i class="ni ni-app text-info text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Sign Up</span>
+                    <span class="nav-link-text ms-1">Handle expired products</span>
                 </a>
             </li>
+            
+            
         </ul>
     </div>
-    <div class="sidenav-footer mx-3" style="margin-top: 80px;">
+    <div class="sidenav-footer mx-3" style="margin-top: 0px;">
         <div class="card card-plain shadow-none" id="sidenavCard">
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg"
                 alt="sidebar_illustration">
