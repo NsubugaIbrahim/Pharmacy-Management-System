@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/', function () {return redirect('/dashboard');});
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+	Route::get('/dashboard2', [HomeController::class, 'index2'])->name('home2');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
