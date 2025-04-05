@@ -15,12 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'username' => 'admin',
-            'firstname' => 'Admin',
-            'lastname' => 'Admin',
-            'email' => 'admin@argon.com',
-            'password' => bcrypt('secret')
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $this->call([
+            RolesTableSeeder::class,
+            UserSeeder::class
         ]);
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
