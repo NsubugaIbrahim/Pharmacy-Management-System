@@ -59,11 +59,9 @@ class DrugController extends Controller
 
     public function edit($id)
     {
-        // Fetch the drug from the database by its ID
         $drug = Drug::findOrFail($id);
-        
-        // Return the edit view with the drug data
-        return view('drugs.edit', compact('drug'));
+        $suppliers = Supplier::all();
+        return view('drugs.edit', compact('drug', 'suppliers'));
     }
 
     public function sell($id)
@@ -79,31 +77,17 @@ class DrugController extends Controller
 
     public function update(Request $request, $id)
 {
-    // Validate the incoming request data
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'quantity' => 'required|integer|min:0',
-        'unit' => 'required|string|max:100',
-        'cost_price' => 'required|numeric|min:0',
-        'selling_price' => 'nullable|numeric|min:0',
+    $request->validate([
+        'name' => 'required',
+        'quantity' => 'required|integer|min:1',
+        'supply_price' => 'required|numeric|min:0',
+        'supplier_id' => 'required|exists:suppliers,id'
     ]);
 
-    // Find the drug by its ID
     $drug = Drug::findOrFail($id);
+    $drug->update($request->all());
 
-    // Update the drug's details
-    $drug->name = $validated['name'];
-    $drug->description = $validated['description'];
-    $drug->quantity = $validated['quantity'];
-    $drug->unit = $validated['unit'];
-    $drug->cost_price = $validated['cost_price'];
-    $drug->selling_price = $validated['selling_price'];
-    
-    // Save the updated drug to the database
-    $drug->save();
-
-    // Redirect back to the drugs list with a success message
-    return redirect()->route('drugs.index')->with('success', 'Drug updated successfully!');
+    return redirect()->route('drugs.index')->with('success', 'Drug updated successfully.');
 }
+
 }
