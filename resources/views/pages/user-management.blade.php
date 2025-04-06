@@ -212,7 +212,7 @@
                                                         style="width: 5px; height: 5px; object-fit: cover;">
                                                 </label>
                                                 <input type="file" name="image" id="user-image-{{ $user->id }}" class="d-none" accept="image/*" 
-                                                    onchange="previewEditImage(this, {{ $user->id }})">
+                                                onchange="previewEditImage(this, '{{ $user->id }}')">
                                             </div>
                                         </div>
                                         <small class="text-muted">Click on the image to upload a new photo</small>
