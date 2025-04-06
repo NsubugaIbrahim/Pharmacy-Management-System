@@ -46,7 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static'); 
 	Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static'); 
-	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 	Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -57,10 +56,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/stock', [DrugController::class, 'stockForm'])->name('drugs.stock');
-    Route::post('/drugs/stock', [DrugController::class, 'storeStock'])->name('drugs.stock.store');
+    Route::post('/drugs/stock', [DrugController::class, 'storeStock'])->name('drugs.store');
     Route::get('/drugs/set-price', [DrugController::class, 'setSellingPriceForm'])->name('drugs.set_price');
     Route::post('/drugs/{drug}/set-price', [DrugController::class, 'updateSellingPrice'])->name('drugs.setprice.update');
+	// In routes/web.php
+	Route::get('drugs/{drug}/edit', [DrugController::class, 'edit'])->name('drugs.edit');// In routes/web.php
+	Route::get('drugs/{drug}/sell', [DrugController::class, 'sell'])->name('drugs.sell');
+	Route::put('drugs/{drug}', [DrugController::class, 'update'])->name('drugs.update');
 
+
+	
+	
+	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });
 
 //create auth group for all routes that require authentication
