@@ -43,6 +43,7 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
+	Route::get('/user-management', [PageController::class, 'userManagement'])->name('user-management');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
@@ -59,7 +60,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 
+	//Register new user
+	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
+    Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+
 });
+
+
 
 //create auth group for all routes that require authentication
 // Route::group(['middleware' => 'auth'], function () {
