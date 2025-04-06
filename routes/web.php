@@ -26,6 +26,7 @@
 	use App\Http\Controllers\CashierController;
 	use App\Http\Controllers\AccountantController;
 	use App\Http\Controllers\DrugController;
+	use App\Http\Controllers\SupplierController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -63,6 +64,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('drugs/{drug}/edit', [DrugController::class, 'edit'])->name('drugs.edit');// In routes/web.php
 	Route::get('drugs/{drug}/sell', [DrugController::class, 'sell'])->name('drugs.sell');
 	Route::put('drugs/{drug}', [DrugController::class, 'update'])->name('drugs.update');
+
+	Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+	Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+	Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+	Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+	Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+
 
 
 	
