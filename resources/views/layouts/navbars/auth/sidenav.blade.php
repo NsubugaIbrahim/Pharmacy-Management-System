@@ -109,8 +109,6 @@
                     <span class="nav-link-text ms-1">Handle expired products</span>
                 </a>
             </li>
-            
-            
         </ul>
     </div>
     <div class="sidenav-footer mx-3" style="margin-top: 0px;">
