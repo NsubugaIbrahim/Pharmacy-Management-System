@@ -12,9 +12,7 @@
 	| be assigned to the "web" middleware group. Make something great!
 	|
 	*/
-
-
-
+	
 	use App\Http\Controllers\HomeController;
 	use App\Http\Controllers\PageController;
 	use App\Http\Controllers\RegisterController;
@@ -27,10 +25,9 @@
 	use App\Http\Controllers\MedicalAssistantController;
 	use App\Http\Controllers\CashierController;
 	use App\Http\Controllers\AccountantController;
-	use App\Http\Controllers\DrugController;    
-    
+	use App\Http\Controllers\DrugController;
 
-	Route::get('/', function () {return view('welcome');});
+	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 	Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
 	Route::get('/login', [LoginController::class, 'show'])->middleware('guest')->name('login');
@@ -52,7 +49,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-
 	Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 	Route::get('/pharmacist/dashboard', [PharmacistController::class, 'index'])->name('pharmacist.dashboard');
 	Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'index'])->name('medical-assistant.dashboard');
@@ -60,12 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
-
-    // Stocking in drugs
     Route::get('/drugs/stock', [DrugController::class, 'stockForm'])->name('drugs.stock');
     Route::post('/drugs/stock', [DrugController::class, 'storeStock'])->name('drugs.stock.store');
-
-    // Set selling price
     Route::get('/drugs/set-price', [DrugController::class, 'setSellingPriceForm'])->name('drugs.set_price');
     Route::post('/drugs/{drug}/set-price', [DrugController::class, 'updateSellingPrice'])->name('drugs.setprice.update');
 
