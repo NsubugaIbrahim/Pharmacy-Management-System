@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => ''])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Drugs 4'])
     <div class="container">
         <h2>Sell Drug</h2>
         <form method="POST" action="{{ route('drugs.processSale', $drug->id) }}">

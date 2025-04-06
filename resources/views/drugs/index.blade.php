@@ -9,7 +9,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex align-items-center">
                             <h6 class="mb-0">Drugs</h6>
-                            <a href="{{ route('drugs.stock') }}" class="btn btn-primary btn-sm ms-auto">Add Supplier</a>
+                            <a href="{{ route('drugs.stock') }}" class="btn btn-primary btn-sm ms-auto">Add Drug</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">

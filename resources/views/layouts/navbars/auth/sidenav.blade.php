@@ -31,8 +31,8 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('home') }}"
             target="_blank">
-            <img src="./img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">Life Pharmacy Management</span>
+            <img src={{ asset('img/logo-ct-dark.png') }} class="navbar-brand-img h-100" alt="main_logo">
+            <span class="ms-1 font-weight-bold">{{ env('APP_NAME') }}</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -60,7 +60,7 @@
                 <a class="nav-link {{ Route::currentRouteName() == 'suppliers.index' ? 'active' : '' }}" href="{{ route('suppliers.index') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Supplier</span>
                 </a>

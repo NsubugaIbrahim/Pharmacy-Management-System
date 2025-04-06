@@ -1,53 +1,42 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Suppliers'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Edit Supplier'])
+
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-12">
-                <div class="card my-4">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Suppliers Table</h6>
-                        </div>
+            <div class="col-12 mx-auto">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h6>Edit Supplier</h6>
                     </div>
-                    <div class="card-body px-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Supplier Name
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="text" name="name" value="{{ $supplier->name }}" class="form-control" required>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Supplier Name</label>
+                                <input type="text" class="form-control" name="name" id="name" value="{{ $supplier->name }}" required>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <a href="{{ route('suppliers.index') }}" class="btn btn-secondary me-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Update Supplier</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
