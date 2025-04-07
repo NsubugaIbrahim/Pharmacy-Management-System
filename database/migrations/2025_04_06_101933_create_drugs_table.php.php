@@ -13,15 +13,10 @@ return new class extends Migration
     {
         Schema::create('drugs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('supply_price', 10, 2);
-            $table->decimal('selling_price', 10, 2)->nullable();
-            $table->integer('quantity');
-            $table->unsignedBigInteger('supplier_id');
+            $table->string('name')->unique(); // make drug names unique
             $table->timestamps();
-        
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
+        
     }
 
     /**
