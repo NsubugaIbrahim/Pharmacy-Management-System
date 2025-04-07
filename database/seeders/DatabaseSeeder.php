@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             DrugSeeder::class,
             SalesSeeder::class,
+            StockSeeder::class,
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

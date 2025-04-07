@@ -14,10 +14,10 @@ class SalesSeeder extends Seeder
     public function run(): void
     {
         $sales = [
-            ['drug_id' => 1, 'quantity' => 5, 'total_price' => 10.00],
-            ['drug_id' => 2, 'quantity' => 3, 'total_price' => 7.50],
-            ['drug_id' => 3, 'quantity' => 2, 'total_price' => 8.00],
-            ['drug_id' => 1, 'quantity' => 10, 'total_price' => 20.00],
+            ['drug_id' => 1, 'quantity' => 5, 'total_price' => 10.00,'created_at' => now(), 'updated_at' => now()],
+            ['drug_id' => 2, 'quantity' => 3, 'total_price' => 7.50,'created_at' => now(), 'updated_at' => now()],
+            ['drug_id' => 3, 'quantity' => 2, 'total_price' => 8.00,'created_at' => now(), 'updated_at' => now()],
+            ['drug_id' => 1, 'quantity' => 10, 'total_price' => 20.00,'created_at' => now(), 'updated_at' => now()],
         ];
 
         foreach ($sales as $sale) {

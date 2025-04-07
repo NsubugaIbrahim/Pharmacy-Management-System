@@ -14,10 +14,16 @@ class DrugSeeder extends Seeder
     public function run(): void
     {
         $drugs = [
-            ['name' => 'Paracetamol', 'supply_price' => 1.50, 'selling_price' => 2.00, 'quantity' => 100, 'supplier_id' => 1],
-            ['name' => 'Ibuprofen', 'supply_price' => 2.00, 'selling_price' => 2.50, 'quantity' => 150, 'supplier_id' => 2],
-            ['name' => 'Amoxicillin', 'supply_price' => 3.00, 'selling_price' => 4.00, 'quantity' => 200, 'supplier_id' => 3],
-            ['name' => 'Cough Syrup', 'supply_price' => 2.50, 'selling_price' => 3.20, 'quantity' => 80, 'supplier_id' => 1],
+            ['name' => 'Paracetamol'],
+            ['name' => 'Ibuprofen'],
+            ['name' => 'Amoxicillin'],
+            ['name' => 'Cough Syrup'],
+            ['name' => 'Aspirin'],
+            ['name' => 'Lisinopril'],
+            ['name' => 'Metformin'],
+            ['name' => 'Simvastatin'],
+            ['name' => 'Omeprazole'],
+            ['name' => 'Levothyroxine'],
         ];
 
         foreach ($drugs as $drug) {
