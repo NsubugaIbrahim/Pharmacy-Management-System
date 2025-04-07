@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('postal')->nullable();
             $table->text('about')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
