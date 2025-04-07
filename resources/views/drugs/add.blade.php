@@ -25,7 +25,7 @@
                         <h6>Add Drug</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <form action="{{ route('stock.store') }}" method="POST">
+                        <form action="{{ route('drugs.store') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
