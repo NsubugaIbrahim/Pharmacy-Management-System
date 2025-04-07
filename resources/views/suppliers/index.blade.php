@@ -26,7 +26,13 @@
                                         <td class="align-middle text-sm ps-4 text-center">{{ $supplier->name }}</td>
                                         <td class="align-middle text-sm ps-4 text-center">
                                             <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <a href="{{ route('suppliers.destroy', $supplier->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                                            <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this supplier?')">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
