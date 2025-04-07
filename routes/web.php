@@ -43,6 +43,7 @@
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
+	Route::get('/user-management', [PageController::class, 'userManagement'])->name('user-management');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
@@ -96,6 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
 	
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });
+
+
 
 //create auth group for all routes that require authentication
 // Route::group(['middleware' => 'auth'], function () {
