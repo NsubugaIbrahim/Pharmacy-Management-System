@@ -91,7 +91,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
 
-
+	//Register new user
+	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
+	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+	Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+	Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+	Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 
 	
 	
