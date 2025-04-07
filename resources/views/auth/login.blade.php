@@ -1,8 +1,8 @@
 <head>
-{{-- <style>
+ <style>
     .backdrop-filter {
-        -webkit-backdrop-filter: blur(15px);
-        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
     }
     
     .bg-white\/30 {
@@ -13,7 +13,7 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }
-</style> --}}
+</style> 
 
 <head>
 @extends('layouts.app')
@@ -31,10 +31,13 @@
             <div class="page-header min-vh-100">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                        <div class="card card-plain backdrop-filter backdrop-blur-lg bg-white/30">
+                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto" style="margin-top: 70px;">
+                            <div class="card card-plain backdrop-filter backdrop-blur-lg bg-white/30">
                                 <div class="card-header pb-0 text-start">
-                                    <h4 class="font-weight-bolder">Sign In</h4>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="/img/life.png" class="navbar-brand-img h-100" alt="logo" style="max-height: 60px; margin-right: 10px;">
+                                        <h4 class="font-weight-bolder m-0">Sign In</h4>
+                                    </div>
                                     <p class="mb-0">Enter your email and password to sign in</p>
                                 </div>
                                 <div class="card-body">
