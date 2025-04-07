@@ -19,7 +19,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-image: url('/img/resetpassword1.jpg');
+            background-image: url('/img/register-bg.jpg');
             background-size: cover;
             background-position: center;
             z-index: -1;
