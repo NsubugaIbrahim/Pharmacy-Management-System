@@ -57,8 +57,8 @@ class DrugController extends Controller
     // Form to stock a drug
     public function addDrug()
     {
-        $drugs = Drug::all();
-        return view('drugs.add', compact('drugs'));
+        
+        return view('drugs.add');
     }
 
     // Store stock entry
