@@ -28,6 +28,7 @@
 	use App\Http\Controllers\DrugController;
 	use App\Http\Controllers\SupplierController;
 	use App\Http\Controllers\StockController;
+	use App\Http\Controllers\RoleController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -42,7 +43,6 @@
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
-	Route::get('/user-management', [PageController::class, 'userManagement'])->name('user-management');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
@@ -82,19 +82,19 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/stock/{stockEntry}', [StockController::class, 'update'])->name('stock.update');
 	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
 
+	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+	Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
 
 
 
 	
 	
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
-
-	//Register new user
-	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
-	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-	Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-	Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-	Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 });
 
 //create auth group for all routes that require authentication
