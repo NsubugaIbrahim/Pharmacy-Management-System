@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Drug;
 use App\Models\Supplier;
-use App\Models\Sale;
+use App\Models\StockEntry;
 
 class DrugController extends Controller
 {
@@ -16,52 +16,15 @@ class DrugController extends Controller
 
     public function index()
     {
-        $drugs = Drug::all();
+        $drugs = Drug::with('stockEntries')->get();
         return view('drugs.index', compact('drugs'));
-    }
-    public function stockForm()
-    {
-        $suppliers = Supplier::all();
-        return view('drugs.create', compact('suppliers'));
-    }
-
-    public function storeStock(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'quantity' => 'required|integer|min:1',
-            'supply_price' => 'required|numeric|min:0',
-            'supplier_id' => 'required|exists:suppliers,id'
-        ]);
-
-        Drug::create($request->all());
-
-        return redirect()->route('drugs.stock')->with('success', 'Drug stocked successfully.');
-    }
-
-    public function setSellingPriceForm()
-    {
-        $drugs = Drug::whereNull('selling_price')->get();
-        return view('drugs.set_price', compact('drugs'));
-    }
-
-    public function updateSellingPrice(Request $request, Drug $drug)
-    {
-        $request->validate([
-            'selling_price' => 'required|numeric|min:0'
-        ]);
-
-        $drug->selling_price = $request->selling_price;
-        $drug->save();
-
-        return back()->with('success', 'Selling price updated.');
     }
 
     public function edit($id)
     {
+        //edit only drug name
         $drug = Drug::findOrFail($id);
-        $suppliers = Supplier::all();
-        return view('drugs.edit', compact('drug', 'suppliers'));
+        return view('drugs.edit', compact('drug'));
     }
 
     public function sell($id)
@@ -76,18 +39,68 @@ class DrugController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required',
-        'quantity' => 'required|integer|min:1',
-        'supply_price' => 'required|numeric|min:0',
-        'supplier_id' => 'required|exists:suppliers,id'
-    ]);
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
 
-    $drug = Drug::findOrFail($id);
-    $drug->update($request->all());
+        $drug = Drug::findOrFail($id);
+        $drug->update($request->all());
 
-    return redirect()->route('drugs.index')->with('success', 'Drug updated successfully.');
-}
+        return redirect()->route('drugs.index')->with('success', 'Drug updated successfully.');
+    }
+
+
+// Show all drugs with total stock
+
+
+    // Form to stock a drug
+    public function addDrug()
+    {
+        $drugs = Drug::all();
+        return view('drugs.add', compact('drugs'));
+    }
+
+    // Store stock entry
+    public function storeDrug(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Drug::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('drugs.index')->with('success', 'Drug added successfully.');
+    }
+
+    // Show form to set selling price for entries without it
+    public function setSellingPriceForm()
+    {
+        $entries = StockEntry::whereNull('selling_price')->with('drug', 'supplier')->get();
+        return view('drugs.set_price', compact('entries'));
+    }
+
+    // Update selling price
+    public function updateSellingPrice(Request $request, StockEntry $entry)
+    {
+        $request->validate([
+            'selling_price' => 'required|numeric|min:0',
+        ]);
+
+        $entry->selling_price = $request->selling_price;
+        $entry->save();
+
+        return redirect()->back()->with('success', 'Selling price updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $drug = Drug::findOrFail($id);
+        $drug->delete();
+
+        return redirect()->route('drugs.index')->with('success', 'Drug deleted successfully.');
+    }
 
 }
