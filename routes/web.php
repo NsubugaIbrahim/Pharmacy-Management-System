@@ -27,6 +27,7 @@
 	use App\Http\Controllers\AccountantController;
 	use App\Http\Controllers\DrugController;
 	use App\Http\Controllers\SupplierController;
+	use App\Http\Controllers\StockController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -56,14 +57,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
-    Route::get('/drugs/stock', [DrugController::class, 'stockForm'])->name('drugs.stock');
-    Route::post('/drugs/stock', [DrugController::class, 'storeStock'])->name('drugs.store');
+    Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
+    Route::post('/drugs/add', [DrugController::class, 'storeDrug'])->name('drugs.store');
     Route::get('/drugs/set-price', [DrugController::class, 'setSellingPriceForm'])->name('drugs.set_price');
     Route::post('/drugs/{drug}/set-price', [DrugController::class, 'updateSellingPrice'])->name('drugs.setprice.update');
 	// In routes/web.php
 	Route::get('drugs/{drug}/edit', [DrugController::class, 'edit'])->name('drugs.edit');// In routes/web.php
 	Route::get('drugs/{drug}/sell', [DrugController::class, 'sell'])->name('drugs.sell');
 	Route::put('drugs/{drug}', [DrugController::class, 'update'])->name('drugs.update');
+	Route::delete('drugs/{drug}/delete', [DrugController::class, 'destroy'])->name('drugs.destroy');
 
 	Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
 	Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
@@ -71,6 +73,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
 	Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+	Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
+	Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
+	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');
+	Route::put('/stock/{stockEntry}', [StockController::class, 'update'])->name('stock.update');
+	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
 
 
 
