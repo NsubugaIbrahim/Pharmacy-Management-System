@@ -20116,7 +20116,7 @@ textarea.form-control-lg {
 }
 
 .fixed-plugin .fixed-plugin-button {
-  background: #fff;
+  background: #fb6340;
   border-radius: 50%;
   bottom: 30px;
   right: 30px;
@@ -20345,7 +20345,7 @@ label,
 }
 
 .bg-gradient-primary {
-  background-image: linear-gradient(310deg, #fb6340 0%, #f56036 100%);
+  background-image: linear-gradient(310deg, #E6DEFB 0%, #6D6FFB 100%);
 }
 
 .bg-gradient-secondary {
