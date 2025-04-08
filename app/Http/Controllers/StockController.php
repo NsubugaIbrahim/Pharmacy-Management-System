@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\StockEntry;
 use App\Models\Drug;
 use App\Models\Supplier;
+use App\Models\Stock_Order;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StockController extends Controller
 {
@@ -24,6 +27,68 @@ class StockController extends Controller
         $suppliers = Supplier::all();
         return view('inventory-stock', compact('drugs', 'suppliers'));
     }
+
+    //Stock inventory test
+    public function store_order(Request $request)
+{
+    // Validate the basic fields
+    $request->validate([
+        'supplier_id' => 'required|exists:suppliers,id',
+        'date' => 'required|date',
+        'entries' => 'required|array|min:1',
+    ]);
+    
+    // Filter out empty entries
+    $validEntries = [];
+    foreach ($request->entries as $entry) {
+        if (!empty($entry['quantity']) && !empty($entry['price']) && !empty($entry['expiry_date'])) {
+            $validEntries[] = $entry;
+        }
+    }
+    
+    // Check if we have any valid entries
+    if (empty($validEntries)) {
+        return redirect()->back()->with('error', 'Please fill at least one restock item.');
+    }
+    
+    // Validate each entry
+    foreach ($validEntries as $entry) {
+        if (!isset($entry['drug_id']) || !isset($entry['quantity']) || 
+            !isset($entry['price']) || !isset($entry['expiry_date'])) {
+            return redirect()->back()->with('error', 'Invalid entry data');
+        }
+    }
+
+    try {
+        DB::transaction(function () use ($request, $validEntries) {
+            // Create the stock order
+            $order = Stock_Order::create([
+                'supplier_id' => $request->supplier_id,
+                'date' => $request->date,
+            ]);
+
+            // Create each stock entry
+            foreach ($validEntries as $entry) {
+                StockEntry::create([
+                    'restock_id' => $order->id,
+                    'drug_id' => $entry['drug_id'],
+                    'quantity' => $entry['quantity'],
+                    'price' => $entry['price'],
+                    'expiry_date' => $entry['expiry_date'],
+                ]);
+            }
+        });
+        
+        return redirect()->back()->with('success', 'Stock restocked successfully!');
+    } catch (\Exception $e) {
+        Log::error('Stock order creation failed: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Failed to create stock order: ' . $e->getMessage());
+    }
+}
+
+    
+    
+
 
     // Form to stock a drug
     public function create()
