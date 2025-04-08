@@ -17,6 +17,14 @@ class StockController extends Controller
         // Return the view with the stock entries
         return view('stock.index', compact('stockEntries'));
     }
+
+    //View Inventory Stock page
+    public function inventory(){
+        $drugs = Drug::all();
+        $suppliers = Supplier::all();
+        return view('inventory-stock', compact('drugs', 'suppliers'));
+    }
+
     // Form to stock a drug
     public function create()
     {
