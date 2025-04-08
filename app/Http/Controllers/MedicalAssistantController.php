@@ -10,4 +10,8 @@ class MedicalAssistantController extends Controller
     {
         return view('medical-assistant.dashboard');
     }
+    public function dashboard()
+{
+    return view('medical-assistant.dashboard'); // or whatever view you want to return
+}
 }
