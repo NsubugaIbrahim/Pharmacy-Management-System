@@ -31,29 +31,38 @@
                             </div>
                         @endif
 
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" style="color: white; font-size: 14px;">
                             <i class="fas fa-info-circle me-2"></i>
-                            Fill in details only for the drugs you want to restock. Empty rows will be ignored.
+                            Fill in details only for the drugs to be restocked. Empty rows will be ignored.
                         </div>
 
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <form method="POST" action="{{ route('stock_orders.store') }}" id="restock-form">
                                 @csrf
-                                <div class="mb-3">
-                                    <label for="supplier" class="form-label">Select Supplier</label>
-                                    <select name="supplier_id" id="supplier" class="form-select" style="width: 100%;" required>
-                                        <option value="">-- Select Supplier --</option>
-                                        @foreach($suppliers as $supplier)
-                                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="date" class="form-label">Restock Date</label>
-                                    <input type="date" id="date" name="date" class="form-control" required>
+                                <div class="d-flex align-items-end gap-3 mb-3">
+                                    <div class="mb-3">
+                                        <label for="supplier" class="form-label">Select Supplier</label>
+                                        <select name="supplier_id" id="supplier" class="form-select" style="width: 200px;" required>
+                                            <option value="">Select Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="date" class="form-label">Restock Date</label>
+                                        <input type="date" id="date" name="date" class="form-control" style="width: 200px;" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Search</label> <br>
+                                        <input type="text" id="search-input" class="form-control" placeholder=" Search for a drug">
+                                            
+                                    </div>
                                 </div>
                                 
-                                <div class="table-responsive">
+                                
+                                
+                                <div class="table-responsive" style="margin-top: -30px;">
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
@@ -185,6 +194,19 @@
                 });
             });
         </script>
+
+        <script>
+            // Set default date to today
+            document.addEventListener('DOMContentLoaded', function() {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                
+                document.getElementById('date').value = `${year}-${month}-${day}`;
+            });
+        </script>
+
                 
         @include('layouts.footers.auth.footer')
     </div>
