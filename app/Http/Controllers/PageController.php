@@ -21,6 +21,11 @@ class PageController extends Controller
         return abort(404);
     }
 
+    public function userManagement()
+    {
+        return view("pages.user-management");
+    }
+
     public function vr()
     {
         return view("pages.virtual-reality");
