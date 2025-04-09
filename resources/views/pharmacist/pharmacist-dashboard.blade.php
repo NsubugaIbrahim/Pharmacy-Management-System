@@ -132,7 +132,7 @@
                                         <i class="ni ni-camera-compact text-dark opacity-10"></i>
                                     </div>
                                     <h5 class="text-white mb-1">Least stock by drug</h5>
-                                    <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
+                                    <p>There's nothing I really wanted to do in life that I wasn't able to get good at.</p>
                                 </div>
                             </div>
                             <div class="carousel-item h-100" style="background-image: url('./img/carousel-2.jpg');
