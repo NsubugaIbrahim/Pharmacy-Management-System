@@ -99,8 +99,9 @@
                                 </div>
                                 
                                 <div class="mt-3 d-flex align-items-center">
-                                    <div class="ms-3 fw-bold" style="margin-right: 30px;">
-                                        Total Amount: <span id="total-cost" class="text-primary">0.00</span> UGX
+                                    <input type="hidden" name="total" id="total-amount-input">
+                                    <div class="ms-3 fw-bold" style = "margin-right:30px">
+                                        Total Amount: <span id="total-cost" class="text-primary">0.00</span>
                                     </div>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fas fa-save me-2"></i> Submit Restock
@@ -292,7 +293,9 @@ function updateTotalCost() {
     });
     
     document.getElementById('total-cost').textContent = total.toFixed(0);
+    document.getElementById('total-amount-input').value = total.toFixed(0);
 }
+
 
 // Add event listeners to update total cost
 document.addEventListener('DOMContentLoaded', function() {

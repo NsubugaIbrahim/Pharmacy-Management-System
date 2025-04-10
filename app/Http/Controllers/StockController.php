@@ -36,6 +36,7 @@ class StockController extends Controller
         'supplier_id' => 'required|exists:suppliers,id',
         'date' => 'required|date',
         'entries' => 'required|array|min:1',
+        'total' => 'required|numeric',
     ]);
     
     // Filter out empty entries
@@ -65,6 +66,7 @@ class StockController extends Controller
             $order = Stock_Order::create([
                 'supplier_id' => $request->supplier_id,
                 'date' => $request->date,
+                'total' => $request->total, // Save the total amount
             ]);
 
             // Create each stock entry
@@ -85,6 +87,7 @@ class StockController extends Controller
         return redirect()->back()->with('error', 'Failed to create stock order: ' . $e->getMessage());
     }
 }
+
 
     // Form to stock a drug
     public function create()

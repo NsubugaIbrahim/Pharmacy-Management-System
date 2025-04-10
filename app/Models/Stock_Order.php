@@ -13,7 +13,8 @@ class Stock_Order extends Model
     
     protected $fillable = [
         'supplier_id',
-        'date'
+        'date',
+        'total'
     ];
     
     public function stockEntries()
