@@ -86,11 +86,6 @@ class StockController extends Controller
     }
 }
 
-
-    
-    
-
-
     // Form to stock a drug
     public function create()
     {

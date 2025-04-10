@@ -51,8 +51,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="date" class="form-label">Restock Date</label>
-                                        <input type="date" id="date" name="date" class="form-control" style="width: 200px;" required>
-                                    </div>
+                                        <input type="date" id="date" name="date" class="form-control" style="width: 200px;" required value="{{ date('Y-m-d') }}">
+                                    </div>                                    
                                     <div class="mb-3">
                                         <label class="form-label">Search</label> <br>
                                         <input type="text" id="search-input" class="form-control" placeholder=" Search for a drug">
@@ -246,6 +246,15 @@
     }
 });
 
+// Set default date to today
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    
+    document.getElementById('date').value = `${year}-${month}-${day}`;
+});
 
         </script>
 
