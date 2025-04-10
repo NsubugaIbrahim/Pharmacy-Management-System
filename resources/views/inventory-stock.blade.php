@@ -55,9 +55,8 @@
                                     </div>                                    
                                     <div class="mb-3">
                                         <label class="form-label">Search</label> <br>
-                                        <input type="text" id="search-input" class="form-control" placeholder=" Search for a drug">
-                                            
-                                    </div>
+                                        <input type="text" id="search-input" class="form-control" placeholder="Search for a drug">
+                                    </div>                                    
                                 </div>
                                 
                                 
@@ -255,6 +254,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.getElementById('date').value = `${year}-${month}-${day}`;
 });
+
+// Add search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+    const rows = document.querySelectorAll('.drug-row');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            rows.forEach(row => {
+                const drugName = row.querySelector('strong').textContent.toLowerCase();
+                if (drugName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+
 
         </script>
 
