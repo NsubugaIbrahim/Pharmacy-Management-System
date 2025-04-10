@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock__entries', function (Blueprint $table) {
+        Schema::create('stock_entries', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('restock_id');
             $table->unsignedBigInteger('drug_id');
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->date('expiry_date');
+            $table->integer('price');
+            $table->integer('cost');
             $table->timestamps();
             
             // Foreign key constraints
-            $table->foreign('restock_id')->references('id')->on('stock__orders')->onDelete('cascade');
+            $table->foreign('restock_id')->references('id')->on('stock_orders')->onDelete('cascade');
             $table->foreign('drug_id')->references('id')->on('drugs')->onDelete('cascade');
         });
     }

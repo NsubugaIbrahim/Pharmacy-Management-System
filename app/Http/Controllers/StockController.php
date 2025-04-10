@@ -15,18 +15,23 @@ class StockController extends Controller
     public function index()
     {
         // Fetch all stock entries with their associated drugs and suppliers
-        $stockEntries = StockEntry::with(['drug', 'supplier'])->get();
+        $drugs = Drug::all();
+        $suppliers = Supplier::all();
 
         // Return the view with the stock entries
-        return view('stock.index', compact('stockEntries'));
+        return view('stock.index', compact('drugs', 'suppliers'));
+    }
+
+    public function displayStocks(){
+        return view('stocks');
     }
 
     //View Inventory Stock page
-    public function inventory(){
-        $drugs = Drug::all();
-        $suppliers = Supplier::all();
-        return view('inventory-stock', compact('drugs', 'suppliers'));
-    }
+    // public function inventory(){
+    //     $drugs = Drug::all();
+    //     $suppliers = Supplier::all();
+    //     return view('inventory-stock', compact('drugs', 'suppliers'));
+    // }
 
     //Stock inventory test
     public function store_order(Request $request)
@@ -36,12 +41,13 @@ class StockController extends Controller
         'supplier_id' => 'required|exists:suppliers,id',
         'date' => 'required|date',
         'entries' => 'required|array|min:1',
+        'total' => 'required|numeric',
     ]);
     
     // Filter out empty entries
     $validEntries = [];
     foreach ($request->entries as $entry) {
-        if (!empty($entry['quantity']) && !empty($entry['price']) && !empty($entry['expiry_date'])) {
+        if (!empty($entry['quantity']) && !empty($entry['price'])) {
             $validEntries[] = $entry;
         }
     }
@@ -54,7 +60,7 @@ class StockController extends Controller
     // Validate each entry
     foreach ($validEntries as $entry) {
         if (!isset($entry['drug_id']) || !isset($entry['quantity']) || 
-            !isset($entry['price']) || !isset($entry['expiry_date'])) {
+            !isset($entry['price']) || !isset($entry['cost'])) {
             return redirect()->back()->with('error', 'Invalid entry data');
         }
     }
@@ -65,6 +71,7 @@ class StockController extends Controller
             $order = Stock_Order::create([
                 'supplier_id' => $request->supplier_id,
                 'date' => $request->date,
+                'total' => $request->total, // Save the total amount
             ]);
 
             // Create each stock entry
@@ -74,7 +81,7 @@ class StockController extends Controller
                     'drug_id' => $entry['drug_id'],
                     'quantity' => $entry['quantity'],
                     'price' => $entry['price'],
-                    'expiry_date' => $entry['expiry_date'],
+                    'cost' => $entry['cost'],
                 ]);
             }
         });
@@ -85,9 +92,6 @@ class StockController extends Controller
         return redirect()->back()->with('error', 'Failed to create stock order: ' . $e->getMessage());
     }
 }
-
-    
-    
 
 
     // Form to stock a drug
