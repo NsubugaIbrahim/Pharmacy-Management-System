@@ -15,10 +15,11 @@ class StockController extends Controller
     public function index()
     {
         // Fetch all stock entries with their associated drugs and suppliers
-        $stockEntries = StockEntry::with(['drug', 'supplier'])->get();
+        $drugs = Drug::all();
+        $suppliers = Supplier::all();
 
         // Return the view with the stock entries
-        return view('stock.index', compact('stockEntries'));
+        return view('stock.index', compact('drugs', 'suppliers'));
     }
 
     public function displayStocks(){
@@ -26,11 +27,11 @@ class StockController extends Controller
     }
 
     //View Inventory Stock page
-    public function inventory(){
-        $drugs = Drug::all();
-        $suppliers = Supplier::all();
-        return view('inventory-stock', compact('drugs', 'suppliers'));
-    }
+    // public function inventory(){
+    //     $drugs = Drug::all();
+    //     $suppliers = Supplier::all();
+    //     return view('inventory-stock', compact('drugs', 'suppliers'));
+    // }
 
     //Stock inventory test
     public function store_order(Request $request)

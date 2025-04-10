@@ -9,7 +9,7 @@ class Stock_Order extends Model
 {
     use HasFactory;
 
-    protected $table = 'stock__orders';
+    protected $table = 'stock_orders';
     
     protected $fillable = [
         'supplier_id',

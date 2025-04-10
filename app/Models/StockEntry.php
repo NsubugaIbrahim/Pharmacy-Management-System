@@ -9,7 +9,7 @@ class StockEntry extends Model
 {
     use HasFactory;
 
-    protected $table = 'stock__entries';
+    protected $table = 'stock_entries';
 
     protected $fillable = [
         'restock_id',
