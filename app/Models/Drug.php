@@ -10,11 +10,7 @@ class Drug extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'supply_price',
-        'selling_price',
-        'quantity',
-        'supplier_id'
+        'name'
     ];
 
     public function supplier()

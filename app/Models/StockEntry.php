@@ -9,7 +9,7 @@ class StockEntry extends Model
 {
     use HasFactory;
 
-    protected $table = 'stock__entries';
+    protected $table = 'stock_entries';
 
     protected $fillable = [
         'restock_id',
@@ -25,5 +25,9 @@ class StockEntry extends Model
     
     public function stockOrder() {
         return $this->belongsTo(Stock_Order::class, 'restock_id');
+    }
+
+    public function supplier() {
+        return $this->hasOneThrough(Supplier::class, Stock_Order::class, 'id', 'id', 'restock_id', 'supplier_id');
     }
 }
