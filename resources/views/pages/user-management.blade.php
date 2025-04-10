@@ -94,7 +94,7 @@
                                             <select class="form-select" id="role" name="role_id" required>
                                                 <option value="">Select Role</option>
                                                 @foreach($roles as $role)
-                                                    <option value="{{ $role->id }}">{{ $role->description }}</option>
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -159,7 +159,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <p class="text-sm font-weight-bold mb-0">{{ $user->role->description ?? 'No Role' }}</p>
+                                        <p class="text-sm font-weight-bold mb-0">{{ $user->role->name ?? 'No Role' }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-sm font-weight-bold mb-0">{{ $user->created_at->format('d/m/Y') }}</p>
@@ -248,7 +248,7 @@
                                                 <option value="">Select Role</option>
                                                 @foreach($roles as $role)
                                                     <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                                        {{ $role->description }}
+                                                        {{ $role->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
