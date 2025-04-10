@@ -11,9 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+<<<<<<< HEAD
         Schema::create('stock__orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplier_id');
+=======
+        Schema::create('stock_orders', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('supplier_id');
+            $table->integer('total');
+>>>>>>> 61d6a0f69527de383b732ff2a1fa5ce215775bfa
             $table->date('date');
             $table->timestamps();
             
@@ -27,6 +34,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+<<<<<<< HEAD
         Schema::dropIfExists('stock__orders');
+=======
+        Schema::dropIfExists('stock_orders');
+>>>>>>> 61d6a0f69527de383b732ff2a1fa5ce215775bfa
     }
 };

@@ -48,7 +48,11 @@
                 </a>
             </li>
             <li class="nav-item">
+<<<<<<< HEAD
                 <a class="nav-link {{ Route::currentRouteName() == 'inventory.stock' ? 'active' : '' }}" href="{{ route('inventory.stock') }}">
+=======
+                <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
+>>>>>>> 61d6a0f69527de383b732ff2a1fa5ce215775bfa
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-primary text-sm opacity-10"></i>
