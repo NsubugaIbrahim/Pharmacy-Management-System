@@ -60,8 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Pharmacist Routes
 	Route::get('/pharmacist/{id}/edit',[PharmacistController::class, 'edit'])->name('pharmacist.edit');
-	Route::get('/pharmacist/{id}', [PharmacistController::class, 'destroy'])->name('pharmacist.destroy');
-	Route::get('/pharmacist/add', [PharmacistController::class, 'create'])->name('pharmacist.add');
+	Route::delete('/pharmacist/{id}', [PharmacistController::class, 'destroy'])->name('pharmacist.destroy');
+	Route::get('/pharmacist/add', [PharmacistController::class, 'store'])->name('pharmacist.create');
 
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
@@ -87,13 +87,18 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');
 	Route::put('/stock/{stockEntry}', [StockController::class, 'update'])->name('stock.update');
 	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
+	//View Inventory Stock
+	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
+	Route::post('/restock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
+	Route::get('/stock-orders', [StockController::class, 'displayStocks'])->name('stock_orders.display');
 
+	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+	Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
-
-
-	
-	
-	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 
 	//Register new user
 	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');

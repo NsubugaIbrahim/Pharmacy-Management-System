@@ -31,8 +31,24 @@ class PharmacistController extends Controller
     }
 
     //Add stock 
-    public function add()
-    {
-        
-    }
+    public function create()
+{
+    return view('pharmacist.add');
+}
+
+public function store(Request $request)
+{
+    // Validate the request
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'quantity' => 'required|integer|min:1',
+        'expiry_date' => 'required|date|after:today',
+    ]);
+    
+    // Create the drug record
+    // Assuming you have a Drug model
+    Drug::create($validated);
+    
+    return redirect()->route('pharmacist.dashboard')->with('success', 'Drug added successfully');
+}
 }

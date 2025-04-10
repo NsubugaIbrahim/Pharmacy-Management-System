@@ -10,7 +10,7 @@
                     <div class="card-header pb-0">
                         <div class="d-flex align-items-center">
                             <h6 class="mb-0">Pharmacist Page</h6>
-                            <a href="{{ route('pharmacist.add') }}" class="btn btn-primary btn-sm ms-auto">Add Stock</a>
+                            <a href="{{ route('pharmacist.create') }}" class="btn btn-primary btn-sm ms-auto">Add Stock</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
