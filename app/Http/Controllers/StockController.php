@@ -21,6 +21,10 @@ class StockController extends Controller
         return view('stock.index', compact('stockEntries'));
     }
 
+    public function displayStocks(){
+        return view('stocks');
+    }
+
     //View Inventory Stock page
     public function inventory(){
         $drugs = Drug::all();

@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'inventory.stock' ? 'active' : '' }}" href="{{ route('inventory.stock') }}">
+                <a class="nav-link {{ Route::currentRouteName() == 'stock_orders.display' ? 'active' : '' }}" href="{{ route('stock_orders.display') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-primary text-sm opacity-10"></i>
