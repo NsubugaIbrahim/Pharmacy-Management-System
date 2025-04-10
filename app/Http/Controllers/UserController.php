@@ -39,10 +39,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('error', 'There were errors in your submission. Please check the form.');
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'There were errors in your submission. Please check the form.');
         }
 
         try {
@@ -66,12 +63,9 @@ class UserController extends Controller
                 'image' => $imagePath,
             ]);
     
-            return redirect()->route('user-management')
-                ->with('success', 'User registered successfully!');
+            return redirect()->route('user-management')->with('success', 'User registered successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
@@ -136,7 +130,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user-management')
-            ->with('success', 'User deleted successfully');
+        return redirect()->route('user-management')->with('success', 'User deleted successfully');
     }
 }
