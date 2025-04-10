@@ -41,7 +41,7 @@ class StockController extends Controller
     // Filter out empty entries
     $validEntries = [];
     foreach ($request->entries as $entry) {
-        if (!empty($entry['quantity']) && !empty($entry['price']) && !empty($entry['expiry_date'])) {
+        if (!empty($entry['quantity']) && !empty($entry['price'])) {
             $validEntries[] = $entry;
         }
     }
@@ -54,7 +54,7 @@ class StockController extends Controller
     // Validate each entry
     foreach ($validEntries as $entry) {
         if (!isset($entry['drug_id']) || !isset($entry['quantity']) || 
-            !isset($entry['price']) || !isset($entry['expiry_date'])) {
+            !isset($entry['price']) || !isset($entry['cost'])) {
             return redirect()->back()->with('error', 'Invalid entry data');
         }
     }
@@ -74,7 +74,7 @@ class StockController extends Controller
                     'drug_id' => $entry['drug_id'],
                     'quantity' => $entry['quantity'],
                     'price' => $entry['price'],
-                    'expiry_date' => $entry['expiry_date'],
+                    'cost' => $entry['cost'],
                 ]);
             }
         });
@@ -85,6 +85,7 @@ class StockController extends Controller
         return redirect()->back()->with('error', 'Failed to create stock order: ' . $e->getMessage());
     }
 }
+
 
     
     

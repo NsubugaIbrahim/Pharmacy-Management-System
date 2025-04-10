@@ -69,7 +69,7 @@
                                                 <th>Drug</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
-                                                <th>Expiry Date</th>
+                                                <th>Cost</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -87,8 +87,9 @@
                                                     <input type="number" name="entries[{{ $index }}][price]" step="0.01" min="0.01" class="form-control price-field">
                                                 </td>
                                                 <td>
-                                                    <input type="date" name="entries[{{ $index }}][expiry_date]" class="form-control expiry-field">
-                                                </td>
+                                                    <input type="text" class="form-control cost-display" readonly>
+                                                    <input type="hidden" name="entries[{{ $index }}][cost]" class="cost-field">
+                                                </td>                                                                                                
                                                 <td class="row-status">
                                                     <span class="badge bg-secondary">Not selected</span>
                                                 </td>
@@ -112,99 +113,140 @@
 
         {{-- JavaScript to handle form submission --}}
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('restock-form');
-                const rows = document.querySelectorAll('.drug-row');
+           document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('restock-form');
+    const rows = document.querySelectorAll('.drug-row');
+    
+    // Update row status when any field changes
+    rows.forEach(row => {
+        const quantityField = row.querySelector('.quantity-field');
+        const priceField = row.querySelector('.price-field');
+        const costDisplay = row.querySelector('.cost-display');
+        const statusBadge = row.querySelector('.row-status .badge');
+        
+        // Calculate cost function
+        const calculateCost = () => {
+            const quantity = parseFloat(quantityField.value) || 0;
+            const price = parseFloat(priceField.value) || 0;
+            const cost = quantity * price;
+            costDisplay.value = cost.toFixed(0);
+            
+            // Add a hidden input to store the cost value for submission
+            let costInput = row.querySelector('.cost-field');
+            if (costInput) {
+                costInput.value = cost.toFixed(0);
+            }
+        };
+        
+        // Initialize cost calculation
+        calculateCost();
+        
+        // Update cost when quantity or price changes
+        quantityField.addEventListener('input', calculateCost);
+        priceField.addEventListener('input', calculateCost);
+        
+        const updateRowStatus = () => {
+            const quantity = quantityField.value.trim();
+            const price = priceField.value.trim();
+            
+            if (quantity && price) {
+                statusBadge.className = 'badge bg-success';
+                statusBadge.textContent = 'Will be restocked';
+                row.classList.add('table-success');
+                row.classList.remove('table-warning');
+            } else if (quantity || price) {
+                statusBadge.className = 'badge bg-warning';
+                statusBadge.textContent = 'Incomplete';
+                row.classList.add('table-warning');
+                row.classList.remove('table-success');
+            } else {
+                statusBadge.className = 'badge bg-secondary';
+                statusBadge.textContent = 'Not selected';
+                row.classList.remove('table-success', 'table-warning');
+            }
+        };
+        
+        // Add event listeners to update status
+        quantityField.addEventListener('input', updateRowStatus);
+        priceField.addEventListener('input', updateRowStatus);
+    });
+    
+    // Form submission handler
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Temporarily prevent submission
+        
+        // Disable empty rows before submitting
+        let hasFilledRow = false;
+        
+        rows.forEach(row => {
+            const quantityField = row.querySelector('.quantity-field');
+            const priceField = row.querySelector('.price-field');
+            
+            const quantity = quantityField.value.trim();
+            const price = priceField.value.trim();
+            
+            // If any field is filled but not all, show warning
+            if ((quantity || price) && !(quantity && price)) {
+                e.preventDefault();
+                alert('Please complete all fields for the drugs you want to restock.');
+                return;
+            }
+            
+            // If all fields are filled, count as valid row
+            if (quantity && price) {
+                hasFilledRow = true;
                 
-                // Update row status when any field changes
-                rows.forEach(row => {
-                    const quantityField = row.querySelector('.quantity-field');
-                    const priceField = row.querySelector('.price-field');
-                    const expiryField = row.querySelector('.expiry-field');
-                    const statusBadge = row.querySelector('.row-status .badge');
-                    
-                    const updateRowStatus = () => {
-                        const quantity = quantityField.value.trim();
-                        const price = priceField.value.trim();
-                        const expiry = expiryField.value.trim();
-                        
-                        if (quantity && price && expiry) {
-                            statusBadge.className = 'badge bg-success';
-                            statusBadge.textContent = 'Will be restocked';
-                            row.classList.add('table-success');
-                        } else if (quantity || price || expiry) {
-                            statusBadge.className = 'badge bg-warning';
-                            statusBadge.textContent = 'Incomplete';
-                            row.classList.add('table-warning');
-                            row.classList.remove('table-success');
-                        } else {
-                            statusBadge.className = 'badge bg-secondary';
-                            statusBadge.textContent = 'Not selected';
-                            row.classList.remove('table-success', 'table-warning');
-                        }
-                    };
-                    
-                    // Add event listeners to update status
-                    quantityField.addEventListener('input', updateRowStatus);
-                    priceField.addEventListener('input', updateRowStatus);
-                    expiryField.addEventListener('input', updateRowStatus);
-                });
+                // Make sure cost is calculated and included
+                const quantity = parseFloat(quantityField.value) || 0;
+                const price = parseFloat(priceField.value) || 0;
+                const cost = quantity * price;
                 
-                // Form submission handler
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Temporarily prevent submission
-                    
-                    // Disable empty rows before submitting
-                    let hasFilledRow = false;
-                    
-                    rows.forEach(row => {
-                        const quantityField = row.querySelector('.quantity-field');
-                        const priceField = row.querySelector('.price-field');
-                        const expiryField = row.querySelector('.expiry-field');
-                        
-                        const quantity = quantityField.value.trim();
-                        const price = priceField.value.trim();
-                        const expiry = expiryField.value.trim();
-                        
-                        // If any field is filled but not all, show warning
-                        if ((quantity || price || expiry) && !(quantity && price && expiry)) {
-                            e.preventDefault();
-                            alert('Please complete all fields for the drugs you want to restock.');
-                            return;
-                        }
-                        
-                        // If all fields are filled, count as valid row
-                        if (quantity && price && expiry) {
-                            hasFilledRow = true;
-                        } else {
-                            // Disable empty rows so they don't get submitted
-                            row.querySelectorAll('input').forEach(input => {
-                                input.disabled = true;
-                            });
-                        }
-                    });
-                    
-                    if (!hasFilledRow) {
-                        alert('Please fill in details for at least one drug to restock.');
-                        return;
-                    }
-                    
-                    // Submit the form if validation passes
-                    this.submit();
+                // Update the cost field
+                const costField = row.querySelector('.cost-field');
+                if (costField) {
+                    costField.value = cost.toFixed(2);
+                }
+                
+                // Enable all inputs in this row to ensure they're submitted
+                row.querySelectorAll('input').forEach(input => {
+                    input.disabled = false;
                 });
+            } else {
+                // Disable empty rows so they don't get submitted
+                row.querySelectorAll('input').forEach(input => {
+                    input.disabled = true;
+                });
+            }
+        });
+        
+        if (!hasFilledRow) {
+            alert('Please fill in details for at least one drug to restock.');
+            return;
+        }
+        
+        // Submit the form if validation passes
+        this.submit();
+    });
+    
+    // Add search functionality
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            rows.forEach(row => {
+                const drugName = row.querySelector('strong').textContent.toLowerCase();
+                if (drugName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
-        </script>
+        });
+    }
+});
 
-        <script>
-            // Set default date to today
-            document.addEventListener('DOMContentLoaded', function() {
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, '0');
-                const day = String(today.getDate()).padStart(2, '0');
-                
-                document.getElementById('date').value = `${year}-${month}-${day}`;
-            });
+
         </script>
 
                 

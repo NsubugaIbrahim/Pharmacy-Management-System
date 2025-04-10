@@ -16,7 +16,7 @@ class StockEntry extends Model
         'drug_id',
         'quantity',
         'price',
-        'expiry_date'
+        'cost'
     ];
 
     public function drug() {
