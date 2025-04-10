@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Drug;
 
 class StockEntry extends Model
 {
@@ -30,4 +31,6 @@ class StockEntry extends Model
     public function supplier() {
         return $this->hasOneThrough(Supplier::class, Stock_Order::class, 'id', 'id', 'restock_id', 'supplier_id');
     }
+
+    
 }

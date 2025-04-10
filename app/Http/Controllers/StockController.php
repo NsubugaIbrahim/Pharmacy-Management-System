@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\StockEntry;
 use App\Models\Drug;
 use App\Models\Supplier;
-use App\Models\Stock_Order;
+use App\Models\StockOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -14,19 +14,18 @@ class StockController extends Controller
 {
     public function index()
     {
-        // Fetch all stock entries with their associated drugs and suppliers
-        $stockEntries = StockEntry::with(['drug', 'supplier'])->get();
-
+        $drugs = Drug::all();
+        $suppliers = Supplier::all();
         // Return the view with the stock entries
-        return view('stock.index', compact('stockEntries'));
+        return view('stock.index', compact('drugs', 'suppliers'));
     }
 
     //View Inventory Stock page
-    public function inventory(){
-        $drugs = Drug::all();
-        $suppliers = Supplier::all();
-        return view('inventory-stock', compact('drugs', 'suppliers'));
-    }
+    // public function inventory(){
+    //     $drugs = Drug::all();
+    //     $suppliers = Supplier::all();
+    //     return view('inventory-stock', compact('drugs', 'suppliers'));
+    // }
 
     //Stock inventory test
     public function store_order(Request $request)
@@ -62,7 +61,7 @@ class StockController extends Controller
     try {
         DB::transaction(function () use ($request, $validEntries) {
             // Create the stock order
-            $order = Stock_Order::create([
+            $order = StockOrder::create([
                 'supplier_id' => $request->supplier_id,
                 'date' => $request->date,
             ]);
@@ -149,5 +148,14 @@ class StockController extends Controller
         $stockEntry->delete();
 
         return redirect()->route('stock.index')->with('success', 'Stock entry deleted successfully.');
+    }
+
+    public function show()
+    {
+        // Fetch all drugs with their total quantities from stock_entries
+        $drugsWithQuantities = Drug::withSum('stockEntries as total_quantity', 'quantity')->get();
+
+        // Pass data to view
+        return view('stock.show', compact('drugsWithQuantities'));
     }
 }
