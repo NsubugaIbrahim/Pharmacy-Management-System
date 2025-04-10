@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('stock_entries', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('restock_id');
             $table->unsignedBigInteger('drug_id');
-            $table->unsignedBigInteger('supplier_id');
             $table->integer('quantity');
-            $table->decimal('supply_price', 10, 2);
-            $table->decimal('selling_price', 10, 2)->nullable();
+            $table->decimal('price', 10, 2);
+            $table->date('expiry_date');
             $table->timestamps();
-        
+            
+            // Foreign key constraints
+            $table->foreign('restock_id')->references('id')->on('stock_orders')->onDelete('cascade');
             $table->foreign('drug_id')->references('id')->on('drugs')->onDelete('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
-        
     }
 
     /**
@@ -34,3 +34,5 @@ return new class extends Migration
         Schema::dropIfExists('stock_entries');
     }
 };
+
+
