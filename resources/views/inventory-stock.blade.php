@@ -67,8 +67,8 @@
                                             <tr>
                                                 <th>Drug</th>
                                                 <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Cost</th>
+                                                <th>Price (UGX)</th>
+                                                <th>Cost (UGX)</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -98,11 +98,14 @@
                                     </table>
                                 </div>
                                 
-                                <div class="mt-3">
+                                <div class="mt-3 d-flex align-items-center">
+                                    <div class="ms-3 fw-bold" style="margin-right: 30px;">
+                                        Total Amount: <span id="total-cost" class="text-primary">0.00</span> UGX
+                                    </div>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fas fa-save me-2"></i> Submit Restock
                                     </button>
-                                </div>
+                                </div>                                
                             </form>
                         </div>
                     </div>
@@ -276,6 +279,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
+// Calculate and update total cost
+function updateTotalCost() {
+    const costDisplays = document.querySelectorAll('.cost-display');
+    let total = 0;
+    
+    costDisplays.forEach(display => {
+        if (display.value) {
+            total += parseFloat(display.value) || 0;
+        }
+    });
+    
+    document.getElementById('total-cost').textContent = total.toFixed(0);
+}
+
+// Add event listeners to update total cost
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.drug-row');
+    
+    rows.forEach(row => {
+        const quantityField = row.querySelector('.quantity-field');
+        const priceField = row.querySelector('.price-field');
+        
+        quantityField.addEventListener('input', updateTotalCost);
+        priceField.addEventListener('input', updateTotalCost);
+    });
+    
+    // Initialize total cost
+    updateTotalCost();
+});
 
         </script>
 
