@@ -53,8 +53,28 @@
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Stock Inventory</span>
+                    <span class="nav-link-text ms-1">Stock Management</span>
                 </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Inventory</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Staff</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Finances</p>
+                      </a>
+                    </li>
+                  </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">

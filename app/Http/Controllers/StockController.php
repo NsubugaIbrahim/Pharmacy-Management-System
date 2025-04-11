@@ -21,7 +21,8 @@ class StockController extends Controller
     }
 
     public function stockView(){
-        return view('stock.stocks-view');
+        $stockOrders = StockOrder::with('supplier')->orderBy('date', 'desc')->get();
+        return view('stock.stocks-view', compact('stockOrders'));
     }
     //View Inventory Stock page
     // public function inventory(){
