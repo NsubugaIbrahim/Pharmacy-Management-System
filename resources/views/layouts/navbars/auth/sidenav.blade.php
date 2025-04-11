@@ -22,6 +22,22 @@
         transition: all 0.15s ease;
     }
 
+    .collapsed .arrow-icon {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.nav-link:not(.collapsed) .arrow-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.nav-link.dropdown-toggle::after {
+    display: none !important;
+}
+
+    
+
 </style></head>
 
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
@@ -48,34 +64,42 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
+                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" 
+                   href="#stockSubmenu" 
+                   data-bs-toggle="collapse" 
+                   role="button" 
+                   aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" 
+                   aria-controls="stockSubmenu">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Stock Management</span>
+                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
+
                 </a>
-                <ul class="nav nav-treeview">
+                <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.view' ? 'show' : '' }}" id="stockSubmenu">
                     <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Inventory</p>
-                      </a>
+                        <a href="#" class="nav-link">
+                            <i class="ni ni-box-2 text-info text-sm me-2"></i>
+                            <p>Inventory</p>
+                        </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Staff</p>
-                      </a>
+                        <a href="#" class="nav-link">
+                            <i class="ni ni-single-02 text-success text-sm me-2"></i>
+                            <p>Staff</p>
+                        </a>
                     </li>
                     <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Finances</p>
-                      </a>
+                        <a href="#" class="nav-link">
+                            <i class="ni ni-credit-card text-warning text-sm me-2"></i>
+                            <p>Finances</p>
+                        </a>
                     </li>
-                  </ul>
+                </ul>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
                     <div
