@@ -24,6 +24,6 @@ class StockEntry extends Model
     }
     
     public function stockOrder() {
-        return $this->belongsTo(Stock_Order::class, 'restock_id');
+        return $this->belongsTo(StockOrder::class, 'restock_id');
     }
 }
