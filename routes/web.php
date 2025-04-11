@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//View Inventory Stock
 	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
 	Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
+	Route::get('/stock-view', [StockController::class, 'stockView'])->name('stock.view');
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
