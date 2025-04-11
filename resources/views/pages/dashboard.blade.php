@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Daily Revenue</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Users</p>
                                     <h5 class="font-weight-bolder">
                                         $53,000
                                     </h5>
@@ -35,9 +35,9 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Weekly Patients</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Roles</p>
                                     <h5 class="font-weight-bolder">
-                                        2,300
+                                        2,30
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+3%</span>
@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Expired Drugs</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Drugs</p>
                                     <h5 class="font-weight-bolder">
                                         +3,462
                                     </h5>
