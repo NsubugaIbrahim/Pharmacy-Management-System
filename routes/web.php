@@ -58,11 +58,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 
-	//Pharmacist Routes
-	Route::get('/pharmacist/{id}/edit',[PharmacistController::class, 'edit'])->name('pharmacist.edit');
-	Route::get('/pharmacist/{id}', [PharmacistController::class, 'destroy'])->name('pharmacist.destroy');
-	Route::get('/pharmacist/add', [PharmacistController::class, 'create'])->name('pharmacist.add');
-
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
     Route::post('/drugs/add', [DrugController::class, 'storeDrug'])->name('drugs.store');
@@ -82,6 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
 	Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+	Route::get('/stocks', [StockController::class, 'show'])->name('stock.show');
 	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
 	Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
 	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');
@@ -89,8 +85,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
 	//View Inventory Stock
 	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
-	Route::post('/restock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
-	Route::get('/stock-orders', [StockController::class, 'displayStocks'])->name('stock_orders.display');
+	Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
+
+	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+	Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
