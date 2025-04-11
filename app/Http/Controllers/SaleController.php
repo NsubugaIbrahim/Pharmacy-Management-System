@@ -9,41 +9,35 @@ use App\Models\User;
 
 class SaleController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('role:cashier');
-    // }
-
-    public function sellForm()
-    {
-        $drugs = Drug::whereNotNull('selling_price')->where('quantity', '>', 0)->get();
-        return view('sales.sell', compact('drugs'));
+    public function index() {
+        $drugs = Drug::all();
+        return view('sales.index', compact('drugs'));
     }
-
-    public function processSale(Request $request)
-    {
+    
+    public function store(Request $request) {
         $request->validate([
             'drug_id' => 'required|exists:drugs,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
+            'customer_name' => 'string|max:255',
+            'selling_price' => 'required|numeric|min:0'
         ]);
-
-        $drug = Drug::find($request->drug_id);
-
-        if ($drug->quantity < $request->quantity) {
-            return back()->withErrors(['quantity' => 'Not enough stock available.']);
+    
+        // Check stock availability
+        $available = \App\Models\StockEntry::where('drug_id', $request->drug_id)->sum('quantity');
+        $sold = \App\Models\Sale::where('drug_id', $request->drug_id)->sum('quantity');
+    
+        if (($available - $sold) < $request->quantity_sold) {
+            return back()->with('error', 'Not enough stock to complete sale.');
         }
-
-        $total = $request->quantity * $drug->selling_price;
-
-        Sale::create([
-            'drug_id' => $drug->id,
+    
+        \App\Models\Sale::create([
+            'drug_id' => $request->drug_id,
             'quantity' => $request->quantity,
-            'total_price' => $total
+            'customer_name' => $request->customer_name,
+            'selling_price' => $request->selling_price,
         ]);
-
-        $drug->quantity -= $request->quantity;
-        $drug->save();
-
-        return back()->with('success', 'Sale processed successfully.');
+    
+        return redirect()->route('sales.index')->with('success', 'Drug sold successfully!');
     }
+    
 }

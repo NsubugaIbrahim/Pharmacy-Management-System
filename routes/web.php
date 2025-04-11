@@ -29,6 +29,7 @@
 	use App\Http\Controllers\SupplierController;
 	use App\Http\Controllers\StockController;
 	use App\Http\Controllers\RoleController;
+	use App\Http\Controllers\SaleController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -101,7 +102,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
-
+	Route::get('/sales/index', [SaleController::class, 'index'])->name('sales.index');
+	Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+	Route::get('/sales/report', [SaleController::class, 'report'])->name('sales.report');
 	//Register new user
 	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');

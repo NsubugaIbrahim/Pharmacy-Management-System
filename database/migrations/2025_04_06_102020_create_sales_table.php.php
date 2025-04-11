@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('drug_id');
             $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('selling_price', 10, 2);
+            $table->timestamp('sold_at')->default(now());
+            $table->string('customer_name')->nullable(); // optional
             $table->timestamps();
         
             $table->foreign('drug_id')->references('id')->on('drugs')->onDelete('cascade');

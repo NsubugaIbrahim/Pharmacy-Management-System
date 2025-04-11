@@ -20,7 +20,7 @@ class Drug extends Model
 
     public function sales()
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Sale::class, 'drug_id');
     }
 
     public function stockEntries() {
