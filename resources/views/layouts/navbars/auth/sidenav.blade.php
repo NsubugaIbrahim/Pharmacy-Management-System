@@ -90,9 +90,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
+                        <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
                             <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Accept Stock Order</span>
+                            <span class="nav-link-text ms-1">Approve Stock Order</span>
                         </a>
                     </li>
                     <li class="nav-item">

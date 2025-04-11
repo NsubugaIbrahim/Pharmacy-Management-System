@@ -24,19 +24,11 @@ class StockController extends Controller
         $stockOrders = StockOrder::with('supplier')->orderBy('date', 'desc')->get();
         return view('stock.stocks-view', compact('stockOrders'));
     }
-    //View Inventory Stock page
-    // public function inventory(){
-    //     $drugs = Drug::all();
-    //     $suppliers = Supplier::all();
-    //     return view('inventory-stock', compact('drugs', 'suppliers'));
-    // }
-    // public function inventory(){
-    //     $drugs = Drug::all();
-    //     $suppliers = Supplier::all();
-    //     return view('inventory-stock', compact('drugs', 'suppliers'));
-    // }
-
-    //Stock inventory test
+    
+    public function approve_order(){
+        $stockOrders = StockOrder::with('supplier')->orderBy('date', 'desc')->get();
+        return view('stock.approve-order', compact('stockOrders'));
+    }
     public function store_order(Request $request)
     {
         // Validate the basic fields
