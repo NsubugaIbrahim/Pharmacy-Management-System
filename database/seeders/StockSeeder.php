@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Models\StockEntry;
+use App\Models\Drug;
+use App\Models\StockOrder;
 
 class StockSeeder extends Seeder
 {
@@ -14,12 +14,25 @@ class StockSeeder extends Seeder
      */
     public function run(): void
     {
-        $stocks = [
-           
-        ];
+        // Assuming you have at least one drug and stock_order in DB
+        $drugs = Drug::all();
+        $stockOrders = StockOrder::all();
 
-        foreach ($stocks as $stock) {
-            DB::table('stock_entries')->insert(array_merge($stock, ['created_at' => now(), 'updated_at' => now()]));
+        if ($drugs->isEmpty() || $stockOrders->isEmpty()) {
+            $this->command->warn('No drugs or stock orders found. Please seed those tables first.');
+            return;
+        }
+
+        foreach ($drugs as $drug) {
+            foreach ($stockOrders->random(2) as $order) {
+                StockEntry::create([
+                    'restock_id' => $order->id,
+                    'drug_id' => $drug->id,
+                    'quantity' => rand(50, 200),
+                    'price' => rand(1000, 5000), // Selling price
+                    'cost' => rand(500, 4000),   // Cost price
+                ]);
+            }
         }
     }
 }

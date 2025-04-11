@@ -105,6 +105,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sales/index', [SaleController::class, 'index'])->name('sales.index');
 	Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
 	Route::get('/sales/report', [SaleController::class, 'report'])->name('sales.report');
+
+	Route::post('/sales/cart/add', [SaleController::class, 'addToCart'])->name('sales.cart.add');
+	Route::get('/sales/cart/remove/{index}', [SaleController::class, 'removeFromCart'])->name('sales.cart.remove');
+	Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+
+	Route::post('/sales/add-to-cart', [SaleController::class, 'store'])->name('sales.store');
+	Route::post('/sales/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
+	Route::get('/sales/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+
+
+
 	//Register new user
 	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');

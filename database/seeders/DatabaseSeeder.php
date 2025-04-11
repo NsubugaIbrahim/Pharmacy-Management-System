@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SupplierSeeder::class,
             DrugSeeder::class,
-            SalesSeeder::class,
+            StockOrderSeeder::class,
             StockSeeder::class,
         ]);
 

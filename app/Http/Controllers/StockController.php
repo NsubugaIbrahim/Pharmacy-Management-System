@@ -141,7 +141,7 @@ class StockController extends Controller
         ]);
 
         StockEntry::update([
-            'drug_id' => $request->name,  // This refers to the drug's ID
+            'drug_id' => $request->drug_id,  // This refers to the drug's ID
             'supplier_id' => $request->supplier_id,
             'quantity' => $request->quantity,
             'supply_price' => $request->supply_price,
