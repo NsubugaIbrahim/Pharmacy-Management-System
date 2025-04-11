@@ -92,7 +92,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
                             <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Approve Stock Order</span>
+                            <span class="nav-link-text ms-1">Pending Stock Orders</span>
                         </a>
                     </li>
                     <li class="nav-item">
