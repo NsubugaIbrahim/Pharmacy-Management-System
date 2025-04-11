@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Password;
 
 class LoginController extends Controller
 {
@@ -29,7 +27,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $user = Auth::user();
-        $role = $user->role->name ?? '';
+            $role = $user->role->name ?? '';
 
         switch ($role) {
             case 'admin':

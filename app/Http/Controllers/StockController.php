@@ -26,6 +26,11 @@ class StockController extends Controller
     //     $suppliers = Supplier::all();
     //     return view('inventory-stock', compact('drugs', 'suppliers'));
     // }
+    // public function inventory(){
+    //     $drugs = Drug::all();
+    //     $suppliers = Supplier::all();
+    //     return view('inventory-stock', compact('drugs', 'suppliers'));
+    // }
 
     //Stock inventory test
     public function store_order(Request $request)
@@ -115,7 +120,7 @@ class StockController extends Controller
             'supply_price' => $request->supply_price,
         ]);
 
-        return redirect()->route('stock.index')->with('success', 'Stock entry created successfully.');
+        return redirect()->route('stock.show')->with('success', 'Stock entry created successfully.');
     }
     // Show the form for editing a stock entry
     public function edit(StockEntry $stockEntry)
