@@ -45,60 +45,75 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <!-- Order Details Modal -->
-                    <div class="modal fade" id="orderDetailsModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel{{ $order->id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title text-success" id="orderDetailsModalLabel{{ $order->id }}">Restock Order #{{ $order->id }}</h5> <hr>
-                            <h5 class="modal-title text-danger" style="margin-left: 10px;">{{ $order->date}}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- Order Details Modals -->
+                  @foreach($stockOrders as $order)
+                  <div class="modal fade" id="orderDetailsModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel{{ $order->id }}" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                          <h5 class="modal-title text-success" id="orderDetailsModalLabel{{ $order->id }}">Stock Order #{{ $order->id }}</h5> <hr>
+                          <h5 class="modal-title text-danger" style="margin-left: 10px;">{{ $order->date}}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                          <div class="table-responsive">
+                              <table class="table align-items-center mb-0">
+                              <thead>
+                                  <tr>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug</th>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Unit Price</th>
+                                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Cost</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  @foreach($order->stockEntries as $entry)
+                                  <tr>
+                                      <td>
+                                          <div class="d-flex px-2 py-1">
+                                          <div class="d-flex flex-column justify-content-center">
+                                              <h6 class="mb-0 text-sm">{{ $entry->drug->name ?? 'N/A' }}</h6>
+                                          </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
+                                      </td>
+                                      <td>
+                                          <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
+                                      </td>
+                                      <td>
+                                          <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
+                                      </td>
+                                  </tr>
+                                  @endforeach
+                              </tbody>
+                              </table>
+                          </div>
+                          </div>
+                          <div class="modal-footer">
+                              <div class="ms-3 fw-bold" style = "margin-right:30px">
+                                  Total Amount: UGX  <span class="text-primary">{{ number_format($order->total) }}</span>
+                              </div>
+                              <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-success" onclick="confirmApprove({{ $order->id }})">Approve</button>
+                                <button type="button" class="btn btn-sm btn-danger ms-2" onclick="confirmDecline({{ $order->id }})">Decline</button>
+                                <button type="button" class="btn btn-sm bg-gradient-secondary ms-2" data-bs-dismiss="modal">Close</button>
                             </div>
-                            <div class="modal-body">
-                            <div class="table-responsive">
-                                <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Unit Price</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Cost</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($order->stockEntries as $entry)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{ $entry->drug->name ?? 'N/A' }}</h6>
-                                            </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                                </table>
-                            </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="ms-3 fw-bold" style = "margin-right:30px">
-                                    Total Amount: UGX  <span class="text-primary">{{ number_format($order->total) }}</span>
-                                </div>
-                            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                            
+                            <!-- Hidden forms for submission -->
+                            <form id="approveForm{{ $order->id }}" action="{{ route('stock.approve', $order->id) }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            <form id="declineForm{{ $order->id }}" action="{{ route('stock.decline', $order->id) }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+                  @endforeach
                 </div>
               </div>
             </div>
@@ -107,4 +122,86 @@
       </div>
     @include('layouts.footers.auth.footer')
   </div>
+
+  <script>
+    function confirmApprove(orderId) {
+        Swal.fire({
+            title: 'Approve Order?',
+            text: "Are you sure you want to approve this stock order?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#5cb85c',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('approveForm' + orderId).submit();
+                
+                // Show processing message
+                Swal.fire({
+                    title: 'Processing!',
+                    text: 'Approving the order...',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+        });
+    }
+    
+    function confirmDecline(orderId) {
+        Swal.fire({
+            title: 'Decline Order?',
+            text: "Are you sure you want to decline this stock order?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, decline it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('declineForm' + orderId).submit();
+                
+                // Show processing message
+                Swal.fire({
+                    title: 'Processing!',
+                    text: 'Declining the order...',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+        });
+    }
+    
+    // Display success/error messages from session
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+        
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+    });
+</script>
+
 @endsection

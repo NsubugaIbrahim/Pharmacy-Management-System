@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id');
             $table->integer('total');
             $table->date('date');
+            $table->enum('status', ['approved', 'declined'])->nullable();
             $table->timestamps();
             
             // Foreign key constraint

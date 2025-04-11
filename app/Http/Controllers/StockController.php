@@ -25,10 +25,33 @@ class StockController extends Controller
         return view('stock.stocks-view', compact('stockOrders'));
     }
     
+    // In StockController.php
     public function approve_order(){
-        $stockOrders = StockOrder::with('supplier')->orderBy('date', 'desc')->get();
+        $stockOrders = StockOrder::with('supplier')
+                        ->whereNull('status')  // Only get orders with null status
+                        ->orderBy('date', 'desc')
+                        ->get();
         return view('stock.approve-order', compact('stockOrders'));
     }
+
+    public function approveOrder($id)
+    {
+        $order = StockOrder::findOrFail($id);
+        $order->status = 'approved';
+        $order->save();
+        
+        return redirect()->back()->with('success', 'Order has been approved successfully.');
+    }
+    
+    public function declineOrder($id)
+    {
+        $order = StockOrder::findOrFail($id);
+        $order->status = 'declined';
+        $order->save();
+        
+        return redirect()->back()->with('success', 'Order has been declined successfully.');
+    }
+
     public function store_order(Request $request)
     {
         // Validate the basic fields
