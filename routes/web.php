@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
+	//Stock
 	Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 	Route::get('/inventory', [StockController::class, 'show'])->name('stock.show');
 	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
@@ -91,9 +92,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/stock/update-expiry/{order}', [StockController::class, 'receiveStockLogic'])->name('stock.update-expiry');
 
 
-	//View Inventory Stock
-	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
-	Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
+	//Inventory
+	Route::put('/inventory/{id}/update-price', [App\Http\Controllers\InventoryController::class, 'updatePrice'])->name('inventory.update-price');
+
 	
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
