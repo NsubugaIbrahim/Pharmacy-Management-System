@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
 	Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
-	Route::get('/stocks', [StockController::class, 'show'])->name('stock.show');
+	Route::get('/inventory', [StockController::class, 'show'])->name('stock.show');
 	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
 	Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
 	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');

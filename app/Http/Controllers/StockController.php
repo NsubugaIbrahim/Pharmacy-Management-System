@@ -7,6 +7,7 @@ use App\Models\StockEntry;
 use App\Models\Drug;
 use App\Models\Supplier;
 use App\Models\StockOrder;
+use App\Models\Inventory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -234,10 +235,20 @@ class StockController extends Controller
 
     public function show()
     {
-        // Fetch all drugs with their total quantities from stock_entries
-        $drugsWithQuantities = Drug::withSum('stockEntries as total_quantity', 'quantity')->get();
+        // Get inventory data grouped by drug_id, summing quantities
+        $inventory = DB::table('inventories')
+            ->join('drugs', 'inventories.drug_id', '=', 'drugs.id')
+            ->select(
+                'drugs.id',
+                'drugs.name',
+                DB::raw('SUM(inventories.quantity) as total_quantity'),
+                'inventories.selling_price',
+                DB::raw('MIN(inventories.expiry_date) as closest_expiry_date')
+            )
+            ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
+            ->get();
 
         // Pass data to view
-        return view('stock.show', compact('drugsWithQuantities'));
+        return view('stock.show', compact('inventory'));
     }
 }
