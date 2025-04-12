@@ -87,6 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/approve-stock-orders', [StockController::class, 'approve_order'])->name('approve.stock.orders');
 	Route::post('/stock/approve/{id}', [StockController::class, 'approveOrder'])->name('stock.approve');
 	Route::post('/stock/decline/{id}', [StockController::class, 'declineOrder'])->name('stock.decline');
+	Route ::get('/receive-stock', [StockController::class, 'receiveStock'])->name('receive.stock');
 
 	//View Inventory Stock
 	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');

@@ -96,7 +96,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
                             <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Receive Stock</span>
                         </a>

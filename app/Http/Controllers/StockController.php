@@ -25,7 +25,7 @@ class StockController extends Controller
         return view('stock.stocks-view', compact('stockOrders'));
     }
     
-    // In StockController.php
+
     public function approve_order(){
         $stockOrders = StockOrder::with('supplier')
                         ->whereNull('status')  // Only get orders with null status
@@ -50,6 +50,10 @@ class StockController extends Controller
         $order->save();
         
         return redirect()->back()->with('success', 'Order has been declined successfully.');
+    }
+
+    public function receiveStock() {
+        return view('stock.receive-stock');
     }
 
     public function store_order(Request $request)
