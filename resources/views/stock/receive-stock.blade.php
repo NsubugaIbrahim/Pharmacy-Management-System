@@ -109,8 +109,12 @@
                                             <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
                                         </td>
                                         <td>
-                                            <input type="date" class="form-control" name="expiry_dates[{{ $entry->id }}]" required>
-                                            <input type="hidden" name="entry_ids[]" value="{{ $entry->id }}">
+                                            @if($order->reception)
+                                                {{ $entry->expiry_date }}
+                                            @else
+                                                <input type="date" class="form-control" name="expiry_dates[{{ $entry->id }}]" required>
+                                                <input type="hidden" name="entry_ids[]" value="{{ $entry->id }}">
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -123,7 +127,11 @@
                                     Total Amount: UGX  <span class="text-primary">{{ number_format($order->total) }}</span>
                                 </div>
                                 <div class="btn-group" role="group">
-                                    <button type="submit" class="btn btn-sm bg-gradient-success">Receive Stock</button>
+                                    @if($order->reception)
+                                        <button type="submit" class="btn btn-sm bg-gradient-secondary" disabled>Already Received</button>
+                                    @else
+                                        <button type="submit" class="btn btn-sm bg-gradient-success">Receive Stock</button>
+                                    @endif
                                     <button type="button" class="btn btn-sm bg-gradient-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
