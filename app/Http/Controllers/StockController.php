@@ -77,6 +77,26 @@ class StockController extends Controller
             $stockEntry = StockEntry::findOrFail($entryId);
             $stockEntry->expiry_date = $expiryDate;
             $stockEntry->save();
+            
+            // Add to inventory or update existing inventory
+            $existingInventory = \App\Models\Inventory::where('drug_id', $stockEntry->drug_id)
+                ->where('expiry_date', $expiryDate)
+                ->first();
+                
+            if ($existingInventory) {
+                // If inventory exists with same drug and expiry date, increment quantity
+                $existingInventory->quantity += $stockEntry->quantity;
+                $existingInventory->save();
+            } else {
+                // Create new inventory record
+                \App\Models\Inventory::create([
+                    'restock_id' => $order->id,
+                    'drug_id' => $stockEntry->drug_id,
+                    'quantity' => $stockEntry->quantity,
+                    'selling_price' => $stockEntry->selling_price ?? null,
+                    'expiry_date' => $expiryDate,
+                ]);
+            }
         }
 
         // Update the order reception status to true (received)
@@ -85,6 +105,7 @@ class StockController extends Controller
 
         return redirect()->back()->with('success', 'Expiry dates have been added and Inventory has been updated successfully');
     }
+
 
 
     public function store_order(Request $request)
