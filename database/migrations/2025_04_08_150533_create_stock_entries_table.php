@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('cost');
+            $table->date('expiry_date')->nullable();
             $table->timestamps();
             
             // Foreign key constraints

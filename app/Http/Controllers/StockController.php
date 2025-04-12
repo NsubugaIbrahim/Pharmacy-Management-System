@@ -53,8 +53,39 @@ class StockController extends Controller
     }
 
     public function receiveStock() {
-        return view('stock.receive-stock');
+        $stockOrders = StockOrder::with('supplier')
+                        ->where('status', 'approved')
+                        ->orderBy('date', 'desc')
+                        ->get();
+        return view('stock.receive-stock', compact('stockOrders'));
     }
+    
+    //Insert expiry dates for Received Stock entries
+    public function receiveStockLogic(Request $request, StockOrder $order)
+    {
+        $request->validate([
+            'expiry_dates' => 'required|array',
+            'expiry_dates.*' => 'required|date',
+            'entry_ids' => 'required|array',
+            'entry_ids.*' => 'required|exists:stock_entries,id'
+        ]);
+
+        foreach ($request->entry_ids as $index => $entryId) {
+            $expiryDate = $request->expiry_dates[$entryId];
+            
+            // Update the stock entry with the expiry date
+            $stockEntry = StockEntry::findOrFail($entryId);
+            $stockEntry->expiry_date = $expiryDate;
+            $stockEntry->save();
+        }
+
+        // Update the order reception status to true (received)
+        $order->reception = true;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Expiry dates have been added and Inventory has been updated successfully');
+    }
+
 
     public function store_order(Request $request)
     {

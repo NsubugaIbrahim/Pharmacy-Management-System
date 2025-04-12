@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('total');
             $table->date('date');
             $table->enum('status', ['approved', 'declined'])->nullable();
+            $table->boolean('reception')->default(false);
             $table->timestamps();
             
             // Foreign key constraint

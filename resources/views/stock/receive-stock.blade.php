@@ -15,14 +15,14 @@
   @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
   
   @section('content')
-      @include('layouts.navbars.auth.topnav', ['title' => 'Stock History'])
+      @include('layouts.navbars.auth.topnav', ['title' => 'Receive Stock'])
       <div class="container-fluid py-4">
           <div class="row">
             <div class="col-12 mx-auto">
               <div class="card mb-4">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
-                    <h6>Stock History</h6>
+                    <h6>Receive Stock</h6> 
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
@@ -33,8 +33,8 @@
                           <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Id</th>
                           <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Date</th>
                           <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Total (UGX)</th>
-                          <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Supplier</th>
-                          <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Status</th>
+                          <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Supplier</th>  
+                          <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Receiption</th>                       
                         </tr>
                       </thead>
                       <tbody>
@@ -51,16 +51,14 @@
                           </td>
                           <td class="text-center">
                             <p class="text-xs font-weight-bold mb-0">{{ $order->supplier->name }}</p>
-                          </td>
+                          </td>   
                           <td class="text-center">
-                            @if($order->status == 'approved')
-                              <span class="badge badge-sm bg-gradient-success">{{ $order->status }}</span>
-                            @elseif($order->status == 'declined')
-                              <span class="badge badge-sm bg-gradient-danger">{{ $order->status }}</span>
+                            @if($order->reception)
+                              <span class="badge badge-sm bg-gradient-success">received</span>
                             @else
                               <span class="badge badge-sm bg-gradient-secondary">pending</span>
                             @endif
-                          </td>
+                          </td>                     
                         </tr>
                         @endforeach
                       </tbody>
@@ -76,50 +74,60 @@
                            <h5 class="modal-title text-danger" style="margin-left: 10px;">{{ $order->date}}</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                            </div>
-                           <div class="modal-body">
-                           <div class="table-responsive">
-                               <table class="table align-items-center mb-0">
-                               <thead>
-                                   <tr>
-                                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug</th>
-                                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
-                                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Unit Price</th>
-                                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Cost</th>
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   @foreach($order->stockEntries as $entry)
-                                   <tr>
-                                       <td>
-                                           <div class="d-flex px-2 py-1">
-                                           <div class="d-flex flex-column justify-content-center">
-                                               <h6 class="mb-0 text-sm">{{ $entry->drug->name ?? 'N/A' }}</h6>
-                                           </div>
-                                           </div>
-                                       </td>
-                                       <td>
-                                           <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
-                                       </td>
-                                       <td>
-                                           <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
-                                       </td>
-                                       <td>
-                                           <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
-                                       </td>
-                                   </tr>
-                                   @endforeach
-                               </tbody>
-                               </table>
-                           </div>
-                           </div>
-                           <div class="modal-footer">
-                               <div class="ms-3 fw-bold" style = "margin-right:30px">
-                                   Total Amount: UGX  <span class="text-primary">{{ number_format($order->total) }}</span>
-                               </div>
-                               <div class="btn-group" role="group">                           
-                                 <button type="button" class="btn btn-sm bg-gradient-secondary ms-2" data-bs-dismiss="modal">Close</button>
-                             </div>
-                           </div>
+                           <form action="{{ route('stock.update-expiry', $order->id) }}" method="POST">
+                            @csrf
+                            <div class="modal-body">
+                                <p class = "text-center text-info">Add the expiry dates for all the Drugs to be stocked before receiving</p>
+                            <div class="table-responsive">
+                                <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Unit Price</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Cost</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expiry date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($order->stockEntries as $entry)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ $entry->drug->name ?? 'N/A' }}</h6>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control" name="expiry_dates[{{ $entry->id }}]" required>
+                                            <input type="hidden" name="entry_ids[]" value="{{ $entry->id }}">
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="ms-3 fw-bold" style="margin-right:30px">
+                                    Total Amount: UGX  <span class="text-primary">{{ number_format($order->total) }}</span>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="submit" class="btn btn-sm bg-gradient-success">Receive Stock</button>
+                                    <button type="button" class="btn btn-sm bg-gradient-secondary ms-2" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
                        </div>
                        </div>
                    </div>
