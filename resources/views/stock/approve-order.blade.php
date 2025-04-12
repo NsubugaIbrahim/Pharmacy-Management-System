@@ -67,27 +67,38 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  @foreach($order->stockEntries as $entry)
-                                  <tr>
-                                      <td>
-                                          <div class="d-flex px-2 py-1">
-                                          <div class="d-flex flex-column justify-content-center">
-                                              <h6 class="mb-0 text-sm">{{ $entry->drug->name ?? 'N/A' }}</h6>
-                                          </div>
-                                          </div>
-                                      </td>
-                                      <td>
-                                          <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
-                                      </td>
-                                      <td>
-                                          <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
-                                      </td>
-                                      <td>
-                                          <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->cost) }}</p>
-                                      </td>
-                                  </tr>
-                                  @endforeach
+                                @forelse($stockOrders as $order)
+                                <tr data-bs-toggle="modal" data-bs-target="#orderDetailsModal{{ $order->id }}">
+                                  <td class="text-center">
+                                    <p class="text-xs font-weight-bold mb-0">{{ $order->id }}</p>
+                                  </td>
+                                  <td class="text-center">
+                                    <p class="text-xs font-weight-bold mb-0">{{ $order->date }}</p>
+                                  </td>
+                                  <td class="text-center">
+                                    <p class="text-xs font-weight-bold mb-0">{{ number_format($order->total) }}</p>
+                                  </td>
+                                  <td class="text-center">
+                                    <p class="text-xs font-weight-bold mb-0">{{ $order->supplier->name }}</p>
+                                  </td>   
+                                  <td class="text-center">
+                                    @if($order->reception)
+                                      <span class="badge badge-sm bg-gradient-success">received</span>
+                                    @else
+                                      <span class="badge badge-sm bg-gradient-secondary">pending</span>
+                                    @endif
+                                  </td>                     
+                                </tr>
+                                @empty
+                                <tr>
+                                  <td colspan="5" class="text-center">
+                                    <p class="text-sm font-weight-bold mb-0">No approved stock orders available</p>
+                                    <p class="text-xs text-secondary mb-0">Stock orders must be approved before they can be received</p>
+                                  </td>
+                                </tr>
+                                @endforelse
                               </tbody>
+                              
                               </table>
                           </div>
                           </div>

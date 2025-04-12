@@ -84,6 +84,12 @@
                 </a>
                 <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.view' ? 'show' : '' }}" id="stockSubmenu">
                     <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
+                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Order New Stock</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
                             <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Stock History</span>
