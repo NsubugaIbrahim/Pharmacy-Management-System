@@ -91,6 +91,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route ::get('/receive-stock', [StockController::class, 'receiveStock'])->name('receive.stock');
 	Route::post('/stock/update-expiry/{order}', [StockController::class, 'receiveStockLogic'])->name('stock.update-expiry');
 
+//View Inventory Stock
+Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
+Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
 
 	//Inventory
 	Route::put('/inventory/{id}/update-price', [App\Http\Controllers\InventoryController::class, 'updatePrice'])->name('inventory.update-price');

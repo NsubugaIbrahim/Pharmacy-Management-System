@@ -23,9 +23,15 @@ class Drug extends Model
         return $this->hasMany(Sale::class);
     }
 
-    public function stockEntries() {
-        return $this->hasMany(StockEntry::class, 'drug_id');
-    }
+    public function stockEntries()
+{
+    return $this->hasMany(StockEntry::class);
+}
+
+public function inventoryItems()
+{
+    return $this->hasMany(Inventory::class);
+}
 
     
     

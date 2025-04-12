@@ -234,21 +234,18 @@ class StockController extends Controller
     }
 
     public function show()
-    {
-        // Get inventory data grouped by drug_id, summing quantities
-        $inventory = DB::table('inventories')
-            ->join('drugs', 'inventories.drug_id', '=', 'drugs.id')
-            ->select(
-                'drugs.id',
-                'drugs.name',
-                DB::raw('SUM(inventories.quantity) as total_quantity'),
-                'inventories.selling_price',
-                DB::raw('MIN(inventories.expiry_date) as closest_expiry_date')
-            )
-            ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
-            ->get();
+{
+    $inventory = Drug::select('drugs.id', 'drugs.name', 'inventories.selling_price')
+        ->selectRaw('SUM(inventories.quantity) as total_quantity')
+        ->selectRaw('MIN(inventories.expiry_date) as closest_expiry_date')
+        ->leftJoin('inventories', 'drugs.id', '=', 'inventories.drug_id')
+        ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
+        ->with(['stockEntries' => function($query) {
+            $query->with('stockOrder.supplier');
+        }, 'inventoryItems'])
+        ->get();
 
-        // Pass data to view
-        return view('stock.show', compact('inventory'));
-    }
+    return view('stock.show', compact('inventory'));
+}
+
 }
