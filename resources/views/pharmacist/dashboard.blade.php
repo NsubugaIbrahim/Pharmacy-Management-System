@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
@@ -40,9 +41,30 @@
                         @if($drug->isEmpty())
                             <div class="text-center text-muted py-4">No records found.</div>
                         @endif
+=======
+@extends('layouts.sidenav-pharmacist', ['class' => 'g-sidenav-show bg-gray-100'])
+
+@section('content')
+    @include('layouts.navbars.auth.topnav', ['title' => 'Pharmacist'])
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h6>Welcome to the Pharmacist Dashboard</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-sm">Here you can manage prescriptions, oversee medication inventory, and access pharmaceutical resources.</p>
+>>>>>>> 23d00e52399ea01972b63be751551c9f80aaf8b2
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 @endsection
+=======
+
+
+@endsection
+>>>>>>> 23d00e52399ea01972b63be751551c9f80aaf8b2

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock_entries', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('restock_id');
             $table->unsignedBigInteger('drug_id');
             $table->integer('quantity');
-            $table->integer('price');
-            $table->integer('cost');
+            $table->integer('selling_price')->nullable();
+            $table->date('expiry_date');
             $table->timestamps();
             
             // Foreign key constraints
@@ -31,8 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_entries');
+        Schema::dropIfExists('inventories');
     }
 };
-
-

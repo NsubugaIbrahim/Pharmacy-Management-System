@@ -22,6 +22,26 @@
         transition: all 0.15s ease;
     }
 
+    .collapsed .arrow-icon {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.nav-link:not(.collapsed) .arrow-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.nav-link.dropdown-toggle::after {
+    display: none !important;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 0;
+}
+
+
 </style></head>
 
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
@@ -48,13 +68,72 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
+                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" 
+                   href="#stockSubmenu" 
+                   data-bs-toggle="collapse" 
+                   role="button" 
+                   aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" 
+                   aria-controls="stockSubmenu">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Stock Inventory</span>
+                    <span class="nav-link-text ms-1">Stock Management</span>
+                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
+
                 </a>
+                <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.view' ? 'show' : '' }}" id="stockSubmenu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
+                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Order New Stock</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
+                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Stock History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
+                            <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Pending Stock Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
+                            <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Receive Stock</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" 
+                   href="#inventorySubmenu" 
+                   data-bs-toggle="collapse" 
+                   role="button" 
+                   aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" 
+                   aria-controls="inventorySubmenu">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Inventory Management</span>
+                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
+                </a>
+                <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.show' ? 'show' : '' }}" id="inventorySubmenu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.show' ? 'active' : '' }}" href="{{ route('stock.show') }}">
+                            <div
+                                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Inventory</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
@@ -74,15 +153,7 @@
                     <span class="nav-link-text ms-1">Supplier</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-box-2 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Stock</span>
-                </a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}" href="{{ route('roles.index') }}">
                     <div

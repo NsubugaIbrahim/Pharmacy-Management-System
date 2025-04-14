@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stock_Order extends Model
+class StockOrder extends Model
 {
     use HasFactory;
 
@@ -21,8 +21,13 @@ class Stock_Order extends Model
     protected $fillable = [
         'supplier_id',
         'date',
+<<<<<<< HEAD:app/Models/Stock_Order.php
         'total'
 >>>>>>> 61d6a0f69527de383b732ff2a1fa5ce215775bfa
+=======
+        'total',
+        'status',
+>>>>>>> f529531b49f77a88d4b7776fac92a08ed8ba4b90:app/Models/StockOrder.php
     ];
     
     public function stockEntries()

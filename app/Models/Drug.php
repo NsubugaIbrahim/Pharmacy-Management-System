@@ -10,11 +10,7 @@ class Drug extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'supply_price',
-        'selling_price',
-        'quantity',
-        'supplier_id'
+        'name'
     ];
 
     public function supplier()
@@ -27,8 +23,16 @@ class Drug extends Model
         return $this->hasMany(Sale::class);
     }
 
-    public function stockEntries() {
-        return $this->hasMany(StockEntry::class);
-    }
+    public function stockEntries()
+{
+    return $this->hasMany(StockEntry::class);
+}
+
+public function inventoryItems()
+{
+    return $this->hasMany(Inventory::class);
+}
+
+    
     
 }
