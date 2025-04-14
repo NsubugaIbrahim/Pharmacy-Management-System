@@ -82,7 +82,10 @@
                     <i class="ni ni-bold-down ms-auto arrow-icon"></i>
 
                 </a>
-                <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.view' ? 'show' : '' }}" id="stockSubmenu">
+                @php
+                    $stockRoutes = ['stock.index', 'stock.view', 'approve.stock.orders', 'receive.stock'];
+                @endphp
+                <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $stockRoutes) ? 'show' : '' }}" id="stockSubmenu">
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
                             <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
