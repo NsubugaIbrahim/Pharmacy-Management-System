@@ -1,21 +1,17 @@
-@extends('layouts.app')
-
-@section('title', 'Medical Assistant Dashboard')
+@extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-<div style="margin-top: 120px;">
-<div class ="container-fluid py-4">
+    @include('layouts.navbars.auth.topnav', ['title' => ''])
+    <div class ="container-fluid py-4">
     <div class="row">
             <div class="col-12 mx-auto">
             <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Customer Order</h6>
                     </div>
-<div class="container mt-4">
-
-    <!-- Create Order Button -->
+    <div class="container mt-4">
     <button
-        onclick="document.getElementById('order-form').style.display='block'"
+    onclick="document.getElementById('order-form').style.display='block'"
         style="
             background-color: #007bff;
             color: white;
@@ -24,7 +20,6 @@
             font-size: 16px;
             border-radius: 8px;
             transition: background-color 0.3s ease;
-            margin-bottom: 20px;
         "
         onmouseover="this.style.backgroundColor='#808000'"
         onmouseout="this.style.backgroundColor='#007bff'"
@@ -52,7 +47,8 @@
             <tbody id="order-items">
                 <tr>
                 <td>
-    <input type="text" name="drug_name[]" class="drug-name" autocomplete="off" required>
+    <input type="text" name="drug_name[]" id="drug-name" oninput="fetchDrugSuggestions(this)" required autocomplete="off">
+    <ul id="suggestions-list" style="list-style-type: none; padding: 0; margin: 0; border: 1px solid #ccc; background-color: white;"></ul>
 </td>
                     <td><input type="number" name="unit_price[]" step="0.01" oninput="calculateAmount(this)" required></td>
                     <td><input type="number" name="quantity[]" oninput="calculateAmount(this)" required min="0" step="1"></td>
@@ -65,27 +61,12 @@
         <button type="button" onclick="addRow()">➕ Add Drug</button>
 
         <h4 style="margin-top: 20px;">Total Amount: <span id="total-amount">0.00</span></h4>
-        <button 
-    type="submit" 
-    style="
-        background-color: lightgreen; 
-        color: white; 
-        padding: 10px 20px; 
-        font-size: 16px; 
-        border: none; 
-        border-radius: 5px; 
-        transition: background-color 0.3s ease;
-    "
-    onmouseover="this.style.backgroundColor='green';"
-    onmouseout="this.style.backgroundColor='lightgreen';"
->
-    💾 Save Order
-</button>
     </div>
 </div>
 
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Inline Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function calculateAmount(elem) {
         const row = elem.parentElement.parentElement;
@@ -123,59 +104,42 @@
         }
     }
 
-    //db query
+    function fetchDrugSuggestions(inputElement) {
+        let query = inputElement.value;
 
-    $(document).ready(function() {
-    $(document).on('keyup', '.drug-name', function() {
-        let $input = $(this);
-        let query = $input.val();
+        if (query.length > 2) { // Only start searching if input has more than 2 characters
+            fetch(`/fetch-drugs?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let suggestionsList = document.getElementById('suggestions-list');
+                    suggestionsList.innerHTML = ''; // Clear previous suggestions
 
-        if (query.length >= 2) { // start suggesting after 2 characters
-            $.ajax({
-                url: '{{ route("drugs.search") }}',
-                type: 'GET',
-                data: { term: query },
-                success: function(data) {
-                    let suggestions = data.map(item => `<div class="suggestion-item" data-value="${item.value}">${item.value}</div>`);
-                    let suggestionBox = `<div class="suggestion-box">${suggestions.join('')}</div>`;
-
-                    $input.next('.suggestion-box').remove();  // Remove old box
-                    $input.after(suggestionBox);  // Show new one
-                }
-            });
+                    if (data.length > 0) {
+                        data.forEach(drug => {
+                            let li = document.createElement('li');
+                            li.textContent = drug.name; // Assuming the drug name is in 'name'
+                            li.style.cursor = 'pointer';
+                            li.onclick = function() {
+                                inputElement.value = drug.name; // Set the input field value to selected drug
+                                suggestionsList.innerHTML = ''; // Clear suggestions
+                            };
+                            suggestionsList.appendChild(li);
+                        });
+                    } else {
+                        let li = document.createElement('li');
+                        li.textContent = 'No matches found';
+                        suggestionsList.appendChild(li);
+                    }
+                });
         } else {
-            $input.next('.suggestion-box').remove(); // Clear suggestions
+            document.getElementById('suggestions-list').innerHTML = ''; // Clear suggestions if less than 3 characters
         }
-    });
+    }
 
-    $(document).on('click', '.suggestion-item', function() {
-        let value = $(this).data('value');
-        $(this).closest('td').find('.drug-name').val(value);
-        $('.suggestion-box').remove();
-    });
 
-    $(document).click(function(e) {
-        if (!$(e.target).hasClass('drug-name') && !$(e.target).hasClass('suggestion-item')) {
-            $('.suggestion-box').remove();
-        }
-    });
-});
 </script>
-<style>
-.suggestion-box {
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    background: white;
-    position: absolute;
-    z-index: 1000;
-}
-.suggestion-item {
-    padding: 5px 10px;
-    cursor: pointer;
-}
-.suggestion-item:hover {
-    background: #f0f0f0;
-}
-</style>
 @endsection
+
+
+@endsection
+

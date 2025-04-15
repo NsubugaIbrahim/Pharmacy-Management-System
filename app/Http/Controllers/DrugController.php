@@ -102,5 +102,14 @@ class DrugController extends Controller
 
         return redirect()->route('drugs.index')->with('success', 'Drug deleted successfully.');
     }
+    public function fetchDrugs(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Find drugs that contain the query (case insensitive)
+        $drugs = Drug::where('name', 'LIKE', '%' . $query . '%')->get();
+
+        return response()->json($drugs);
+    }
 
 }
