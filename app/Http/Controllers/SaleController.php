@@ -5,45 +5,156 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Drug;
 use App\Models\Sale;
-use App\Models\User;
+use App\Models\Inventory;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('role:cashier');
-    // }
-
-    public function sellForm()
+    public function index(Request $request)
     {
-        $drugs = Drug::whereNotNull('selling_price')->where('quantity', '>', 0)->get();
-        return view('sales.sell', compact('drugs'));
+        $drugs = Drug::all();
+        $selectedPrice = null;
+
+        if ($request->has('drug_id')) {
+            $inventory = \App\Models\Inventory::where('drug_id', $request->drug_id)
+                ->orderBy('expiry_date', 'asc') // or 'created_at', depending on your logic
+                ->first();
+
+            if ($inventory) {
+                $selectedPrice = $inventory->selling_price;
+            }
+        }
+
+        return view('sales.index', ['drugs' => $drugs,'selectedPrice' => $selectedPrice,]);
     }
 
-    public function processSale(Request $request)
+    
+    public function store(Request $request)
     {
         $request->validate([
             'drug_id' => 'required|exists:drugs,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1',
+            'selling_price' => 'required|numeric|min:0',
         ]);
 
-        $drug = Drug::find($request->drug_id);
+        $drug = \App\Models\Drug::findOrFail($request->drug_id);
 
-        if ($drug->quantity < $request->quantity) {
-            return back()->withErrors(['quantity' => 'Not enough stock available.']);
+        // Check available stock
+        $available = \App\Models\Inventory::where('drug_id', $drug->id)->sum('quantity');
+        $sold = \App\Models\Sale::where('drug_id', $drug->id)->sum('quantity');
+        $remaining = $available - $sold;
+
+        if ($remaining < $request->quantity) {
+            return back()->with('error', 'Not enough stock for ' . $drug->name);
         }
 
-        $total = $request->quantity * $drug->selling_price;
-
-        Sale::create([
+        // Add to session cart
+        $cart = session()->get('cart', []);
+        $cart[] = [
             'drug_id' => $drug->id,
+            'drug_name' => $drug->name,
             'quantity' => $request->quantity,
-            'total_price' => $total
+            'selling_price' => $request->selling_price,
+        ];
+        session()->put('cart', $cart);
+
+        return back()->with('success', $drug->name . ' added to cart!');
+    }
+
+    public function removeFromCart($index)
+    {
+        $cart = session()->get('cart', []);
+        unset($cart[$index]);
+        session(['cart' => array_values($cart)]); // reindex
+
+        return redirect()->back()->with('success', 'Item removed from cart');
+    }
+
+    public function finalizeSale(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required|string|max:255'
         ]);
 
-        $drug->quantity -= $request->quantity;
-        $drug->save();
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return back()->with('error', 'Cart is empty!');
+        }
 
-        return back()->with('success', 'Sale processed successfully.');
+        DB::beginTransaction();
+
+        try {
+            foreach ($cart as $item) {
+                $drugId = $item['drug_id'];
+                $neededQty = $item['quantity'];
+
+                // Get stock entries for this drug, FIFO style (oldest first)
+                $entries = Inventory::where('drug_id', $drugId)
+                ->where('quantity', '>', 0)
+                ->orderBy('expiry_date') // or created_at if preferred
+                ->get();
+
+
+                foreach ($entries as $entry) {
+                    if ($neededQty <= 0) break;
+
+                    $availableQty = $entry->quantity;
+
+                    if ($availableQty >= $neededQty) {
+                        $entry->quantity -= $neededQty;
+                        $entry->save();
+                        $neededQty = 0;
+                    } else {
+                        $neededQty -= $availableQty;
+                        $entry->quantity = 0;
+                        $entry->save();
+                    }
+                }
+
+                if ($neededQty > 0) {
+                    DB::rollBack();
+                    return back()->with('error', 'Not enough stock for ' . $item['drug_name']);
+                }
+
+                // Save the sale
+                Sale::create([
+                    'drug_id' => $drugId,
+                    'quantity' => $item['quantity'],
+                    'selling_price' => $item['selling_price'],
+                    'customer_name' => $request->customer_name,
+                    'total_price' => $item['selling_price'] * $item['quantity'], // ✅ Add this
+                ]);
+
+                
+            }
+
+            // Save receipt data
+            session(['receipt_data' => [
+                'customer_name' => $request->customer_name,
+                'items' => $cart,
+                'total' => array_sum(array_map(fn($i) => $i['selling_price'] * $i['quantity'], $cart))
+            ]]);
+
+            session()->forget('cart');
+            DB::commit();
+
+            return redirect()->route('sales.receipt');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Sale failed: ' . $e->getMessage());
+        }
     }
+
+    public function receipt()
+    {
+        $receiptData = session('receipt_data');
+        if (!$receiptData) {
+            return redirect()->route('sales.index')->with('error', 'No receipt to show.');
+        }
+
+        return view('sales.receipt', ['data' => $receiptData]);
+    }
+
+    
 }
