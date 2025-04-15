@@ -42,7 +42,34 @@
                         </tr>
                       </thead>
                       <tbody>
-
+                        @forelse($disposedDrugs as $drug)
+                          <tr>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ $drug->drug_name }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ $drug->stock_id }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ $drug->quantity }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ $drug->expiry_date }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ $drug->days_expired }}</p>
+                            </td>
+                            <td class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">{{ number_format($drug->losses_incurred) }}</p>
+                            </td>
+                          </tr>
+                        @empty
+                          <tr>
+                            <td colspan="6" class="text-center">
+                              <p class="text-xs font-weight-bold mb-0">No disposed drugs found</p>
+                            </td>
+                          </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
