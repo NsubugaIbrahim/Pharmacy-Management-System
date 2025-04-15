@@ -98,6 +98,9 @@ Route::group(['middleware' => 'auth'], function () {
 	//Inventory
 	Route::put('/inventory/{id}/update-price', [App\Http\Controllers\InventoryController::class, 'updatePrice'])->name('inventory.update-price');
 
+	//Expiry
+	Route::get('/expiry-alerts', [App\Http\Controllers\InventoryController::class, 'nearExpiry'])->name('near.expiry');
+
 	
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');

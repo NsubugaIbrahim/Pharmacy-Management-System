@@ -124,6 +124,26 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'near.expiry' ? 'active' : 'collapsed' }}" 
+                   href="#expirySubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'near.expiry' ? 'true' : 'false' }}" aria-controls="expirySubmenu">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Expiry Management</span>
+                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
+                </a>
+                <ul class="collapse submenu {{ Route::currentRouteName() == 'near.expiry' ? 'show' : '' }}" id="expirySubmenu">
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'near.expiry' ? 'active' : '' }}" href="{{ route('near.expiry') }}">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Expiry Alerts</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-primary text-sm opacity-10"></i>

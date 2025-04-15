@@ -23,4 +23,9 @@ class InventoryController extends Controller
         ->with('success', 'Drug price updated successfully');
 }
 
+public function nearExpiry(){
+    return view('expiry.expiry-alert');
 }
+
+}
+
