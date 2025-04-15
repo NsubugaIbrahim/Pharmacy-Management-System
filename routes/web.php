@@ -127,8 +127,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sell/report', [SaleController::class, 'report'])->name('sales.report');
 	Route::post('/sell/cart/add', [SaleController::class, 'addToCart'])->name('sales.cart.add');
 	Route::get('/sell/cart/remove/{index}', [SaleController::class, 'removeFromCart'])->name('sales.cart.remove');
-	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
-	Route::post('/sell/add-to-cart', [SaleController::class, 'store'])->name('sales.store');
 	Route::post('/sell/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
 	Route::get('/sell/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
 	Route::get('/inventory/price/{drug_id}', [SaleController::class, 'getSellingPrice'])->name('inventory.price');
