@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Drug;
 
 class MedicalAssistantController extends Controller
 {
@@ -10,4 +12,26 @@ class MedicalAssistantController extends Controller
     {
         return view('medical-assistant.dashboard');
     }
+    public function dashboard()
+{
+    return view('medical-assistant.dashboard'); // or whatever view you want to return
+}
+
+public function searchDrugs(Request $request)
+{
+    $query = $request->get('term');
+
+    $drugs = Drug::where('name', 'LIKE', '%' . $query . '%')
+                ->orderBy('name')
+                ->limit(10)
+                ->get();
+
+    $results = [];
+
+    foreach ($drugs as $drug) {
+        $results[] = ['id' => $drug->id, 'value' => $drug->name];
+    }
+
+    return response()->json($results);
+}
 }
