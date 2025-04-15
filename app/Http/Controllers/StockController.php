@@ -231,18 +231,20 @@ class StockController extends Controller
     }
 
     public function show()
-    {
-        $inventory = Drug::select('drugs.id', 'drugs.name', 'inventories.selling_price')
-            ->selectRaw('SUM(inventories.quantity) as total_quantity')
-            ->selectRaw('MIN(inventories.expiry_date) as closest_expiry_date')
-            ->leftJoin('inventories', 'drugs.id', '=', 'inventories.drug_id')
-            ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
-            ->with(['stockEntries' => function($query) {
-                $query->with('stockOrder.supplier');
-            }, 'inventoryItems'])
-            ->get();
+{
+    $inventory = Drug::select('drugs.id', 'drugs.name')
+        ->selectRaw('SUM(inventories.quantity) as total_quantity')
+        ->selectRaw('MIN(inventories.expiry_date) as closest_expiry_date')
+        ->selectRaw('MAX(inventories.selling_price) as selling_price') // Using MAX as an example, you could use AVG or other logic
+        ->leftJoin('inventories', 'drugs.id', '=', 'inventories.drug_id')
+        ->groupBy('drugs.id', 'drugs.name')
+        ->with(['stockEntries' => function($query) {
+            $query->with('stockOrder.supplier');
+        }, 'inventoryItems'])
+        ->get();
 
-        return view('stock.show', compact('inventory'));
-    }
+    return view('stock.show', compact('inventory'));
+}
+
 
 }
