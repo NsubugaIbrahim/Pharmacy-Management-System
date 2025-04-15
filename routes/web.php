@@ -59,14 +59,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 
-<<<<<<< HEAD
-	//Pharmacist Routes
-	Route::get('/pharmacist/{id}/edit',[PharmacistController::class, 'edit'])->name('pharmacist.edit');
-	Route::delete('/pharmacist/{id}', [PharmacistController::class, 'destroy'])->name('pharmacist.destroy');
-	Route::get('/pharmacist/add', [PharmacistController::class, 'store'])->name('pharmacist.create');
-
-=======
->>>>>>> f529531b49f77a88d4b7776fac92a08ed8ba4b90
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
     Route::post('/drugs/add', [DrugController::class, 'storeDrug'])->name('drugs.store');
