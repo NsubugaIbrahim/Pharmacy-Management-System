@@ -1,12 +1,12 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Stock Inventory'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Order Stock '])
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12 mx-auto">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Stock Inventory</h6>
+                        <h6>Order Stock</h6>
                     </div>
                     <div class="card-body">
                         @if(session('success'))
@@ -31,15 +31,15 @@
                             </div>
                         @endif
 
-                        <div class="alert alert-info" style="color: white; font-size: 14px;">
+                        {{-- <div class="alert alert-info" style="color: white; font-size: 14px;">
                             <i class="fas fa-info-circle me-2"></i>
                             Fill in details only for the drugs to be restocked. Empty rows will be ignored.
-                        </div>
+                        </div> --}}
 
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <form method="POST" action="{{ route('stock_orders.store') }}" id="restock-form">
                                 @csrf
-                                <div class="d-flex align-items-end gap-3 mb-3">
+                                <div class="d-flex align-items-end gap-3 mb-3 text-center">
                                     <div class="mb-3">
                                         <label for="supplier" class="form-label">Select Supplier</label>
                                         <select name="supplier_id" id="supplier" class="form-select" style="width: 200px;" required>
@@ -58,16 +58,13 @@
                                         <input type="text" id="search-input" class="form-control" placeholder="Search for a drug">
                                     </div>                                    
                                 </div>
-                                
-                                
-                                
                                 <div class="table-responsive" style="margin-top: -30px;">
                                     <table class="table table-striped table-hover">
                                         <thead>
-                                            <tr>
+                                            <tr class="text-center">
                                                 <th>Drug</th>
                                                 <th>Quantity</th>
-                                                <th>Price (UGX)</th>
+                                                <th>Stock In Price (UGX)</th>
                                                 <th>Cost (UGX)</th>
                                                 <th>Status</th>
                                             </tr>

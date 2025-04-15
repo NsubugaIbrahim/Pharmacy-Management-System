@@ -84,12 +84,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Stock History</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
                             <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Pending Stock Orders</span>
@@ -99,6 +93,12 @@
                         <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
                             <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Receive Stock</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
+                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Stock History</span>
                         </a>
                     </li>
                 </ul>

@@ -7,7 +7,6 @@ use App\Models\StockEntry;
 use App\Models\Drug;
 use App\Models\Supplier;
 use App\Models\StockOrder;
-use App\Models\Inventory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -32,7 +31,7 @@ class StockController extends Controller
                         ->whereNull('status')  // Only get orders with null status
                         ->orderBy('date', 'desc')
                         ->get();
-        return view('stock.approve-order', compact('stockOrders'));
+        return view('stock.approveorder', compact('stockOrders'));
     }
 
     public function approveOrder($id)
