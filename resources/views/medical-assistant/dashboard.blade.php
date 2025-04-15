@@ -51,7 +51,9 @@
     </thead>
             <tbody id="order-items">
                 <tr>
-                    <td><input type="text" name="drug_name[]"  required></td>
+                <td>
+    <input type="text" name="drug_name[]" class="drug-name" autocomplete="off" required>
+</td>
                     <td><input type="number" name="unit_price[]" step="0.01" oninput="calculateAmount(this)" required></td>
                     <td><input type="number" name="quantity[]" oninput="calculateAmount(this)" required min="0" step="1"></td>
                     <td><input type="text" name="amount[]" readonly></td>
@@ -124,44 +126,56 @@
     //db query
 
     $(document).ready(function() {
-    // When typing in the Drug Name field
-    $('input[name="drug_name[]"]').on('keyup', function() {
-        let input = $(this);
-        let query = input.val();  // Get current input value
+    $(document).on('keyup', '.drug-name', function() {
+        let $input = $(this);
+        let query = $input.val();
 
-        if (query.length > 1) {
+        if (query.length >= 2) { // start suggesting after 2 characters
             $.ajax({
-                url: "{{ route('search.drugs') }}",  // Send the request to the controller method
-                type: "GET",
+                url: '{{ route("drugs.search") }}',
+                type: 'GET',
                 data: { term: query },
-                success: function(response) {
-                    // Display the suggestions
-                    let suggestionBox = input.next('.autocomplete-list');
-                    if (suggestionBox.length === 0) {
-                        suggestionBox = $('<div class="autocomplete-list"></div>').insertAfter(input);
-                    }
-                    suggestionBox.html(response);  // Inject the returned HTML (drug names)
+                success: function(data) {
+                    let suggestions = data.map(item => `<div class="suggestion-item" data-value="${item.value}">${item.value}</div>`);
+                    let suggestionBox = `<div class="suggestion-box">${suggestions.join('')}</div>`;
 
-                    // Handle selecting a suggestion
-                    $('.autocomplete-suggestion').on('click', function() {
-                        let selectedDrug = $(this).data('drug-name');
-                        input.val(selectedDrug);  // Set the input value to the selected drug
-                        suggestionBox.empty();  // Clear the suggestions
-                    });
+                    $input.next('.suggestion-box').remove();  // Remove old box
+                    $input.after(suggestionBox);  // Show new one
                 }
             });
         } else {
-            // Clear suggestions if input is too short
-            $(this).next('.autocomplete-list').empty();
+            $input.next('.suggestion-box').remove(); // Clear suggestions
         }
     });
 
-    // Hide the suggestions when clicking elsewhere
+    $(document).on('click', '.suggestion-item', function() {
+        let value = $(this).data('value');
+        $(this).closest('td').find('.drug-name').val(value);
+        $('.suggestion-box').remove();
+    });
+
     $(document).click(function(e) {
-        if (!$(e.target).hasClass('autocomplete-suggestion') && !$(e.target).hasClass('form-control')) {
-            $('.autocomplete-list').empty();
+        if (!$(e.target).hasClass('drug-name') && !$(e.target).hasClass('suggestion-item')) {
+            $('.suggestion-box').remove();
         }
     });
 });
 </script>
+<style>
+.suggestion-box {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    background: white;
+    position: absolute;
+    z-index: 1000;
+}
+.suggestion-item {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background: #f0f0f0;
+}
+</style>
 @endsection

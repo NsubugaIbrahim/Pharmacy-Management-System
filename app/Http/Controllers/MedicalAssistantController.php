@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Drug;
 
 class MedicalAssistantController extends Controller
 {
@@ -15,23 +16,22 @@ class MedicalAssistantController extends Controller
 {
     return view('medical-assistant.dashboard'); // or whatever view you want to return
 }
+
 public function searchDrugs(Request $request)
 {
-    $search = $request->input('term');
+    $query = $request->get('term');
 
-    // Querying the 'drugs' table to get matching names
-    $drugs = DB::connection('pharmacy-1')
-        ->table('drugs')
-        ->where('name', 'LIKE', '%' . $search . '%')
-        ->limit(10)  // Limit the number of results to show
-        ->get();
+    $drugs = Drug::where('name', 'LIKE', '%' . $query . '%')
+                ->orderBy('name')
+                ->limit(10)
+                ->get();
 
-    // Return the matching drug names as an HTML list
-    $output = '';
+    $results = [];
+
     foreach ($drugs as $drug) {
-        $output .= '<div class="autocomplete-suggestion" data-drug-name="' . $drug->name . '">' . $drug->name . '</div>';
+        $results[] = ['id' => $drug->id, 'value' => $drug->name];
     }
 
-    return response()->html($output);
+    return response()->json($results);
 }
 }
