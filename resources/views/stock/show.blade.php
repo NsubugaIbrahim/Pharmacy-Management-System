@@ -52,7 +52,7 @@ span:hover {
                           </td>
                           <td class="text-center">
                               <div class="btn-group" role="group">
-                                  <span class="badge badge-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#editPriceModal{{ $item->id }}">Set Price</span>
+                                  <span class="badge badge-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#editPriceModal{{ $item->id }}">Update Price</span>
                                   <span class="badge badge-sm bg-gradient-danger" data-bs-toggle="modal" data-bs-target="#stockHistoryModal{{ $item->id }}" style ="margin-left: 5px;">Stock History</span>
                               </div>
                               
@@ -106,22 +106,22 @@ span:hover {
                                                       <tbody>
                                                           @foreach($item->stockEntries as $entry)
                                                           <tr>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ $entry->restock_id }}</p>
                                                               </td>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ $entry->stockOrder->supplier->name ?? 'N/A' }}</p>
                                                               </td>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ $entry->stockOrder->date ?? 'N/A' }}</p>
                                                               </td>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ $entry->quantity }}</p>
                                                               </td>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ number_format($entry->price) }}</p>
                                                               </td>
-                                                              <td>
+                                                              <td class="text-center">
                                                                   <p class="text-xs font-weight-bold mb-0">{{ $entry->expiry_date }}</p>
                                                               </td>
                                                           </tr>
