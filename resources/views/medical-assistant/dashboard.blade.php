@@ -1,17 +1,21 @@
-@extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
+@extends('layouts.app')
+
+@section('title', 'Medical Assistant Dashboard')
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => ''])
-    <div class ="container-fluid py-4">
+<div style="margin-top: 120px;">
+<div class ="container-fluid py-4">
     <div class="row">
             <div class="col-12 mx-auto">
             <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Customer Order</h6>
                     </div>
-    <div class="container mt-4">
+<div class="container mt-4">
+
+    <!-- Create Order Button -->
     <button
-    onclick="document.getElementById('order-form').style.display='block'"
+        onclick="document.getElementById('order-form').style.display='block'"
         style="
             background-color: #007bff;
             color: white;
@@ -20,6 +24,7 @@
             font-size: 16px;
             border-radius: 8px;
             transition: background-color 0.3s ease;
+            margin-bottom: 20px;
         "
         onmouseover="this.style.backgroundColor='#808000'"
         onmouseout="this.style.backgroundColor='#007bff'"
@@ -46,10 +51,7 @@
     </thead>
             <tbody id="order-items">
                 <tr>
-                <td>
-    <input type="text" name="drug_name[]" id="drug-name" oninput="fetchDrugSuggestions(this)" required autocomplete="off">
-    <ul id="suggestions-list" style="list-style-type: none; padding: 0; margin: 0; border: 1px solid #ccc; background-color: white;"></ul>
-</td>
+                    <td><input type="text" name="drug_name[]"  required></td>
                     <td><input type="number" name="unit_price[]" step="0.01" oninput="calculateAmount(this)" required></td>
                     <td><input type="number" name="quantity[]" oninput="calculateAmount(this)" required min="0" step="1"></td>
                     <td><input type="text" name="amount[]" readonly></td>
@@ -61,12 +63,27 @@
         <button type="button" onclick="addRow()">➕ Add Drug</button>
 
         <h4 style="margin-top: 20px;">Total Amount: <span id="total-amount">0.00</span></h4>
+        <button 
+    type="submit" 
+    style="
+        background-color: lightgreen; 
+        color: white; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        border: none; 
+        border-radius: 5px; 
+        transition: background-color 0.3s ease;
+    "
+    onmouseover="this.style.backgroundColor='green';"
+    onmouseout="this.style.backgroundColor='lightgreen';"
+>
+    💾 Save Order
+</button>
     </div>
 </div>
 
-@section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Inline Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function calculateAmount(elem) {
         const row = elem.parentElement.parentElement;
@@ -104,42 +121,47 @@
         }
     }
 
-    function fetchDrugSuggestions(inputElement) {
-        let query = inputElement.value;
+    //db query
 
-        if (query.length > 2) { // Only start searching if input has more than 2 characters
-            fetch(`/fetch-drugs?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    let suggestionsList = document.getElementById('suggestions-list');
-                    suggestionsList.innerHTML = ''; // Clear previous suggestions
+    $(document).ready(function() {
+    // When typing in the Drug Name field
+    $('input[name="drug_name[]"]').on('keyup', function() {
+        let input = $(this);
+        let query = input.val();  // Get current input value
 
-                    if (data.length > 0) {
-                        data.forEach(drug => {
-                            let li = document.createElement('li');
-                            li.textContent = drug.name; // Assuming the drug name is in 'name'
-                            li.style.cursor = 'pointer';
-                            li.onclick = function() {
-                                inputElement.value = drug.name; // Set the input field value to selected drug
-                                suggestionsList.innerHTML = ''; // Clear suggestions
-                            };
-                            suggestionsList.appendChild(li);
-                        });
-                    } else {
-                        let li = document.createElement('li');
-                        li.textContent = 'No matches found';
-                        suggestionsList.appendChild(li);
+        if (query.length > 1) {
+            $.ajax({
+                url: "{{ route('search.drugs') }}",  // Send the request to the controller method
+                type: "GET",
+                data: { term: query },
+                success: function(response) {
+                    // Display the suggestions
+                    let suggestionBox = input.next('.autocomplete-list');
+                    if (suggestionBox.length === 0) {
+                        suggestionBox = $('<div class="autocomplete-list"></div>').insertAfter(input);
                     }
-                });
+                    suggestionBox.html(response);  // Inject the returned HTML (drug names)
+
+                    // Handle selecting a suggestion
+                    $('.autocomplete-suggestion').on('click', function() {
+                        let selectedDrug = $(this).data('drug-name');
+                        input.val(selectedDrug);  // Set the input value to the selected drug
+                        suggestionBox.empty();  // Clear the suggestions
+                    });
+                }
+            });
         } else {
-            document.getElementById('suggestions-list').innerHTML = ''; // Clear suggestions if less than 3 characters
+            // Clear suggestions if input is too short
+            $(this).next('.autocomplete-list').empty();
         }
-    }
+    });
 
-
+    // Hide the suggestions when clicking elsewhere
+    $(document).click(function(e) {
+        if (!$(e.target).hasClass('autocomplete-suggestion') && !$(e.target).hasClass('form-control')) {
+            $('.autocomplete-list').empty();
+        }
+    });
+});
 </script>
 @endsection
-
-
-@endsection
-

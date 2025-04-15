@@ -130,5 +130,8 @@ Route::group(['middleware' => 'auth'], function () {
 // });
 //Medical-assistant
 Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'dashboard'])->name('medical-assistant.dashboard');
-Route::get('/fetch-drugs', 'DrugController@fetchDrugs');
+//use App\Http\Controllers\MedicalAssistantController;
+
+Route::get('/search-drugs', [MedicalAssistantController::class, 'searchDrugs'])->name('search.drugs');
+
 ?>
