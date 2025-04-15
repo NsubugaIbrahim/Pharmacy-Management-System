@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stock_Order extends Model
+class StockOrder extends Model
 {
     use HasFactory;
 
-    protected $table = 'stock__orders';
+    protected $table = 'stock_orders';
     
     protected $fillable = [
         'supplier_id',
-        'date'
+        'date',
+        'total',
+        'status',
     ];
     
     public function stockEntries()

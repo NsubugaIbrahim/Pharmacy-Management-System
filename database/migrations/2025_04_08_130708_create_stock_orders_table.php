@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock__orders', function (Blueprint $table) {
+        Schema::create('stock_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplier_id');
+            $table->integer('total');
             $table->date('date');
+            $table->enum('status', ['approved', 'declined'])->nullable();
+            $table->boolean('reception')->default(false);
             $table->timestamps();
             
             // Foreign key constraint
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock__orders');
+        Schema::dropIfExists('stock_orders');
     }
 };
