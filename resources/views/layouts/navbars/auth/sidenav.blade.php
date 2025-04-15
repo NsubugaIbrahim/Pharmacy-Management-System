@@ -141,6 +141,22 @@
                             <span class="nav-link-text ms-1">Expiry Alerts</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'expired.drugs' ? 'active' : '' }}" href="{{ route('expired.drugs') }}">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Expired Drugs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'disposed.drugs' ? 'active' : '' }}" href="{{ route('disposed.drugs') }}">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Disposed Drugs</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item">

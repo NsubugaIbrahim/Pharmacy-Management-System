@@ -86,6 +86,8 @@ class InventoryController extends Controller
             ->with('success', 'Drug has been disposed successfully');
     }
     
-
+    public function disposedDrugs(){
+        return view('expiry.disposed-drugs');
+    }
 }
 

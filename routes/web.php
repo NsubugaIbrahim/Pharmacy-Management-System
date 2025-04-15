@@ -105,7 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Dispose off expired drugs
 	Route::post('/dispose-drug/{id}', [App\Http\Controllers\InventoryController::class, 'disposeDrug'])->name('dispose.drug');
-
+	Route::get('disposed-drugs', [App\Http\Controllers\InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
 	
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
