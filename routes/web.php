@@ -29,6 +29,7 @@
 	use App\Http\Controllers\SupplierController;
 	use App\Http\Controllers\StockController;
 	use App\Http\Controllers\RoleController;
+	use App\Http\Controllers\SaleController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -85,18 +86,18 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
 	//Stock
-	Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+	Route::get('/orderstock', [StockController::class, 'index'])->name('stock.index');
 	Route::get('/inventory', [StockController::class, 'show'])->name('stock.show');
 	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
 	Route::post('/stock', [StockController::class, 'store'])->name('stock.store');
 	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');
 	Route::put('/stock/{stockEntry}', [StockController::class, 'update'])->name('stock.update');
 	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
-	Route::get('/stock-view', [StockController::class, 'stockView'])->name('stock.view');
-	Route::get('/approve-stock-orders', [StockController::class, 'approve_order'])->name('approve.stock.orders');
+	Route::get('/stockhistory', [StockController::class, 'stockView'])->name('stock.view');
+	Route::get('/approvestockorders', [StockController::class, 'approve_order'])->name('approve.stock.orders');
 	Route::post('/stock/approve/{id}', [StockController::class, 'approveOrder'])->name('stock.approve');
 	Route::post('/stock/decline/{id}', [StockController::class, 'declineOrder'])->name('stock.decline');
-	Route ::get('/receive-stock', [StockController::class, 'receiveStock'])->name('receive.stock');
+	Route::get('/receivestock', [StockController::class, 'receiveStock'])->name('receive.stock');
 	Route::post('/stock/update-expiry/{order}', [StockController::class, 'receiveStockLogic'])->name('stock.update-expiry');
 
 	//View Inventory Stock
@@ -106,6 +107,13 @@ Route::group(['middleware' => 'auth'], function () {
 	//Inventory
 	Route::put('/inventory/{id}/update-price', [App\Http\Controllers\InventoryController::class, 'updatePrice'])->name('inventory.update-price');
 
+	//Expiry
+	Route::get('/expiry-alerts', [App\Http\Controllers\InventoryController::class, 'nearExpiry'])->name('near.expiry');
+	Route::get('/expired-drugs', [App\Http\Controllers\InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
+
+	//Dispose off expired drugs
+	Route::post('/dispose-drug/{id}', [App\Http\Controllers\InventoryController::class, 'disposeDrug'])->name('dispose.drug');
+	Route::get('disposed-drugs', [App\Http\Controllers\InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
 	
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
@@ -122,16 +130,22 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
+	Route::get('/sell', [SaleController::class, 'index'])->name('sales.index');
+	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
+	Route::get('/sell/report', [SaleController::class, 'report'])->name('sales.report');
+	Route::post('/sell/cart/add', [SaleController::class, 'addToCart'])->name('sales.cart.add');
+	Route::get('/sell/cart/remove/{index}', [SaleController::class, 'removeFromCart'])->name('sales.cart.remove');
+	Route::post('/sell/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
+	Route::get('/sell/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+	Route::get('/inventory/price/{drug_id}', [SaleController::class, 'getSellingPrice'])->name('inventory.price');
 
 	//Register new user
-	Route::get('/user-management', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
+	Route::get('/usermanagement', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
 	Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 	Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
 	Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 
-	
-	
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 });
 

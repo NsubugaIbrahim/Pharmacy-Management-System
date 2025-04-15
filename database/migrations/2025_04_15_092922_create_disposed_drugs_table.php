@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('disposed_drugs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('restock_id');
             $table->unsignedBigInteger('drug_id');
             $table->integer('quantity');
-            $table->decimal('total_price', 10, 2);
-            $table->string('customer_name');
+            $table->date('expiry_date');
             $table->timestamps();
-        
+            
+            // Foreign key constraints
+            $table->foreign('restock_id')->references('id')->on('stock_orders')->onDelete('cascade');
             $table->foreign('drug_id')->references('id')->on('drugs')->onDelete('cascade');
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('disposed_drugs');
     }
 };
