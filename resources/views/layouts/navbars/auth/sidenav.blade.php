@@ -84,12 +84,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Stock History</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
                             <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Pending Stock Orders</span>
@@ -99,6 +93,12 @@
                         <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
                             <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Receive Stock</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
+                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <span class="nav-link-text ms-1">Stock History</span>
                         </a>
                     </li>
                 </ul>
@@ -159,7 +159,15 @@
                     <span class="nav-link-text ms-1">Supplier</span>
                 </a>
             </li>
-            
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'sales.index' ? 'active' : '' }}" href="{{ route('sales.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sell</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}" href="{{ route('roles.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">

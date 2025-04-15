@@ -7,30 +7,24 @@
                     <script>
                         document.write(new Date().getFullYear())
                     </script>,
-                    made with <i class="fa fa-heart"></i> by
+                    developed by the mighty <i class="fa fa-heart"></i>
                     <a href="" class="font-weight-bold" target="_blank">Group D</a>
-                    &
-                    <a href="" class="font-weight-bold" target="_blank">Group c</a>
-                    for a better web.
+                    for a better Pharmacy Management.
                 </div>
             </div>
             <div class="col-lg-6">
                 <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                     <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="_blank">krahim</a>
+                        <a href="https://github.com/kayiwarahim" class="nav-link text-muted" target="_blank">K Rahim</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="_blank">jnakalema</a>
+                        <a href="https://github.com/Juiana-Kalema" class="nav-link text-muted" target="_blank">N Julian</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="_blank">snamembwa</a>
+                        <a href="https://github.com/its-Sherry003" class="nav-link text-muted" target="_blank">N Sherry</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="_blank">nibrahim</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link pe-0 text-muted"
-                            target="_blank">Group License</a>
+                        <a href="https://github.com/NsubugaIbrahim" class="nav-link text-muted" target="_blank">N Ibrahim</a>
                     </li>
                 </ul>
             </div>

@@ -7,7 +7,6 @@ use App\Models\StockEntry;
 use App\Models\Drug;
 use App\Models\Supplier;
 use App\Models\StockOrder;
-use App\Models\Inventory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +22,7 @@ class StockController extends Controller
 
     public function stockView(){
         $stockOrders = StockOrder::with('supplier')->orderBy('date', 'desc')->get();
-        return view('stock.stocks-view', compact('stockOrders'));
+        return view('stock.stockview', compact('stockOrders'));
     }
     
 
@@ -32,7 +31,7 @@ class StockController extends Controller
                         ->whereNull('status')  // Only get orders with null status
                         ->orderBy('date', 'desc')
                         ->get();
-        return view('stock.approve-order', compact('stockOrders'));
+        return view('stock.approveorder', compact('stockOrders'));
     }
 
     public function approveOrder($id)
@@ -58,7 +57,7 @@ class StockController extends Controller
                         ->where('status', 'approved')
                         ->orderBy('date', 'desc')
                         ->get();
-        return view('stock.receive-stock', compact('stockOrders'));
+        return view('stock.receivestock', compact('stockOrders'));
     }
     
     //Insert expiry dates for Received Stock entries
@@ -68,44 +67,45 @@ class StockController extends Controller
             'expiry_dates' => 'required|array',
             'expiry_dates.*' => 'required|date',
             'entry_ids' => 'required|array',
-            'entry_ids.*' => 'required|exists:stock_entries,id'
+            'entry_ids.*' => 'required|exists:stock_entries,id',
+            'selling_prices' => 'required|array',
+            'selling_prices.*' => 'required|numeric|min:0',
         ]);
 
-        foreach ($request->entry_ids as $index => $entryId) {
+        foreach ($request->entry_ids as $entryId) {
             $expiryDate = $request->expiry_dates[$entryId];
-            
-            // Update the stock entry with the expiry date
+            $sellingPrice = $request->selling_prices[$entryId];
+
             $stockEntry = StockEntry::findOrFail($entryId);
             $stockEntry->expiry_date = $expiryDate;
             $stockEntry->save();
-            
-            // Add to inventory or update existing inventory
+
+            // Check if inventory already exists for same drug and expiry date
             $existingInventory = \App\Models\Inventory::where('drug_id', $stockEntry->drug_id)
                 ->where('expiry_date', $expiryDate)
                 ->first();
-                
+
             if ($existingInventory) {
-                // If inventory exists with same drug and expiry date, increment quantity
                 $existingInventory->quantity += $stockEntry->quantity;
+                $existingInventory->selling_price = $sellingPrice; // Update selling price if needed
                 $existingInventory->save();
             } else {
-                // Create new inventory record
                 \App\Models\Inventory::create([
                     'restock_id' => $order->id,
                     'drug_id' => $stockEntry->drug_id,
                     'quantity' => $stockEntry->quantity,
-                    'selling_price' => $stockEntry->selling_price ?? null,
+                    'selling_price' => $sellingPrice,
                     'expiry_date' => $expiryDate,
                 ]);
             }
         }
 
-        // Update the order reception status to true (received)
         $order->reception = true;
         $order->save();
 
-        return redirect()->back()->with('success', 'Expiry dates have been added and Inventory has been updated successfully');
+        return redirect()->back()->with('success', 'Expiry dates and selling prices have been saved to inventory.');
     }
+
 
 
 
@@ -167,9 +167,6 @@ class StockController extends Controller
             return redirect()->back()->with('error', 'Failed to create stock order: ' . $e->getMessage());
         }
     }
-
-    
-    
 
 
     // Form to stock a drug
@@ -234,18 +231,18 @@ class StockController extends Controller
     }
 
     public function show()
-{
-    $inventory = Drug::select('drugs.id', 'drugs.name', 'inventories.selling_price')
-        ->selectRaw('SUM(inventories.quantity) as total_quantity')
-        ->selectRaw('MIN(inventories.expiry_date) as closest_expiry_date')
-        ->leftJoin('inventories', 'drugs.id', '=', 'inventories.drug_id')
-        ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
-        ->with(['stockEntries' => function($query) {
-            $query->with('stockOrder.supplier');
-        }, 'inventoryItems'])
-        ->get();
+    {
+        $inventory = Drug::select('drugs.id', 'drugs.name', 'inventories.selling_price')
+            ->selectRaw('SUM(inventories.quantity) as total_quantity')
+            ->selectRaw('MIN(inventories.expiry_date) as closest_expiry_date')
+            ->leftJoin('inventories', 'drugs.id', '=', 'inventories.drug_id')
+            ->groupBy('drugs.id', 'drugs.name', 'inventories.selling_price')
+            ->with(['stockEntries' => function($query) {
+                $query->with('stockOrder.supplier');
+            }, 'inventoryItems'])
+            ->get();
 
-    return view('stock.show', compact('inventory'));
-}
+        return view('stock.show', compact('inventory'));
+    }
 
 }
