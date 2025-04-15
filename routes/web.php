@@ -100,6 +100,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Expiry
 	Route::get('/expiry-alerts', [App\Http\Controllers\InventoryController::class, 'nearExpiry'])->name('near.expiry');
+	Route::get('/expired-drugs', [App\Http\Controllers\InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
+
+	//Dispose off expired drugs
+	Route::post('/dispose-drug/{id}', [App\Http\Controllers\InventoryController::class, 'disposeDrug'])->name('dispose.drug');
 
 	
 

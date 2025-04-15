@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StockEntry;
 use Illuminate\Http\Request;
-use App\Models\StockOrder;
+use App\Models\Inventory;
 
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +38,39 @@ class InventoryController extends Controller
         return view('expiry.expiry-alert', compact('expiringDrugs'));
     }
 
+    public function expiredDrugs()
+    {
+        $today = now();
+        
+        $expiredDrugs = Inventory::with('drug')
+            ->where('expiry_date', '<', $today)
+            ->where('quantity', '>', 0)
+            ->orderBy('expiry_date', 'asc')
+            ->get();
+        
+        return view('expiry.expired-drugs', compact('expiredDrugs'));
+    }
+    
+    public function disposeDrug($id)
+    {
+        $inventory = \App\Models\Inventory::findOrFail($id);
+        
+        // Create a record in disposed_drugs table
+        \App\Models\DisposedDrugs::create([
+            'restock_id' => $inventory->restock_id,
+            'drug_id' => $inventory->drug_id,
+            'quantity' => $inventory->quantity,
+            'expiry_date' => $inventory->expiry_date
+        ]);
+        
+        // Update inventory to zero quantity
+        $inventory->quantity = 0;
+        $inventory->save();
+        
+        return redirect()->route('expired.drugs')
+            ->with('success', 'Drug has been disposed successfully');
+    }
+    
 
 }
 
