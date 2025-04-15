@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StockEntry;
 use Illuminate\Http\Request;
+use App\Models\StockOrder;
+
 use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
@@ -23,9 +26,18 @@ class InventoryController extends Controller
         ->with('success', 'Drug price updated successfully');
 }
 
-public function nearExpiry(){
-    return view('expiry.expiry-alert');
-}
+    public function nearExpiry(){
+        $oneMonthLater = now()->addMonth();
+        
+        $expiringDrugs = StockEntry::with('drug')
+            ->where('expiry_date', '<=', $oneMonthLater)
+            ->where('quantity', '>', 0)
+            ->orderBy('expiry_date', 'asc')
+            ->get();
+        
+        return view('expiry.expiry-alert', compact('expiringDrugs'));
+    }
+
 
 }
 
