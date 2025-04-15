@@ -74,13 +74,15 @@
                             <td class="text-center">
                               <span class="badge badge-sm bg-gradient-warning">{{ $daysExpired }} days</span>
                             </td>
-                            <td class="text-center">
-                              <form action="{{ route('dispose.drug', $stock->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to dispose of this drug?');">
-                                @csrf
-                                <button type="submit" class="badge badge-sm bg-gradient-danger" style="margin-top = 5px">
-                                  <i class="fas fa-trash-alt me-1"></i> Dispose
-                                </button>
-                              </form>
+                            <td class="text-center p-0">
+                                <div class="d-flex justify-content-center align-items-center" style="height: 100%; margin-top:15px">
+                                  <form action="{{ route('dispose.drug', $stock->id) }}" method="POST" id="dispose-form-{{ $stock->id }}">
+                                    @csrf
+                                    <button type="button" class="badge badge-sm bg-gradient-danger dispose-btn" data-id="{{ $stock->id }}">
+                                      <i class="fas fa-trash-alt me-1"></i> Dispose
+                                    </button>
+                                  </form>
+                                </div>
                             </td>
                           </tr>
                         @endforeach
@@ -102,4 +104,33 @@
         </div>
       @include('layouts.footers.auth.footer')
     </div>
+    @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const disposeBtns = document.querySelectorAll('.dispose-btn');
+            
+            disposeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const stockId = this.getAttribute('data-id');
+                    
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Are you sure you want to dispose of this drug?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, dispose it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('dispose-form-' + stockId).submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    @endpush
+
   @endsection
