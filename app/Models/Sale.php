@@ -12,7 +12,8 @@ class Sale extends Model
     protected $fillable = [
         'drug_id',
         'quantity',
-        'total_price'
+        'total_price',
+        'customer_name'
     ];
 
     public function drug()
