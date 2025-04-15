@@ -163,4 +163,8 @@ Route::group(['middleware' => 'auth'], function () {
 //     Route::get('/change-password', [ChangePassword::class, 'show'])->name('change-password');
 //     Route::post('/change-password', [ChangePassword::class, 'update'])->name('change.perform');
 // });
+Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'dashboard'])->name('medical-assistant.dashboard');
+//use App\Http\Controllers\MedicalAssistantController;
+
+Route::get('/drugs/search', [MedicalAssistantController::class, 'searchDrugs'])->name('drugs.search');
 ?>
