@@ -35,21 +35,25 @@
     }
     
     .finance-icon {
-      font-size: 2.5rem;
+      font-size: 1rem;
       opacity: 0.8;
     }
     
     .finance-value {
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: 700;
     }
     
     .finance-label {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+    .expenses-card {
+  background: linear-gradient(45deg, #fa709a, #fee140);
+}
+
   </style>
   
   @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
@@ -59,72 +63,98 @@
       <div class="container-fluid py-4">
           <!-- Financial Summary Cards -->
           <div class="row mb-4">
-              <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
-                  <div class="card finance-card revenue-card text-white">
-                      <div class="card-body p-4">
-                          <div class="row">
-                              <div class="col-8">
-                                  <div class="numbers">
-                                      <p class="finance-label mb-0">Total Revenue</p>
-                                      <h5 class="finance-value mb-0">
-                                          UGX {{ number_format($totalRevenue, 2) }}
-                                      </h5>
-                                  </div>
-                              </div>
-                              <div class="col-4 text-end">
-                                  <div class="finance-icon">
-                                      <i class="ni ni-money-coins"></i>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              
-              <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
-                  <div class="card finance-card cost-card text-white">
-                      <div class="card-body p-4">
-                          <div class="row">
-                              <div class="col-8">
-                                  <div class="numbers">
-                                      <p class="finance-label mb-0">Cost of Goods</p>
-                                      <h5 class="finance-value mb-0">
-                                          UGX {{ number_format($costOfGoods, 2) }}
-                                      </h5>
-                                  </div>
-                              </div>
-                              <div class="col-4 text-end">
-                                  <div class="finance-icon">
-                                      <i class="ni ni-cart"></i>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              
-              <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
-                  <div class="card finance-card profit-card text-white">
-                      <div class="card-body p-4">
-                          <div class="row">
-                              <div class="col-8">
-                                  <div class="numbers">
-                                      <p class="finance-label mb-0">Total Profit</p>
-                                      <h5 class="finance-value mb-0">
-                                          UGX {{ number_format($profit, 2) }}
-                                      </h5>
-                                  </div>
-                              </div>
-                              <div class="col-4 text-end">
-                                  <div class="finance-icon">
-                                      <i class="ni ni-chart-bar-32"></i>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                    <div class="card finance-card revenue-card text-white">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="finance-label mb-0">Total Revenue</p>
+                                        <h5 class="finance-value mb-0">
+                                            UGX {{ number_format($totalRevenue) }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="finance-icon">
+                                        <i class="ni ni-money-coins"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                    <div class="card finance-card cost-card text-white">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="finance-label mb-0">Cost of Goods</p>
+                                        <h5 class="finance-value mb-0">
+                                            UGX {{ number_format($costOfGoods) }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="finance-icon">
+                                        <i class="ni ni-cart"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                    <div class="card finance-card expenses-card text-white">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="finance-label mb-0">Disposed Drugs Losses</p>
+                                        <h5 class="finance-value mb-0">
+                                            UGX {{ number_format($disposedDrugsLosses ?? 0) }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="finance-icon">
+                                        <i class="ni ni-basket"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                    <div class="card finance-card profit-card text-white">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="finance-label mb-0">Total </p>
+                                        <p class="finance-label mb-0"> Profit</p>
+                                        <h5 class="finance-value mb-0">
+                                            UGX {{ number_format($profit) }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div class="finance-icon">
+                                        <i class="ni ni-chart-bar-32"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
           
           <!-- Financial Charts -->
           <div class="row">
