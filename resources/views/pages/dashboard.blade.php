@@ -12,7 +12,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Daily Revenue</p>
                                     <h5 class="font-weight-bolder">
-                                    UGX {{ number_format($todayRevenue ?? 0, 2) }}
+                                    UGX {{ number_format($todayRevenue) }}
                                     </h5>
                                     <p class="mb-0">
                                     {{ \Carbon\Carbon::today()->toFormattedDateString() }}
@@ -60,7 +60,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Expired Drugs</p>
                                     <h5 class="font-weight-bolder">
-                                    {{ number_format($monthlyExpiredDrugs) }}
+                                    UGX {{ number_format($monthlyExpiredDrugs) }}
                                     </h5>
                                     <p class="mb-0">
                                     {{ \Carbon\Carbon::now()->startOfMonth()->format('M Y') }}
@@ -84,7 +84,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">MONTHLY SALES</p>
                                     <h5 class="font-weight-bolder">
-                                    {{ number_format($monthlySales) }}
+                                    UGX {{ number_format($monthlySales) }}
                                     </h5>
                                     <p class="mb-0">
                                     {{ \Carbon\Carbon::now()->startOfMonth()->format('M Y') }}
@@ -432,16 +432,26 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-    grid: {
+                        title: {
+            display: true,
+            text: 'Amount (UGX)',
+            color: '#666',
+            font: {
+                size: 14,
+                weight: 'bold',
+                family: 'Open Sans'
+                }
+            },
+        grid: {
         drawBorder: false,
         display: true,
         drawOnChartArea: true,
         drawTicks: false,
         borderDash: [5, 5]
-    },
-    ticks: {
+        },
+        ticks: {
         callback: function(value) {
-            return 'UGX ' + value;
+            return value;
         },
         display: true,
         padding: 10,
@@ -455,6 +465,16 @@
     }
 },
                     x: {
+                        title: {
+            display: true,
+            text: 'Date',
+            color: '#666',
+            font: {
+                size: 14,
+                weight: 'bold',
+                family: 'Open Sans'
+            }
+        },
                         grid: {
                             drawBorder: false,
                             display: false,
@@ -465,13 +485,15 @@
                         ticks: {
                             display: true,
                             color: '#ccc',
-                            padding: 20,
+                            padding: 10,
                             font: {
                                 size: 11,
                                 family: "Open Sans",
                                 style: 'normal',
                                 lineHeight: 2
                             },
+                            maxRotation: 90,
+                            minRotation: 45
                         }
                     },
                 },

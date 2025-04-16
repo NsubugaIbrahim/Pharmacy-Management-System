@@ -44,7 +44,6 @@ class HomeController extends Controller
                     ->orderBy('date')
                     ->get();
 
-    // Prepare chart data
     $daysInMonth = $startOfMonth->daysInMonth;
     $labels = [];
     $totals = [];
@@ -61,7 +60,7 @@ class HomeController extends Controller
                         ->count('customer_name');
 
     $monthlyExpiredDrugs = Inventory::where('expiry_date', '<', Carbon::now())
-                        ->count('drug_id');
+                        ->sum('selling_price');
 
     $monthlySales = Sale::where('created_at', '>=', Carbon::now()->startOfMonth())
                     ->sum('total_price');
