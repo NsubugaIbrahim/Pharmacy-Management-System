@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Sale;
 use App\Models\StockEntry;
 use App\Models\DisposedDrugs;
@@ -57,11 +58,24 @@ class AdminController extends Controller
                             ->where('year', $data->year)
                             ->first();
         $costAmount = $cost ? $cost->costs : 0;
+        
+        // Find matching disposed drugs losses for this month using a modified version of calculateTotalLosses
+        $disposedLosses = DB::table('disposed_drugs')
+            ->leftJoin(DB::raw('(SELECT drug_id, MAX(selling_price) as max_price FROM inventories GROUP BY drug_id) as inv'), 
+                  'disposed_drugs.drug_id', '=', 'inv.drug_id')
+            ->whereRaw('MONTH(disposed_drugs.created_at) = ? AND YEAR(disposed_drugs.created_at) = ?', [$data->month, $data->year])
+            ->selectRaw('SUM(disposed_drugs.quantity * COALESCE(inv.max_price, 0)) as total_losses')
+            ->value('total_losses') ?? 0;
+        
+        // Add disposed drugs losses to the cost amount
+        $costAmount += $disposedLosses;
         $costData[] = $costAmount;
         
-        // Calculate monthly profit
+        // Calculate monthly profit (now including disposed drugs losses)
         $profitData[] = $data->revenue - $costAmount;
     }
+
+
     
     return view('admin.finances', compact(
         'totalRevenue', 

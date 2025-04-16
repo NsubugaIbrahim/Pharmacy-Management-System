@@ -35,7 +35,7 @@
     }
     
     .finance-icon {
-      font-size: 1rem;
+      font-size: 1.5rem;
       opacity: 0.8;
     }
     
@@ -137,7 +137,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="finance-label mb-0">Total </p>
+                                        <p class="finance-label mb-0">Gross </p>
                                         <p class="finance-label mb-0"> Profit</p>
                                         <h5 class="finance-value mb-0">
                                             UGX {{ number_format($profit) }}
@@ -187,7 +187,7 @@
                                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Period</th>
                                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Revenue</th>
                                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cost</th>
-                                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Profit</th>
+                                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Gross Profit</th>
                                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Margin %</th>
                                       </tr>
                                   </thead>
@@ -201,14 +201,15 @@
                                                   </div>
                                               </div>
                                           </td>
+                                         
                                           <td>
-                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($revenueData[$index], 2) }}</p>
+                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($revenueData[$index]) }}</p>
                                           </td>
                                           <td>
-                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($costData[$index], 2) }}</p>
+                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($costData[$index]) }}</p>
                                           </td>
                                           <td>
-                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($profitData[$index], 2) }}</p>
+                                              <p class="text-xs font-weight-bold mb-0">UGX {{ number_format($profitData[$index]) }}</p>
                                           </td>
                                           <td>
                                               @php
@@ -241,83 +242,91 @@
       @push('js')
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
-          document.addEventListener("DOMContentLoaded", function() {
-              var ctx = document.getElementById('financial-chart').getContext('2d');
-              
-              var labels = @json($labels);
-              var revenueData = @json($revenueData);
-              var costData = @json($costData);
-              var profitData = @json($profitData);
-              
-              var chart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: labels,
-                      datasets: [
-                          {
-                              label: 'Revenue',
-                              data: revenueData,
-                              backgroundColor: 'rgba(66, 135, 245, 0.7)',
-                              borderColor: 'rgba(66, 135, 245, 1)',
-                              borderWidth: 1
-                          },
-                          {
-                              label: 'Cost',
-                              data: costData,
-                              backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                              borderColor: 'rgba(255, 99, 132, 1)',
-                              borderWidth: 1
-                          },
-                          {
-                              label: 'Profit',
-                              data: profitData,
-                              backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                              borderColor: 'rgba(75, 192, 192, 1)',
-                              borderWidth: 1,
-                              type: 'line',
-                              fill: false,
-                              tension: 0.4
-                          }
-                      ]
-                  },
-                  options: {
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                          y: {
-                              beginAtZero: true,
-                              grid: {
-                                  drawBorder: false,
-                                  color: 'rgba(0, 0, 0, 0.1)'
-                              },
-                              ticks: {
-                                  callback: function(value) {
-                                      return 'UGX ' + value.toLocaleString();
-                                  }
-                              }
-                          },
-                          x: {
-                              grid: {
-                                  drawBorder: false,
-                                  color: 'rgba(0, 0, 0, 0.1)'
-                              }
-                          }
-                      },
-                      plugins: {
-                          legend: {
-                              position: 'top',
-                          },
-                          tooltip: {
-                              callbacks: {
-                                  label: function(context) {
-                                      return context.dataset.label + ': UGX ' + context.raw.toLocaleString();
-                                  }
-                              }
-                          }
-                      }
-                  }
-              });
-          });
-      </script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('financial-chart').getContext('2d');
+            
+            var labels = @json($labels);
+            var revenueData = @json($revenueData);
+            var costData = @json($costData);
+            var profitData = @json($profitData);
+            
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Revenue',
+                            data: revenueData,
+                            backgroundColor: 'rgba(66, 135, 245, 0.7)',
+                            borderColor: 'rgba(66, 135, 245, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Cost',
+                            data: costData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Profit',
+                            data: profitData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            // Remove the type: 'line' to make it a bar chart like the others
+                            // type: 'line',
+                            // Remove fill: false as it's not needed for bar charts
+                            // fill: false,
+                            // Remove tension as it's not needed for bar charts
+                            // tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return 'UGX ' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': UGX ' + context.raw.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    // Add barPercentage to control the width of the bars
+                    barPercentage: 0.8,
+                    // Add categoryPercentage to ensure equal spacing between groups
+                    categoryPercentage: 0.9
+                }
+            });
+        });
+    </script>
+
       @endpush
   @endsection
