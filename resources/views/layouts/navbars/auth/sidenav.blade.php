@@ -132,7 +132,11 @@
                     <span class="nav-link-text ms-1">Expiry Management</span>
                     <i class="ni ni-bold-down ms-auto arrow-icon"></i>
                 </a>
-                <ul class="collapse submenu {{ Route::currentRouteName() == 'near.expiry' ? 'show' : '' }}" id="expirySubmenu">
+
+                @php
+                    $expiryRoutes = ['near.expiry', 'expired.drugs', 'disposed.drugs'];
+                @endphp
+                <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $expiryRoutes) ? 'show' : '' }}" id="expirySubmenu">
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'near.expiry' ? 'active' : '' }}" href="{{ route('near.expiry') }}">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
