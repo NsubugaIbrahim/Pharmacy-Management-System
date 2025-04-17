@@ -39,6 +39,10 @@
 
     <!-- Order Form Fragment -->
     <div id="order-form" style="display: none;">
+    <div style="margin-bottom: 20px;">
+        <label for="customer_name"><strong>Customer Name:</strong></label>
+        <input type="text" id="customer_name" name="customer_name" required placeholder="Enter Customer Name">
+    </div>
         <table boarder="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px;">
         <thead style="background-color: rgb(230, 235, 240); color: black; font-weight: bold;">
         <tr>
@@ -66,7 +70,7 @@
 
         <h4 style="margin-top: 20px;">Total Amount: <span id="total-amount">0.00</span></h4>
         <button 
-    type="submit" 
+    type="button" 
     style="
         background-color: lightgreen; 
         color: white; 
@@ -78,6 +82,8 @@
     "
     onmouseover="this.style.backgroundColor='green';"
     onmouseout="this.style.backgroundColor='lightgreen';"
+    class="btn btn-success"
+    id="saveOrderBtn"
 >
     💾 Save Order
 </button>
@@ -86,6 +92,7 @@
 
 <!-- Inline Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function calculateAmount(elem) {
         const row = elem.parentElement.parentElement;
@@ -182,6 +189,54 @@ $(document).on('click', '.suggestion-item', function() {
     });
 });
 
+//on click of save button
+document.getElementById('saveOrderBtn').addEventListener('click', function() {
+
+// Gather form data
+let customerName = document.querySelector('[name="customer_name"]').value;
+let drugNames = document.querySelectorAll('[name="drug_name[]"]');
+let quantities = document.querySelectorAll('[name="quantity[]"]');
+let unitPrices = document.querySelectorAll('[name="unit_price[]"]');
+let amounts = document.querySelectorAll('[name="amount[]"]');
+
+let data = {
+    customer_name: customerName,
+    drugs: []
+};
+
+drugNames.forEach((input, index) => {
+    data.drugs.push({
+        name: input.value,
+        quantity: quantities[index].value,
+        unit_price: unitPrices[index].value,
+        amount: amounts[index].value
+    });
+});
+
+fetch("{{ route('medical-assistant.storeOrder') }}", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    },
+    body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => {
+    if(result.success) {
+        alert("Thank you! Order saved successfully.");
+        window.location.href = "/medical-assistant/dashboard";
+    } else {
+        alert("Failed to save order. " + (result.message || 'Check inputs.'));
+    }
+})
+.catch(error => {
+    alert("Error! Something went wrong.");
+    console.error(error);
+});
+});
+ 
+
 </script>
 <style>
 .suggestion-box {
@@ -200,4 +255,13 @@ $(document).on('click', '.suggestion-item', function() {
     background: #f0f0f0;
 }
 </style>
+
+<!-- @if(session('success'))
+<script>
+    alert('Thank you for your order!');
+    window.location.href = "{{ route('medical-assistant.dashboard') }}";
+</script>
+@endif -->
+
+
 @endsection

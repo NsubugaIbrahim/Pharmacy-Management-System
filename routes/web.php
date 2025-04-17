@@ -168,4 +168,8 @@ Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, '
 
 Route::get('/drugs/search', [MedicalAssistantController::class, 'searchDrugs'])->name('drugs.search');
 Route::get('/drugs/get-price', [MedicalAssistantController::class, 'getDrugPrice'])->name('drugs.getPrice');
+Route::post('/medical-assistant/store-order', [MedicalAssistantController::class, 'storeOrder'])
+    ->name('medical-assistant.storeOrder');
+
+  
 ?>
