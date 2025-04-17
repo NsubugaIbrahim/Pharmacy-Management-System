@@ -64,22 +64,23 @@
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Unit Price (UGX)</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Cost (UGX)</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
                               </tr>
                             </thead>
                             <tbody>
-                              @forelse($stockOrders as $order)
+                              @forelse($order->orderItems as $item)
                               <tr data-bs-toggle="modal" data-bs-target="#orderDetailsModal{{ $order->id }}">
                                 <td class="text-center">
-                                  <p class="text-xs font-weight-bold mb-0">{{ $order->id }}</p>
+                                  <p class="text-xs font-weight-bold mb-0">{{ $item->drug->name }}</p>
                                 </td>
                                 <td class="text-center">
-                                  <p class="text-xs font-weight-bold mb-0">{{ $order->date }}</p>
+                                  <p class="text-xs font-weight-bold mb-0">{{ $item->quantity }}</p>
                                 </td>
                                 <td class="text-center">
-                                  <p class="text-xs font-weight-bold mb-0">{{ number_format($order->total) }}</p>
+                                  <p class="text-xs font-weight-bold mb-0">{{ number_format($item->price) }}</p>
                                 </td>
                                 <td class="text-center">
-                                  <p class="text-xs font-weight-bold mb-0">{{ $order->supplier->name }}</p>
+                                  <p class="text-xs font-weight-bold mb-0">{{$item->quantity * $item->price}}</p>
                                 </td>   
                                 <td class="text-center">
                                   @if($order->reception)

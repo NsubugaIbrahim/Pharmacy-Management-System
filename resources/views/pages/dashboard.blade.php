@@ -152,8 +152,10 @@
                                                         <td class="align-middle text-center text-sm ">
                                                             @if($drug->total_quantity <= 0)
                                                                 <span class="badge badge-sm bg-gradient-danger">Out of Stock</span>
-                                                            @elseif($drug->total_quantity < 5)
+                                                            @elseif($drug->total_quantity < 50)
                                                                 <span class="badge badge-sm bg-gradient-warning">Low Stock</span>
+                                                            @else
+                                                                <span class="badge badge-sm bg-gradient-success">In Stock</span>
                                                             @endif
                                                         </td>
                                                     </tr>
