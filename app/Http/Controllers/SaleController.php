@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
+
+    public function show()
+{
+    $sales = Sale::with('drug')->latest()->get(); // eager load related drug data
+    return view('sales.show', compact('sales'));
+}
     public function index(Request $request)
     {
         $drugs = Drug::all();
