@@ -145,12 +145,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
+
+	
 });
 
-	//Search feature
-	Route::get('/api/search', [SearchController::class, 'search']);
+//Search feature
+Route::get('/api/search', [SearchController::class, 'search']);
 
-
+	
 //create auth group for all routes that require authentication
 // Route::group(['middleware' => 'auth'], function () {
 //     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
