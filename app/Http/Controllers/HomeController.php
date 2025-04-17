@@ -95,7 +95,26 @@ class HomeController extends Controller
                     ->limit(5) // Show only 5 expired drugs
                     ->get();
 
-    return view('pages.dashboard', compact('todayRevenue', 'labels', 'totals', 'weeklyPatients', 'monthlyExpiredDrugs','monthlySales', 'topSellingDrugs', 'expiredDrugs'));
+    $soonExpiringDrugs = Inventory::whereBetween('expiry_date', [
+                        Carbon::now(), 
+                        Carbon::now()->addMonth()
+                    ])
+                    ->with('drug') // Eager load the drug relationship
+                    ->orderBy('expiry_date')
+                    ->limit(4) // Show only 5 drugs
+                    ->get();
+                
+                    $lowStockDrugs = DB::table('inventories')
+    ->join('drugs', 'inventories.drug_id', '=', 'drugs.id')
+    ->select('inventories.drug_id', 'drugs.name as drug_name', DB::raw('SUM(inventories.quantity) as total_quantity'))
+    ->groupBy('inventories.drug_id', 'drugs.name')
+    ->orderBy('total_quantity', 'asc')
+    ->limit(5)
+    ->get();
+
+                
+                
+    return view('pages.dashboard', compact('todayRevenue', 'labels', 'totals', 'weeklyPatients', 'monthlyExpiredDrugs','monthlySales', 'topSellingDrugs', 'expiredDrugs', 'soonExpiringDrugs', 'lowStockDrugs'));
 }
 
 }

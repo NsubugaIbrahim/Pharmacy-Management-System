@@ -39,7 +39,7 @@
                                     {{ number_format($weeklyPatients) }}
                                     </h5>
                                     <p class="mb-0">
-                                    {{ \Carbon\Carbon::now()->startOfWeek()->format('M d') }} - {{ \Carbon\Carbon::now()->endOfWeek()->format('M d, Y') }}
+                                    {{ Carbon\Carbon::now()->startOfWeek()->format('M d') }} - {{ \Carbon\Carbon::now()->endOfWeek()->format('M d, Y') }}
                                     </p>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                                     {{ number_format($monthlySales) }}
                                     </h5>
                                     <p class="mb-0">
-                                    {{ \Carbon\Carbon::now()->startOfMonth()->format('M Y') }}
+                                    {{ Carbon\Carbon::now()->startOfMonth()->format('M Y') }}
                                     </p>
                                 </div>
                             </div>
@@ -100,6 +100,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
         <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
@@ -118,35 +119,140 @@
                 <div class="card card-carousel overflow-hidden h-100 p-0">
                     <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
                         <div class="carousel-inner border-radius-lg h-100">
-                            <div class="carousel-item h-100 active" style="background-image: url('./img/carousel-1.jpg');
+                            <div class="carousel-item h-100 active" style="background-image: url('{{ asset('img/pham3.jpg') }}');
             background-size: cover;">
                                 <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
                                     <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
-                                        <i class="ni ni-camera-compact text-dark opacity-10"></i>
+                                        <i class="ni ni-bulb-61 text-dark opacity-10"></i>
                                     </div>
+                                    
                                     <h5 class="text-white mb-1">Least stock by drug</h5>
-                                    <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
+                                    <div class="table-responsive">
+                                        <table class="table align-items-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7">Drug Name</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($lowStockDrugs as $drug)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex px-2 py-1">
+                                                                <div class="d-flex flex-column justify-content-center">
+                                                                    <h6 class="mb-0 text-sm text-white">{{ $drug->drug_name }}</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-xs font-weight-bold mb-0 text-white">{{ $drug->total_quantity }}</p>
+                                                        </td>
+                                                        <td class="align-middle text-center text-sm ">
+                                                            @if($drug->total_quantity <= 0)
+                                                                <span class="badge badge-sm bg-gradient-danger">Out of Stock</span>
+                                                            @elseif($drug->total_quantity < 5)
+                                                                <span class="badge badge-sm bg-gradient-warning">Low Stock</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">
+                                                            <p class="text-xs font-weight-bold mb-0 text-white">No drugs with low stock found</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    
                                 </div>
                             </div>
-                            <div class="carousel-item h-100" style="background-image: url('./img/carousel-2.jpg');
+                            <div class="carousel-item h-100" style="background-image: url('{{ asset('img/pham2.jpg') }}');
             background-size: cover;">
                                 <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
                                     <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
                                         <i class="ni ni-bulb-61 text-dark opacity-10"></i>
                                     </div>
                                     <h5 class="text-white mb-1">Closest expiry dates by drug</h5>
-                                    <p>That’s my skill. I’m not really specifically talented at anything except for the
-                                        ability to learn.</p>
+                                    <div class="table-responsive">
+                                        <table class="table align-items-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7">Drug</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Expiry Date</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Days Left</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                                                    <th class="text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($soonExpiringDrugs as $inventory)
+                                                @php
+                                                    $daysLeft = Carbon\Carbon::now()->diffInDays($inventory->expiry_date, false);
+                                                    $statusClass = $daysLeft < 7 ? 'bg-gradient-danger' : ($daysLeft < 14 ? 'bg-gradient-warning' : 'bg-gradient-info');
+                                                @endphp
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex px-2 py-1">
+                                                            
+                                                            <div class="d-flex flex-column justify-content-center">
+                                                                <h6 class="mb-0 text-sm text-white">{{ $inventory->drug->name }}</h6>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0 text-white">{{ Carbon\Carbon::parse($inventory->expiry_date)->format('M d, Y') }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0 text-white">{{ $daysLeft }} days</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-xs font-weight-bold mb-0">{{ $inventory->quantity }}</p>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="badge badge-sm {{ $statusClass }}">
+                                                            @if($daysLeft < 7)
+                                                                Critical
+                                                            @elseif($daysLeft < 14)
+                                                                Warning
+                                                            @else
+                                                                Expiring Soon
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <p class="text-sm mb-0">No drugs expiring within the next month</p>
+                                                    </td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        
+                                        @if(count($soonExpiringDrugs) > 0)
+                                        <div class="text-center mt-3">
+                                            <a href="{{ route('near.expiry') }}" class="btn btn-sm btn-outline-primary">View All Soon Expiring Drugs</a>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    
+                                        
                                 </div>
                             </div>
-                            <div class="carousel-item h-100" style="background-image: url('./img/carousel-3.jpg');
+                            <div class="carousel-item h-100" style="background-image: url('{{ asset('img/pham1.jpg') }}');
             background-size: cover;">
                                 <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
                                     <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
                                         <i class="ni ni-trophy text-dark opacity-10"></i>
                                     </div>
-                                    <h5 class="text-white mb-1">Share with us your design tips!</h5>
-                                    <p>Don’t be afraid to be wrong because you can’t learn anything from a compliment.</p>
+                                    
                                 </div>
                             </div>
                         </div>
