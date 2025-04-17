@@ -1,10 +1,8 @@
-@extends('layouts.app')
-
-@section('title', 'Medical Assistant Dashboard')
+@extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-<div style="margin-top: 120px;">
-<div class ="container-fluid py-4">
+@include('layouts.navbars.auth.topnav', ['title' => 'Medical Assistant Dashboard'])
+<div class="container-fluid py-4">
     <div class="row">
             <div class="col-12 mx-auto">
             <div class="card mb-4">

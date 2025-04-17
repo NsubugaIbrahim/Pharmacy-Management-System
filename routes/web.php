@@ -30,6 +30,9 @@
 	use App\Http\Controllers\StockController;
 	use App\Http\Controllers\RoleController;
 	use App\Http\Controllers\SaleController;
+	use App\Http\Controllers\SearchController;
+	use App\Http\Controllers\InventoryController;
+	use App\Http\Controllers\UserController;
 
 	Route::get('/', function () {return view('auth.login');});
 	Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -97,15 +100,18 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
 
 	//Inventory
-	Route::put('/inventory/{id}/update-price', [App\Http\Controllers\InventoryController::class, 'updatePrice'])->name('inventory.update-price');
+	Route::put('/inventory/{id}/update-price', [InventoryController::class, 'updatePrice'])->name('inventory.update-price');
 
 	//Expiry
-	Route::get('/expiry-alerts', [App\Http\Controllers\InventoryController::class, 'nearExpiry'])->name('near.expiry');
-	Route::get('/expired-drugs', [App\Http\Controllers\InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
+	Route::get('/expiry-alerts', [InventoryController::class, 'nearExpiry'])->name('near.expiry');
+	Route::get('/expired-drugs', [InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
 
 	//Dispose off expired drugs
-	Route::post('/dispose-drug/{id}', [App\Http\Controllers\InventoryController::class, 'disposeDrug'])->name('dispose.drug');
-	Route::get('disposed-drugs', [App\Http\Controllers\InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
+	Route::post('/dispose-drug/{id}', [InventoryController::class, 'disposeDrug'])->name('dispose.drug');
+	Route::get('disposed-drugs', [InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
+
+	//Finances
+	Route::get('/finances', [AdminController::class, 'finances'])->name('finances');
 	
 
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
@@ -122,6 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
+	Route::get('/sales', [SaleController::class, 'show'])->name('sales.show');
 	Route::get('/sell', [SaleController::class, 'index'])->name('sales.index');
 	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
 	Route::get('/sell/report', [SaleController::class, 'report'])->name('sales.report');
@@ -132,17 +139,21 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/inventory/price/{drug_id}', [SaleController::class, 'getSellingPrice'])->name('inventory.price');
 
 	//Register new user
-	Route::get('/usermanagement', [App\Http\Controllers\UserController::class, 'index'])->name('user-management');
-	Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
-	Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-	Route::put('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-	Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+	Route::get('/usermanagement', [UserController::class, 'index'])->name('user-management');
+	Route::post('/users', [UserController::class, 'store'])->name('users.store');
+	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+	Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 	Route::get('/{page}', [PageController::class, 'index'])->name('page');
+
+	
 });
 
+//Search feature
+Route::get('/api/search', [SearchController::class, 'search']);
 
-
+	
 //create auth group for all routes that require authentication
 // Route::group(['middleware' => 'auth'], function () {
 //     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');

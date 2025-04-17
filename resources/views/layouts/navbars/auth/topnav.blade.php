@@ -1,3 +1,66 @@
+@push('css')
+<style>
+   /* Ensure the search input has enough width */
+    .navbar-search-block .input-group {
+        width: 100%; /* Make it take full width of its container */
+        min-width: 250px; /* Ensure a minimum width */
+    }
+    
+    /* Fix the container width */
+    .navbar-search-block {
+        width: auto; /* Let it grow based on content */
+        max-width: 400px; /* Maximum width - adjust as needed */
+        margin-right: 20px; /* Add some space on the right */
+    }
+    
+    /* Ensure the form control (input) isn't constrained */
+    .navbar-search-block .form-control {
+        width: 100%; /* Take full width of input-group */
+    }
+    
+    /* Fix any overflow issues */
+    #navbar {
+        overflow: visible !important; /* Ensure dropdowns aren't cut off */
+    }
+    
+    /* Rest of your existing styles */
+    #searchSuggestions .dropdown-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        white-space: normal; /* Allow text to wrap */
+    }
+    
+    
+    /* Rest of your existing styles */
+    #searchSuggestions .dropdown-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        white-space: normal; /* Allow text to wrap */
+    }
+    
+    #searchSuggestions .dropdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    #searchSuggestions .dropdown-item:hover {
+        background-color: rgba(94, 114, 228, 0.1);
+    }
+    
+    #searchSuggestions .dropdown-item i {
+        margin-right: 10px;
+        color: #5e72e4;
+    }
+    
+    #searchSuggestions .dropdown-item small {
+        display: block;
+        margin-top: 5px;
+        color: #8898aa;
+    }
+</style>
+@endpush
+
+
+
 <!-- Navbar -->
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl
         {{ str_contains(Request::url(), 'virtual-reality') == true ? ' mt-3 mx-3 bg-primary' : '' }}" id="navbarBlur"
@@ -10,14 +73,16 @@
             </ol> --}}
             <h4 class="font-weight-bolder text-white mb-0">{{ $title }}</h4>
         </nav>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2" id="navbar">
+            <div class="d-flex align-items-center navbar-search-block" style="margin-left: 300px !important;">
                 <div class="input-group">
                     <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="Type here...">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search here...">
+                    <div class="dropdown-menu" id="searchSuggestions" style="display: none; max-height: 400px; overflow-y: auto; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 10px; position: absolute; top: calc(100% + 10px); left: 0; width: 100%; z-index: 1050; width:600px;"></div>
                 </div>
             </div>
-            <ul class="navbar-nav  justify-content-end">
+            
+            <ul class="navbar-nav  justify-content-end" style="margin-left: 250px !important;">
                 <li class="nav-item d-flex align-items-center">
                     <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
                         @csrf
@@ -129,3 +194,92 @@
     </div>
 </nav>
 <!-- End Navbar -->
+
+@push('js')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    
+    if (!searchInput || !suggestionsBox) {
+        console.error("Search elements not found in the DOM");
+        return;
+    }
+    
+    console.log("Search elements initialized");
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        console.log("Search query:", query);
+        
+        if (query.length < 2) {
+            suggestionsBox.style.display = 'none';
+            return;
+        }
+        
+        // Make AJAX call to search endpoint
+        console.log("Fetching search results for:", query);
+        
+        fetch('/api/search?query=' + encodeURIComponent(query))
+            .then(response => {
+                console.log("Search response status:", response.status);
+                // Log the raw response for debugging
+                response.clone().text().then(text => {
+                    console.log("Raw response:", text);
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Server returned ' + response.status);
+                }
+                return response.json();
+            })
+            .then(results => {
+    console.log("Search results:", results);
+    
+    if (results && results.length > 0) {
+        suggestionsBox.innerHTML = '';
+        
+        results.forEach(result => {
+            // Get the query from the search input
+            const query = searchInput.value.toLowerCase();
+            
+            // Highlight the query in the context
+            let context = result.context;
+            if (context && query.length > 1) {
+                // Use a regex with 'gi' flags for global, case-insensitive matching
+                const regex = new RegExp(query, 'gi');
+                context = context.replace(regex, match => `<strong class="text-primary">${match}</strong>`);
+            }
+            
+            suggestionsBox.innerHTML += `
+                <a class="dropdown-item" href="${result.url}">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    ${result.title}
+                    <small class="text-muted ml-2">${context}</small>
+                </a>
+            `;
+        });
+        
+        suggestionsBox.style.display = 'block';
+    } else {
+        suggestionsBox.innerHTML = `
+            <span class="dropdown-item text-muted">
+                No results found for "${searchInput.value}"
+            </span>
+        `;
+        suggestionsBox.style.display = 'block';
+    }
+})
+
+    });
+    
+    // Close suggestions on click outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.navbar-search-block')) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+});
+
+</script>
+@endpush
