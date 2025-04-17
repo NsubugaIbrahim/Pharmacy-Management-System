@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Sale;
 use App\Models\StockEntry;
 use App\Models\DisposedDrugs;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        
+            return view('admin.dashboard');
     }
 
     public function finances()

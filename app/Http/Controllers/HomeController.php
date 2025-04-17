@@ -66,7 +66,36 @@ class HomeController extends Controller
     $monthlySales = Sale::where('created_at', '>=', Carbon::now()->startOfMonth())
                     ->sum('total_price');
 
-    return view('pages.dashboard', compact('todayRevenue', 'labels', 'totals', 'weeklyPatients', 'monthlyExpiredDrugs','monthlySales'));
+    // Get top 4 selling drugs by quantity
+    $topSellingDrugs = Sale::select('drug_id')
+    ->selectRaw('SUM(quantity) as total_quantity')
+    ->selectRaw('SUM(total_price) as total_revenue')
+    ->selectRaw('MAX(created_at) as latest_sale')
+    ->with('drug') // Eager load the drug relationship
+    ->groupBy('drug_id')
+    ->orderByDesc('total_quantity')
+    ->limit(4)
+    ->get();
+
+    // Format the latest_sale date
+    $topSellingDrugs->each(function ($sale) {
+        $sale->latest_sale = Carbon::parse($sale->latest_sale);
+    });
+
+    $todayRevenue = Sale::whereDate('created_at', Carbon::today())
+    ->sum('total_price');
+
+    $monthlyExpiredDrugs = Inventory::where('expiry_date', '<', Carbon::now())
+                        ->count('drug_id');
+    
+    // Add this new query to fetch expired drugs with details
+    $expiredDrugs = Inventory::where('expiry_date', '<', Carbon::now())
+                    ->with('drug') // Assuming you have a relationship set up
+                    ->orderBy('expiry_date')
+                    ->limit(5) // Show only 5 expired drugs
+                    ->get();
+
+    return view('pages.dashboard', compact('todayRevenue', 'labels', 'totals', 'weeklyPatients', 'monthlyExpiredDrugs','monthlySales', 'topSellingDrugs', 'expiredDrugs'));
 }
 
 }
