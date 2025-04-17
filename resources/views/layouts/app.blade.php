@@ -26,6 +26,7 @@
                 $route = request()->route()->getName();
                 $authRoutes = ['login', 'register'];
                 $profileRoutes = ['profile', 'profile-static'];
+                $role = auth()->user()->role->name ?? '';
             @endphp
 
             @if (in_array($route, $authRoutes))
@@ -35,7 +36,31 @@
                     <div class="min-height-300 bg-primary position-absolute w-100"></div>
                 @endif
 
-                @include('layouts.navbars.auth.sidenav')
+                {{-- Load sidebar based on user role --}}
+                @switch($role)
+                    @case('admin')
+                        @include('layouts.navbars.auth.sidebar-admin')
+                        @break
+
+                    @case('pharmacist')
+                        @include('layouts.navbars.auth.sidebar-pharmacist')
+                        @break
+
+                    @case('medical-assistant')
+                        @include('layouts.navbars.auth.sidebar-medical-assistant')
+                        @break
+
+                    @case('cashier')
+                        @include('layouts.navbars.auth.sidebar-cashier')
+                        @break
+
+                    @case('accountant')
+                        @include('layouts.navbars.auth.sidebar-accountant')
+                        @break
+
+                    @default
+                        @include('layouts.navbars.auth.sidenav') {{-- Fallback sidebar --}}
+                @endswitch
 
                 <main class="main-content border-radius-lg">
                     @yield('content')
@@ -44,6 +69,7 @@
                 @include('components.fixed-plugin')
             @endif
         @endauth
+
 
         <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
         <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
