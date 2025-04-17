@@ -27,4 +27,9 @@ class StockOrder extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(StockEntry::class, 'restock_id');
+    }
 }
