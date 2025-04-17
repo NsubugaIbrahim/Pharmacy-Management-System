@@ -48,7 +48,8 @@
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('home') }}" target="_blank">
             <img src={{ asset('img/life.png') }} class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">{{ env('APP_NAME') }} Accountant</span>
+            <span class="ms-1 font-weight-bold">{{ env('APP_NAME') }}</span><br>
+            <span class="ms-1 font-weight-bold align-items-center">Accountant</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -63,104 +64,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" href="#stockSubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" aria-controls="stockSubmenu">
+                <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
+                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Stock Management</span>
-                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
-
+                    <span class="nav-link-text ms-1">Pending Stock Orders</span>
                 </a>
-                @php
-                    $stockRoutes = ['stock.index', 'stock.view', 'approve.stock.orders', 'receive.stock'];
-                @endphp
-
-                <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $stockRoutes) ? 'show' : '' }}" id="stockSubmenu">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Order New Stock</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
-                            <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Pending Stock Orders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
-                            <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Receive Stock</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Stock History</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" 
-                   href="#inventorySubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" aria-controls="inventorySubmenu">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-calendar-grid-58 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Inventory Management</span>
-                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
-                </a>
-                <ul class="collapse submenu {{ Route::currentRouteName() == 'stock.show' ? 'show' : '' }}" id="inventorySubmenu">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.show' ? 'active' : '' }}" href="{{ route('stock.show') }}">
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-calendar-grid-58 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Inventory</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'near.expiry' ? 'active' : 'collapsed' }}" 
-                   href="#expirySubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'near.expiry' ? 'true' : 'false' }}" aria-controls="expirySubmenu">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Expiry Management</span>
-                    <i class="ni ni-bold-down ms-auto arrow-icon"></i>
-                </a>
-
-                @php
-                    $expiryRoutes = ['near.expiry', 'expired.drugs', 'disposed.drugs'];
-                @endphp
-                <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $expiryRoutes) ? 'show' : '' }}" id="expirySubmenu">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'near.expiry' ? 'active' : '' }}" href="{{ route('near.expiry') }}">
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Expiry Alerts</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'expired.drugs' ? 'active' : '' }}" href="{{ route('expired.drugs') }}">
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Expired Drugs</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'disposed.drugs' ? 'active' : '' }}" href="{{ route('disposed.drugs') }}">
-                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Disposed Drugs</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'finances' ? 'active' : '' }}" href="{{ route('finances') }}">
@@ -171,53 +80,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Drugs</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'suppliers.index' ? 'active' : '' }}" href="{{ route('suppliers.index') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Supplier</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'sales.index' ? 'active' : '' }}" href="{{ route('sales.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sell</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'sales.show' ? 'active' : '' }}" href="{{ route('sales.show') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Sales</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'roles.index' ? 'active' : '' }}" href="{{ route('roles.index') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-circle-08 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Roles</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}" href="{{ route('user-management') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Management</span>
                 </a>
             </li>
             <li class="nav-item">

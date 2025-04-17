@@ -48,7 +48,8 @@
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('admin.dashboard') }}" target="_blank">
             <img src={{ asset('img/life.png') }} class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">{{ env('APP_NAME') }} Admin</span>
+            <span class="ms-1 font-weight-bold">{{ env('APP_NAME') }}</span><br>
+            <span class="ms-1 font-weight-bold align-items-center">Administrator</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -72,28 +73,10 @@
 
                 </a>
                 @php
-                    $stockRoutes = ['stock.index', 'stock.view', 'approve.stock.orders', 'receive.stock'];
+                    $stockRoutes = ['stock.view'];
                 @endphp
 
                 <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $stockRoutes) ? 'show' : '' }}" id="stockSubmenu">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Order New Stock</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'approve.stock.orders' ? 'active' : '' }}" href="{{ route('approve.stock.orders') }}">
-                            <i class="ni ni-single-02 text-success text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Pending Stock Orders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
-                            <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
-                            <span class="nav-link-text ms-1">Receive Stock</span>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
                             <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
@@ -184,15 +167,6 @@
                         <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Supplier</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'sales.index' ? 'active' : '' }}" href="{{ route('sales.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sell</span>
                 </a>
             </li>
             <li class="nav-item">
