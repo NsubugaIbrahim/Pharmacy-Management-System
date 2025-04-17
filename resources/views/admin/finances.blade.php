@@ -61,7 +61,6 @@
   @section('content')
       @include('layouts.navbars.auth.topnav', ['title' => 'Financial Dashboard'])
       <div class="container-fluid py-4">
-          <!-- Financial Summary Cards -->
           <div class="row mb-4">
             <div class="row mb-4">
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
@@ -85,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                     <div class="card finance-card cost-card text-white">
                         <div class="card-body p-4">
@@ -107,14 +105,13 @@
                         </div>
                     </div>
                 </div>
-            
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                     <div class="card finance-card expenses-card text-white">
                         <div class="card-body p-4">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="finance-label mb-0">Disposed Drugs Losses</p>
+                                        <p class="finance-label mb-0">Drugs Losses</p>
                                         <h5 class="finance-value mb-0">
                                             UGX {{ number_format($disposedDrugsLosses ?? 0) }}
                                         </h5>
@@ -129,16 +126,13 @@
                         </div>
                     </div>
                 </div>
-                
-                
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                     <div class="card finance-card profit-card text-white">
                         <div class="card-body p-4">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
-                                        <p class="finance-label mb-0">Gross </p>
-                                        <p class="finance-label mb-0"> Profit</p>
+                                        <p class="finance-label mb-0">Gross Profit</p>
                                         <h5 class="finance-value mb-0">
                                             UGX {{ number_format($profit) }}
                                         </h5>
@@ -154,8 +148,6 @@
                     </div>
                 </div>
             </div>
-            
-          
           <!-- Financial Charts -->
           <div class="row">
               <div class="col-12">
@@ -171,7 +163,6 @@
                   </div>
               </div>
           </div>
-          
           <!-- Profit Margin Analysis -->
           <div class="row">
               <div class="col-12">

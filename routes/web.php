@@ -128,6 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
+	Route::get('/sales', [SaleController::class, 'show'])->name('sales.show');
 	Route::get('/sell', [SaleController::class, 'index'])->name('sales.index');
 	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
 	Route::get('/sell/report', [SaleController::class, 'report'])->name('sales.report');

@@ -7,15 +7,52 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Sale;
 use App\Models\StockEntry;
 use App\Models\DisposedDrugs;
-use Carbon\Carbon;
+use App\Models\Inventory;
+use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
 {
     public function index()
-    {
-        
-            return view('admin.dashboard');
+{
+    $todayRevenue = Sale::whereDate('created_at', Carbon::today())
+                        ->sum('total_price');
+
+    $startOfMonth = Carbon::now()->startOfMonth();
+    $endOfMonth = Carbon::now()->endOfMonth();
+
+    $dailySales = Sale::select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('SUM(total_price) as total')
+                    )
+                    ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+                    ->groupBy('date')
+                    ->orderBy('date')
+                    ->get();
+
+    // Prepare chart data
+    $daysInMonth = $startOfMonth->daysInMonth;
+    $labels = [];
+    $totals = [];
+
+    for ($i = 1; $i <= $daysInMonth; $i++) {
+        $date = Carbon::createFromDate(null, null, $i)->format('Y-m-d');
+        $labels[] = Carbon::createFromDate(null, null, $i)->format('d M');
+        $daySale = $dailySales->firstWhere('date', $date);
+        $totals[] = $daySale ? $daySale->total : 0;
     }
+
+    $weeklyPatients = Sale::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                        ->distinct('customer_name')
+                        ->count('customer_name');
+
+    $monthlyExpiredDrugs = Inventory::where('expiry_date', '<', Carbon::now())
+                        ->count('drug_id');
+
+    $monthlySales = Sale::where('created_at', '>=', Carbon::now()->startOfMonth())
+                    ->sum('total_price');
+
+    return view('admin.dashboard', compact('todayRevenue', 'labels', 'totals', 'weeklyPatients', 'monthlyExpiredDrugs','monthlySales'));
+}
 
     public function finances()
 {

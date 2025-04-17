@@ -12,7 +12,7 @@
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Daily Revenue</p>
                                     <h5 class="font-weight-bolder">
-                                    UGX {{ number_format($todayRevenue ?? 0, 2) }}
+                                    UGX {{ number_format($todayRevenue ?? 0, 0) }}
                                     </h5>
                                     <p class="mb-0">
                                     {{ \Carbon\Carbon::today()->toFormattedDateString() }}
@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Weekly Patients</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Weekly Customers</p>
                                     <h5 class="font-weight-bolder">
                                     {{ number_format($weeklyPatients) }}
                                     </h5>
