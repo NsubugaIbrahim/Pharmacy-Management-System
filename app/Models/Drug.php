@@ -33,6 +33,9 @@ public function inventoryItems()
     return $this->hasMany(Inventory::class);
 }
 
+public function inventory(){
+    return $this->hasOne(Inventory::class);
+}
     
     
 }

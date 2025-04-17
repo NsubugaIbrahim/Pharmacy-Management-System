@@ -34,4 +34,18 @@ public function searchDrugs(Request $request)
 
     return response()->json($results);
 }
+public function getDrugPrice(Request $request)
+{
+    $drugName = $request->get('name');
+
+    $drug = Drug::where('name', $drugName)->first();
+
+    if ($drug && $drug->inventory) {
+        return response()->json([
+            'price' => $drug->inventory->selling_price
+        ]);
+    } else {
+        return response()->json(['price' => null]);
+    }
+}
 }

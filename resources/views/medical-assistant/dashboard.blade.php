@@ -54,7 +54,7 @@
                 <td>
     <input type="text" name="drug_name[]" class="drug-name" autocomplete="off" required>
 </td>
-                    <td><input type="number" name="unit_price[]" step="0.01" oninput="calculateAmount(this)" required></td>
+                    <td><input type="text" name="unit_price[]" class="unit-price" readonly oninput="calculateAmount(this)" required></td>
                     <td><input type="number" name="quantity[]" oninput="calculateAmount(this)" required min="0" step="1"></td>
                     <td><input type="text" name="amount[]" readonly></td>
                     <td><button type="button" onclick="removeRow(this)">🗑️</button></td>
@@ -160,6 +160,28 @@
         }
     });
 });
+
+//unit price auto fill
+
+$(document).on('click', '.suggestion-item', function() {
+    let value = $(this).data('value');
+    let $input = $(this).closest('td').find('.drug-name');
+    
+    $input.val(value);
+    $('.suggestion-box').remove();
+
+    // Fetch Unit Price from server
+    $.ajax({
+        url: '{{ route("drugs.getPrice") }}',
+        type: 'GET',
+        data: { name: value },
+        success: function(response) {
+            let price = response.price ?? '';
+            $input.closest('tr').find('.unit-price').val(price);
+        }
+    });
+});
+
 </script>
 <style>
 .suggestion-box {
