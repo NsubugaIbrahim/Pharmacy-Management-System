@@ -74,7 +74,7 @@
             <h4 class="font-weight-bolder text-white mb-0">{{ $title }}</h4>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2" id="navbar">
-            <div class="d-flex align-items-center navbar-search-block" style="margin-left: 300px !important;">
+            <div class="d-flex align-items-center navbar-search-block" style="margin-left: 100px !important;">
                 <div class="input-group">
                     <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
                     <input type="text" class="form-control" id="searchInput" placeholder="Search here...">
