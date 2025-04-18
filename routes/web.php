@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static'); 
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-	Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+	Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 	Route::get('/pharmacist/dashboard', [PharmacistController::class, 'index'])->name('pharmacist.dashboard');
 	Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'index'])->name('medical-assistant.dashboard');
 	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
