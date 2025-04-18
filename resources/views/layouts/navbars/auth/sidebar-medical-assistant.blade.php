@@ -63,30 +63,30 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'sales.index' ? 'active' : '' }}" href="{{ route('sales.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sell</span>
-                </a>
-            </li> -->
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'sales.show' ? 'active' : '' }}" href="{{ route('sales.show') }}">
-                    <div
-                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sales</span>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'sales.index' ? 'active' : '' }}" href="{{ route('sales.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-shopping-cart text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Record Customer Order</span>
+                </a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'sales.show' ? 'active' : '' }}" href="{{ route('sales.show') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-bag-17 text-info text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sales</span>
                 </a>
             </li>
         </ul>
@@ -96,8 +96,8 @@
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg" alt="sidebar_illustration">
             <div class="card-body text-center p-3 w-100 pt-0">
                 <div class="docs-info">
-                    <h6 class="mb-0">Need help?</h6>
-                    <p class="text-xs font-weight-bold mb-0">Please check our docs</p>
+                    <h6 class="mb-0">PharmaStore</h6>
+                    <p class="text-xs font-weight-bold mb-0">Archive your info</p>
                 </div>
             </div>
         </div>
