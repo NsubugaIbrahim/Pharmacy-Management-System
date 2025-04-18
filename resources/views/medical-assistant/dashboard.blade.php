@@ -188,7 +188,7 @@ $(document).on('click', '.suggestion-item', function() {
 });
 
 //on click of save button
-document.getElementById('saveOrderBtn').addEventListener('click', function() {
+document.getElementById('saveOrderBtn').addEventListener('click', function () {
 
 // Gather form data
 let customerName = document.querySelector('[name="customer_name"]').value;
@@ -219,20 +219,29 @@ fetch("{{ route('medical-assistant.storeOrder') }}", {
     },
     body: JSON.stringify(data)
 })
-.then(response => response.json())
-.then(result => {
-    if(result.success) {
-        alert("Thank you! Order saved successfully.");
-        window.location.href = "/medical-assistant/dashboard";
-    } else {
-        alert("Failed to save order. " + (result.message || 'Check inputs.'));
-    }
-})
-.catch(error => {
-    alert("Error! Something went wrong.");
-    console.error(error);
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            alert("Thank you! Order saved successfully.");
+            window.location.href = "/medical-assistant/dashboard";
+        } else if (result.stock_issues) {
+            // If there are stock issues, show them in an alert
+            let message = "The following items exceed stock levels:\n\n";
+            result.stock_issues.forEach(issue => {
+                message += `- ${issue.name}: Requested ${issue.requested}, In stock ${issue.in_stock}\n`;
+            });
+            alert(message);
+            // Stay on the form to let the user fix the issues
+        } else {
+            alert("Failed to save order. " + (result.message || 'Check inputs.'));
+        }
+    })
+    .catch(error => {
+        alert("Error! Something went wrong.");
+        console.error(error);
+    });
 });
-});
+
  
 
 </script>

@@ -53,6 +53,39 @@ public function getDrugPrice(Request $request)
 public function storeOrder(Request $request)
 {
     try {
+        $stockIssues = [];
+
+        foreach ($request->drugs as $drug) {
+            $drugRecord = Drug::where('name', $drug['name'])->first();
+
+            if ($drugRecord && $drugRecord->inventory) {
+                $availableStock = $drugRecord->inventory->quantity;
+                $requestedQty = (int) $drug['quantity'];
+
+                if ($requestedQty > $availableStock) {
+                    $stockIssues[] = [
+                        'name' => $drug['name'],
+                        'requested' => $requestedQty,
+                        'in_stock' => $availableStock,
+                    ];
+                }
+            } else {
+                $stockIssues[] = [
+                    'name' => $drug['name'],
+                    'requested' => $drug['quantity'],
+                    'in_stock' => 0,
+                ];
+            }
+        }
+
+        if (!empty($stockIssues)) {
+            return response()->json([
+                'success' => false,
+                'stock_issues' => $stockIssues
+            ], 422);
+        }
+
+        // Proceed with saving the sale since stock is okay
         foreach ($request->drugs as $drug) {
             $drugRecord = Drug::where('name', $drug['name'])->first();
 
