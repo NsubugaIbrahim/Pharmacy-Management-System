@@ -64,6 +64,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'stock.index' ? 'active' : '' }}" href="{{ route('stock.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-primary text-sm opacity-10"></i>
@@ -74,7 +82,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'receive.stock' ? 'active' : '' }}" href="{{ route('receive.stock') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="ni ni-credit-card text-warning text-sm me-2" style ="margin-left: 30px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Receive Stock</span>
                 </a>
@@ -82,7 +90,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-notes-medical text-danger text-sm me-2" style ="margin-left: 30px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Stock History</span>
                 </a>
@@ -90,7 +98,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'near.expiry' ? 'active' : '' }}" href="{{ route('near.expiry') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bell-55 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-clock text-info text-sm opacity-10" style ="margin-left: 30px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Expiry Alerts</span>
                 </a>
@@ -98,7 +106,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'expired.drugs' ? 'active' : '' }}" href="{{ route('expired.drugs') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bell-55 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-exclamation-circle text-danger text-sm opacity-10" style ="margin-left: 30px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Expired Drugs</span>
                 </a>
@@ -106,17 +114,9 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'disposed.drugs' ? 'active' : '' }}" href="{{ route('disposed.drugs') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bell-55 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-trash-alt text-warning text-sm opacity-10" style ="margin-left: 30px"></i>
                     </div>
                     <span class="nav-link-text ms-1">Disposed Drugs</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
                 </a>
             </li>
         </ul>
@@ -126,8 +126,8 @@
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg" alt="sidebar_illustration">
             <div class="card-body text-center p-3 w-100 pt-0">
                 <div class="docs-info">
-                    <h6 class="mb-0">Need help?</h6>
-                    <p class="text-xs font-weight-bold mb-0">Please check our docs</p>
+                    <h6 class="mb-0">PharmaStore</h6>
+                    <p class="text-xs font-weight-bold mb-0">Archive your info</p>
                 </div>
             </div>
         </div>

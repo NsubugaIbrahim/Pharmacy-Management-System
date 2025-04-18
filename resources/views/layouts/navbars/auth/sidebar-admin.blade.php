@@ -64,6 +64,22 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}" href="{{ route('user-management') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User Management</span>
+                </a>
+            </li>          
+            <li class="nav-item">
                 <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'stock.view' ? 'active' : 'collapsed' }}" href="#stockSubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'stock.view' ? 'true' : 'false' }}" aria-controls="stockSubmenu">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
@@ -79,7 +95,7 @@
                 <ul class="collapse submenu {{ in_array(Route::currentRouteName(), $stockRoutes) ? 'show' : '' }}" id="stockSubmenu">
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
-                            <i class="ni ni-box-2 text-info text-sm me-2" style ="margin-left: 30px"></i>
+                            <i class="fas fa-notes-medical text-danger text-sm me-2" style ="margin-left: 30px"></i>
                             <span class="nav-link-text ms-1">Stock History</span>
                         </a>
                     </li>
@@ -98,7 +114,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.show' ? 'active' : '' }}" href="{{ route('stock.show') }}">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-calendar-grid-58 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                                <i class="fas fa-store text-info text-sm opacity-10" style ="margin-left: 30px"></i>
                             </div>
                             <span class="nav-link-text ms-1">Inventory</span>
                         </a>
@@ -109,7 +125,7 @@
                 <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'near.expiry' ? 'active' : 'collapsed' }}" 
                    href="#expirySubmenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ Route::currentRouteName() == 'near.expiry' ? 'true' : 'false' }}" aria-controls="expirySubmenu">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-archive-2 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-exclamation-triangle text-danger text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Expiry Management</span>
                     <i class="ni ni-bold-down ms-auto arrow-icon"></i>
@@ -122,7 +138,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'near.expiry' ? 'active' : '' }}" href="{{ route('near.expiry') }}">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                                <i class="fas fa-clock text-info text-sm opacity-10" style ="margin-left: 30px"></i>
                             </div>
                             <span class="nav-link-text ms-1">Expiry Alerts</span>
                         </a>
@@ -130,7 +146,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'expired.drugs' ? 'active' : '' }}" href="{{ route('expired.drugs') }}">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                                <i class="fas fa-exclamation-circle text-danger text-sm opacity-10" style ="margin-left: 30px"></i>
                             </div>
                             <span class="nav-link-text ms-1">Expired Drugs</span>
                         </a>
@@ -138,7 +154,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'disposed.drugs' ? 'active' : '' }}" href="{{ route('disposed.drugs') }}">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="ni ni-box-2 text-primary text-sm opacity-10" style ="margin-left: 30px"></i>
+                                <i class="fas fa-trash-alt text-warning text-sm opacity-10" style ="margin-left: 30px"></i>
                             </div>
                             <span class="nav-link-text ms-1">Disposed Drugs</span>
                         </a>
@@ -148,7 +164,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'finances' ? 'active' : '' }}" href="{{ route('finances') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-money-bill-wave text-info text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Financial management</span>
                 </a>
@@ -156,7 +172,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'drugs.index' ? 'active' : '' }}" href="{{ route('drugs.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-app text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-pills text-success text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Drugs</span>
                 </a>
@@ -164,7 +180,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'suppliers.index' ? 'active' : '' }}" href="{{ route('suppliers.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bag-17 text-primary text-sm opacity-10"></i>
+                        <i class="fas fa-tags text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Supplier</span>
                 </a>
@@ -185,23 +201,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Roles</span>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}" href="{{ route('user-management') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
+            </li>           
         </ul>
     </div>
     <div class="sidenav-footer mx-3" style="margin-top: 0px;">
@@ -209,8 +209,8 @@
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg" alt="sidebar_illustration">
             <div class="card-body text-center p-3 w-100 pt-0">
                 <div class="docs-info">
-                    <h6 class="mb-0">Need help?</h6>
-                    <p class="text-xs font-weight-bold mb-0">Please check our docs</p>
+                    <h6 class="mb-0">PharmaStore</h6>
+                    <p class="text-xs font-weight-bold mb-0">Archive your info</p>
                 </div>
             </div>
         </div>

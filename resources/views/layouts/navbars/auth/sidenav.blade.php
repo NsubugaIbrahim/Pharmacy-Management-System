@@ -96,7 +96,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'stock.view' ? 'active' : '' }}" href="{{ route('stock.view') }}">
-                            <i class="fas fa-notes-medical text-danger text-sm me-2" style ="margin-left: 30px"></i>
+                            <i class="fas fa-notes-medical text-danger text-sm me-2" ></i>
                             <span class="nav-link-text ms-1">Stock History</span>
                         </a>
                     </li>
