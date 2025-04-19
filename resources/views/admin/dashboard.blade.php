@@ -5,7 +5,7 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
+                <div class="card" style="background: linear-gradient(45deg,rgb(68, 230, 235), #04befe);">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
+                <div class="card" style="background: linear-gradient(45deg, #43e97b, #38f9d7);">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
+                <div class="card" style="background: linear-gradient(45deg, #ff9a9e, #fad0c4);">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6">
-                <div class="card">
+                <div class="card" style="background: linear-gradient(45deg,rgb(230, 255, 117),rgb(153, 228, 159));">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
@@ -104,9 +104,9 @@
         </div>
         <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
-                <div class="card z-index-2 h-100">
+                <div class="card z-index-2 h-100" style="background: linear-gradient(45deg, #ff9a9e, #fad0c4);">
                     <div class="card-header pb-0 pt-3 bg-transparent">
-                        <h6 class="text-capitalize">MONTHLY SALES</h6>
+                        <h6 class="text-capitalize">MONTHLY SALES (UGX)</h6>
                     </div>
                     <div class="card-body p-3">
                         <div class="chart">
@@ -274,7 +274,7 @@
         </div>
         <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
-                <div class="card ">
+                <div class="card " style="background: linear-gradient(45deg,rgb(178, 201, 212),rgb(233, 213, 221));">
                     <div class="card-header pb-0 p-3">
                         <div class="d-flex justify-content-between">
                             <h6 class="mb-2">Top selling drugs by quantity</h6>
@@ -284,10 +284,10 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Quantity Sold</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Revenue</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Last Sale</th>
+                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">Drug</th>
+                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Total Quantity Sold</th>
+                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Total Revenue</th>
+                                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Last Sale</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -413,28 +413,29 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-    grid: {
-        drawBorder: false,
-        display: true,
-        drawOnChartArea: true,
-        drawTicks: false,
-        borderDash: [5, 5]
-    },
-    ticks: {
-        callback: function(value) {
-            return 'UGX ' + value;
-        },
-        display: true,
-        padding: 10,
-        color: '#666',
-        font: {
-            size: 12,
-            family: "Open Sans",
-            style: 'normal',
-            lineHeight: 2
-        }
-    }
-},
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return  value;
+                            },
+                            display: true,
+                            padding: 10,
+                            color: '#666',
+                            font: {
+                                size: 12,
+                                family: "Open Sans",
+                                style: 'normal',
+                                lineHeight: 2
+                            }
+                        }
+                    },
+                    
                     x: {
                         grid: {
                             drawBorder: false,
@@ -445,7 +446,7 @@
                         },
                         ticks: {
                             display: true,
-                            color: '#ccc',
+                            color: '#000',
                             padding: 20,
                             font: {
                                 size: 11,
