@@ -17,7 +17,6 @@ class RolesTableSeeder extends Seeder
             ['name' => 'admin', 'description' => 'Administrator','created_at' => now(), 'updated_at' => now()],
             ['name' => 'pharmacist', 'description' => 'Manager','created_at' => now(), 'updated_at' => now()],
             ['name' => 'medical-assistant', 'description' => 'Medical Assistant','created_at' => now(), 'updated_at' => now()],
-            ['name' => 'cashier', 'description' => 'Cashier','created_at' => now(), 'updated_at' => now()],
             ['name' => 'accountant', 'description' => 'Accountant','created_at' => now(), 'updated_at' => now()],
         ]);
     }

@@ -48,32 +48,26 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
 	Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 	Route::get('/pharmacist/dashboard', [PharmacistController::class, 'index'])->name('pharmacist.dashboard');
 	Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'index'])->name('medical-assistant.dashboard');
 	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
-
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
     Route::post('/drugs/add', [DrugController::class, 'storeDrug'])->name('drugs.store');
     Route::get('/drugs/set-price', [DrugController::class, 'setSellingPriceForm'])->name('drugs.set_price');
     Route::post('/drugs/{drug}/set-price', [DrugController::class, 'updateSellingPrice'])->name('drugs.setprice.update');
-	// In routes/web.php
-	Route::get('drugs/{drug}/edit', [DrugController::class, 'edit'])->name('drugs.edit');// In routes/web.php
+	Route::get('drugs/{drug}/edit', [DrugController::class, 'edit'])->name('drugs.edit');
 	Route::get('drugs/{drug}/sell', [DrugController::class, 'sell'])->name('drugs.sell');
 	Route::put('drugs/{drug}', [DrugController::class, 'update'])->name('drugs.update');
 	Route::delete('drugs/{drug}/delete', [DrugController::class, 'destroy'])->name('drugs.destroy');
-
 	Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
 	Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
 	Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
 	Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
 	Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
 	Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-
-	//Stock
 	Route::get('/orderstock', [StockController::class, 'index'])->name('stock.index');
 	Route::get('/inventory', [StockController::class, 'show'])->name('stock.show');
 	Route::get('/stock/create', [StockController::class, 'create'])->name('stock.create');
@@ -87,40 +81,26 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/stock/decline/{id}', [StockController::class, 'declineOrder'])->name('stock.decline');
 	Route::get('/receivestock', [StockController::class, 'receiveStock'])->name('receive.stock');
 	Route::post('/stock/update-expiry/{order}', [StockController::class, 'receiveStockLogic'])->name('stock.update-expiry');
-
-	//View Inventory Stock
 	Route::get('/inventory-stock', [StockController::class, 'inventory'])->name('inventory.stock');
 	Route::post('/stock-orders', [StockController::class, 'store_order'])->name('stock_orders.store');
-
-	//Inventory
 	Route::put('/inventory/{id}/update-price', [InventoryController::class, 'updatePrice'])->name('inventory.update-price');
-
-	//Expiry
 	Route::get('/expiry-alerts', [InventoryController::class, 'nearExpiry'])->name('near.expiry');
 	Route::get('/expired-drugs', [InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
-
-	//Dispose off expired drugs
 	Route::post('/dispose-drug/{id}', [InventoryController::class, 'disposeDrug'])->name('dispose.drug');
 	Route::get('disposed-drugs', [InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
-
-	//Finances
 	Route::get('/finances', [AdminController::class, 'finances'])->name('finances');
-	
-
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
 	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
 	Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
 	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
 	Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 	Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-
 	Route::get('/sales', [SaleController::class, 'show'])->name('sales.show');
 	Route::get('/sell', [SaleController::class, 'index'])->name('sales.index');
 	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
@@ -130,15 +110,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/sell/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
 	Route::get('/sell/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
 	Route::get('/inventory/price/{drug_id}', [SaleController::class, 'getSellingPrice'])->name('inventory.price');
-
-	//Register new user
 	Route::get('/usermanagement', [UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [UserController::class, 'store'])->name('users.store');
 	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 	Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-	
 });
 
 //Search feature

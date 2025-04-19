@@ -96,7 +96,7 @@
             <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg" alt="sidebar_illustration">
             <div class="card-body text-center p-3 w-100 pt-0">
                 <div class="docs-info">
-                    <h6 class="mb-0">PharmaStore</h6>
+                    <h6 class="mb-0">{{ env('APP_NAME') }}</h6>
                     <p class="text-xs font-weight-bold mb-0">Archive your info</p>
                 </div>
             </div>
