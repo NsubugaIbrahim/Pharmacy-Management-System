@@ -22,7 +22,6 @@
 	use App\Http\Controllers\AdminController;
 	use App\Http\Controllers\PharmacistController;
 	use App\Http\Controllers\MedicalAssistantController;
-	use App\Http\Controllers\CashierController;
 	use App\Http\Controllers\AccountantController;
 	use App\Http\Controllers\DrugController;
 	use App\Http\Controllers\SupplierController;
@@ -49,9 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 	Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+	Route::get('/finances', [AdminController::class, 'finances'])->name('finances');
 	Route::get('/pharmacist/dashboard', [PharmacistController::class, 'index'])->name('pharmacist.dashboard');
 	Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'index'])->name('medical-assistant.dashboard');
-	Route::get('/cashier/dashboard', [CashierController::class, 'index'])->name('cashier.dashboard');
 	Route::get('/accountant/dashboard', [AccountantController::class, 'index'])->name('accountant.dashboard');
 	Route::get('/drugs', [DrugController::class, 'index'])->name('drugs.index');
     Route::get('/drugs/add', [DrugController::class, 'addDrug'])->name('drugs.add');
@@ -88,7 +87,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/expired-drugs', [InventoryController::class, 'expiredDrugs'])->name('expired.drugs');
 	Route::post('/dispose-drug/{id}', [InventoryController::class, 'disposeDrug'])->name('dispose.drug');
 	Route::get('disposed-drugs', [InventoryController::class, 'disposedDrugs'])->name('disposed.drugs');
-	Route::get('/finances', [AdminController::class, 'finances'])->name('finances');
 	Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 	Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
 	Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
@@ -103,31 +101,28 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 	Route::get('/sales', [SaleController::class, 'show'])->name('sales.show');
 	Route::get('/sell', [SaleController::class, 'index'])->name('sales.index');
+	Route::get('/get-selling-price/{drugId}', [SaleController::class, 'getSellingPrice'])->name('getSellingPrice');
 	Route::post('/sell/store', [SaleController::class, 'store'])->name('sales.store');
 	Route::get('/sell/report', [SaleController::class, 'report'])->name('sales.report');
 	Route::post('/sell/cart/add', [SaleController::class, 'addToCart'])->name('sales.cart.add');
 	Route::get('/sell/cart/remove/{index}', [SaleController::class, 'removeFromCart'])->name('sales.cart.remove');
 	Route::post('/sell/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
 	Route::get('/sell/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
-	Route::get('/inventory/price/{drug_id}', [SaleController::class, 'getSellingPrice'])->name('inventory.price');
-	Route::get('/usermanagement', [UserController::class, 'index'])->name('user-management');
+	Route::get('/users', [UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [UserController::class, 'store'])->name('users.store');
 	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 	Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-
 });
 
 //Search feature
 Route::get('/api/search', [SearchController::class, 'search']);
 
 Route::get('/medical-assistant/dashboard', [MedicalAssistantController::class, 'dashboard'])->name('medical-assistant.dashboard');
-//use App\Http\Controllers\MedicalAssistantController;
-
 Route::get('/drugs/search', [MedicalAssistantController::class, 'searchDrugs'])->name('drugs.search');
 Route::get('/drugs/get-price', [MedicalAssistantController::class, 'getDrugPrice'])->name('drugs.getPrice');
-Route::post('/medical-assistant/store-order', [MedicalAssistantController::class, 'storeOrder'])
-    ->name('medical-assistant.storeOrder');
+Route::get('/drugs/get-price', [MedicalAssistantController::class, 'getDrugPrice'])->name('drugs.getPrice');
+Route::post('/medical-assistant/store-order', [MedicalAssistantController::class, 'storeOrder'])->name('medical-assistant.storeOrder');
 
   
 ?>

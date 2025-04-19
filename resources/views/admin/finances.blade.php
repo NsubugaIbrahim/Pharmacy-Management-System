@@ -92,7 +92,7 @@
                                     <div class="numbers">
                                         <p class="finance-label mb-0">Cost of Goods</p>
                                         <h5 class="finance-value mb-0">
-                                            UGX {{ number_format($costOfGoods) }}
+                                            UGX {{ number_format($totalCost) }}
                                         </h5>
                                     </div>
                                 </div>

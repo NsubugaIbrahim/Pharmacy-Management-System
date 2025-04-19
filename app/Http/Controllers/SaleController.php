@@ -12,27 +12,16 @@ class SaleController extends Controller
 {
 
     public function show()
-{
-    $sales = Sale::with('drug')->latest()->get(); // eager load related drug data
-    return view('sales.show', compact('sales'));
-}
-    public function index(Request $request)
+    {
+        $sales = Sale::with('drug')->latest()->get(); // eager load related drug data
+        return view('sales.show', compact('sales'));
+    }
+    public function index()
     {
         $drugs = Drug::all();
-        $selectedPrice = null;
-
-        if ($request->has('drug_id')) {
-            $inventory = \App\Models\Inventory::where('drug_id', $request->drug_id)
-                ->orderBy('expiry_date', 'asc') // or 'created_at', depending on your logic
-                ->first();
-
-            if ($inventory) {
-                $selectedPrice = $inventory->selling_price;
-            }
-        }
-
-        return view('sales.index', ['drugs' => $drugs,'selectedPrice' => $selectedPrice,]);
+        return view('sales.index', ['drugs' => $drugs]);
     }
+
 
     
     public function store(Request $request)
@@ -160,6 +149,17 @@ class SaleController extends Controller
         }
 
         return view('sales.receipt', ['data' => $receiptData]);
+    }
+
+    public function getSellingPrice($drugId)
+    {
+        $inventory = \App\Models\Inventory::where('drug_id', $drugId)
+            ->orderBy('expiry_date', 'asc')
+            ->first();
+
+        return response()->json([
+            'selling_price' => $inventory ? $inventory->selling_price : null,
+        ]);
     }
 
     

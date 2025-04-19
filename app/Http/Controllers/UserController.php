@@ -95,16 +95,14 @@ class UserController extends Controller
         
         // Handle image upload if provided
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($user->image && file_exists(public_path($user->image))) {
-                unlink(public_path($user->image));
+            // Delete old image from storage
+            if ($user->image && Storage::disk('public')->exists($user->image)) {
+                Storage::disk('public')->delete($user->image);
             }
-            
-            // Store new image using the same logic as in store method
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('img/users'), $imageName);
-            $user->image = 'img/users/' . $imageName;
+    
+            // Store new image
+            $imagePath = $request->file('image')->store('img/users', 'public');
+            $user->image = $imagePath;
         }
         
         $user->save();

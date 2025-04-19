@@ -17,7 +17,8 @@
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
 
-                    <form action="{{ route('profile.update') }}" method="POST">
+                    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+
                         @csrf
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -60,7 +61,12 @@
                                 <input type="text" name="postal" value="{{ old('postal', auth()->user()->postal) }}" class="form-control @error('postal') is-invalid @enderror">
                                 @error('postal') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label>image</label>
+                                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
+                                @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 <label>About Me</label>
                                 <textarea name="about" class="form-control @error('about') is-invalid @enderror" rows="3">{{ old('about', auth()->user()->about) }}</textarea>
                                 @error('about') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -83,11 +89,17 @@
                 <div class="card-body text-center">
                     <div class="mb-3">
                         @if(auth()->user()->image)
-                            <img src="{{ asset(auth()->user()->image) }}" class="avatar me-3" alt="user image">
+                            <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                                 class="avatar me-3" 
+                                 alt="user image" 
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
                         @else
-                            <img src="{{ asset('img/avatar.jpg') }}" class="avatar me-3" alt="default image">
+                            <img src="{{ asset('img/avatar.jpg') }}" 
+                                 class="avatar me-3" 
+                                 alt="default image" 
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
                         @endif
-                    </div>
+                    </div>                    
                     <h5>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</h5>
                         <p class="text-muted">{{ auth()->user()->email }}</p>
                         <p class="text-bold">{{ auth()->user()->about }}</p>

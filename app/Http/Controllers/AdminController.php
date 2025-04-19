@@ -103,77 +103,94 @@ class AdminController extends Controller
 
 
     public function finances()
-{
-    // Get total revenue from sales
-    $totalRevenue = Sale::sum('total_price');
-    
-    // Get cost of goods sold from stock entries
-    $costOfGoods = StockEntry::sum('cost');
+    {
+        // Get total revenue from sales (quantity × unit selling price)
+        $totalRevenue = DB::table('sales')
+        ->join('inventories', 'sales.drug_id', '=', 'inventories.drug_id')
+        ->selectRaw('SUM(sales.quantity * inventories.selling_price) as total_revenue')
+        ->value('total_revenue');
 
-    // Get disposed drugs losses 
-    $disposedDrugsLosses = DisposedDrugs::calculateTotalLosses();
-    
-    // Calculate profit 
-    $profit = $totalRevenue - $costOfGoods - $disposedDrugsLosses;
-    
-    // Get monthly data for charts
-    $monthlyData = Sale::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(total_price) as revenue')
-        ->groupBy('year', 'month')
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
+        // Calculate total cost of sold drugs (based on purchase price)
+        $totalCost = DB::table('sales')
+        ->join('stock_entries', 'sales.drug_id', '=', 'stock_entries.drug_id')
+        ->selectRaw('SUM(sales.quantity * stock_entries.price) as total_cost')
+        ->value('total_cost');
+
+        // Get total loss from disposed drugs
+        $disposedDrugsLosses = DisposedDrugs::calculateTotalLosses();
+
+        // Final profit = Revenue - Cost of sold items - losses from disposed
+        $profit = ($totalRevenue ?? 0) - ($totalCost ?? 0) - ($disposedDrugsLosses ?? 0);
+
         
-    $monthlyCosts = StockEntry::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(cost) as costs')
-        ->groupBy('year', 'month')
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
-    
-    // Format data for charts
-    $labels = [];
-    $revenueData = [];
-    $costData = [];
-    $profitData = [];
-    
-    foreach ($monthlyData as $data) {
-        $monthName = date('M Y', mktime(0, 0, 0, $data->month, 1, $data->year));
-        $labels[] = $monthName;
-        $revenueData[] = $data->revenue;
+        // Get monthly data for charts
+        $monthlyData = Sale::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(total_price) as revenue')
+            ->groupBy('year', 'month')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+            
+        $monthlyCosts = StockEntry::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(cost) as costs')
+            ->groupBy('year', 'month')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
         
-        // Find matching cost data
-        $cost = $monthlyCosts->where('month', $data->month)
-                            ->where('year', $data->year)
-                            ->first();
-        $costAmount = $cost ? $cost->costs : 0;
+        // Format data for charts
+        $labels = [];
+        $revenueData = [];
+        $costData = [];
+        $profitData = [];
+
+        foreach ($monthlyData as $data) {
+            $month = $data->month;
+            $year = $data->year;
+            $monthName = date('M Y', mktime(0, 0, 0, $month, 1, $year));
+            $labels[] = $monthName;
+
+            // Monthly Revenue: sales.quantity * inventories.selling_price
+            $monthlyRevenue = DB::table('sales')
+                ->join('inventories', 'sales.drug_id', '=', 'inventories.drug_id')
+                ->whereMonth('sales.created_at', $month)
+                ->whereYear('sales.created_at', $year)
+                ->selectRaw('SUM(sales.quantity * inventories.selling_price) as total_revenue')
+                ->value('total_revenue') ?? 0;
+
+            // Monthly Cost: sales.quantity * stock_entries.price (purchase cost)
+            $monthlyCost = DB::table('sales')
+                ->join('stock_entries', 'sales.drug_id', '=', 'stock_entries.drug_id')
+                ->whereMonth('sales.created_at', $month)
+                ->whereYear('sales.created_at', $year)
+                ->selectRaw('SUM(sales.quantity * stock_entries.price) as total_cost')
+                ->value('total_cost') ?? 0;
+
+            // Monthly Disposed Drug Losses
+            $disposedLosses = DB::table('disposed_drugs')
+                ->leftJoin(DB::raw('(SELECT drug_id, MAX(selling_price) as max_price FROM inventories GROUP BY drug_id) as inv'),
+                    'disposed_drugs.drug_id', '=', 'inv.drug_id')
+                ->whereMonth('disposed_drugs.created_at', $month)
+                ->whereYear('disposed_drugs.created_at', $year)
+                ->selectRaw('SUM(disposed_drugs.quantity * COALESCE(inv.max_price, 0)) as total_losses')
+                ->value('total_losses') ?? 0;
+
+            $revenueData[] = $monthlyRevenue;
+            $costData[] = $monthlyCost + $disposedLosses;
+            $profitData[] = $monthlyRevenue - $monthlyCost - $disposedLosses;
+        }
+
+
+
         
-        // Find matching disposed drugs losses for this month using a modified version of calculateTotalLosses
-        $disposedLosses = DB::table('disposed_drugs')
-            ->leftJoin(DB::raw('(SELECT drug_id, MAX(selling_price) as max_price FROM inventories GROUP BY drug_id) as inv'), 
-                  'disposed_drugs.drug_id', '=', 'inv.drug_id')
-            ->whereRaw('MONTH(disposed_drugs.created_at) = ? AND YEAR(disposed_drugs.created_at) = ?', [$data->month, $data->year])
-            ->selectRaw('SUM(disposed_drugs.quantity * COALESCE(inv.max_price, 0)) as total_losses')
-            ->value('total_losses') ?? 0;
-        
-        // Add disposed drugs losses to the cost amount
-        $costAmount += $disposedLosses;
-        $costData[] = $costAmount;
-        
-        // Calculate monthly profit (now including disposed drugs losses)
-        $profitData[] = $data->revenue - $costAmount;
+        return view('admin.finances', compact(
+            'totalRevenue',
+            'totalCost', 
+            'profit',
+            'labels',
+            'revenueData',
+            'costData',
+            'profitData',
+            'disposedDrugsLosses'
+        ));
     }
-
-
-    
-    return view('admin.finances', compact(
-        'totalRevenue', 
-        'costOfGoods', 
-        'profit',
-        'labels',
-        'revenueData',
-        'costData',
-        'profitData',
-        'disposedDrugsLosses'
-    ));
-}
 
 }

@@ -147,7 +147,7 @@
                                         <div class="d-flex px-3 py-1">
                                             <div>
                                                 @if($user->image)
-                                                    <img src="{{ asset($user->image) }}" class="avatar me-3" alt="user image">
+                                                    <img src="{{ asset('storage/' . $user->image) }}" class="avatar me-3" alt="user image">
                                                 @else
                                                     <img src="{{ asset('img/avatar.jpg') }}" class="avatar me-3" alt="default image">
                                                 @endif
@@ -206,11 +206,11 @@
                                             <div class="position-relative">
                                                 <label for="user-image-{{ $user->id }}" style="cursor: pointer; margin-bottom: 0;">
                                                     <img id="preview-image-{{ $user->id }}" 
-                                                        src="{{ $user->image ? asset($user->image) : asset('img/avatar.jpg') }}" 
-                                                        alt="User Image" 
-                                                        class="avatar avatar-xl rounded-circle mb-2" 
-                                                        style="width: 5px; height: 5px; object-fit: cover;">
-                                                </label>
+                                                         src="{{ $user->image ? asset('storage/' . $user->image) : asset('img/avatar.jpg') }}" 
+                                                         alt="User Image" 
+                                                         class="avatar avatar-xl rounded-circle mb-2" 
+                                                         style="width: 5px; height: 5px; object-fit: cover;">
+                                                </label>                                                
                                                 <input type="file" name="image" id="user-image-{{ $user->id }}" class="d-none" accept="image/*" 
                                                 onchange="previewEditImage(this, '{{ $user->id }}')">
                                             </div>
