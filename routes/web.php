@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/stock/{stockEntry}/edit', [StockController::class, 'edit'])->name('stock.edit');
 	Route::put('/stock/{stockEntry}', [StockController::class, 'update'])->name('stock.update');
 	Route::delete('/stock/{stockEntry}', [StockController::class, 'destroy'])->name('stock.destroy');
-	Route::get('/stockhistory', [StockController::class, 'stockView'])->name('stock.view');
+	Route::get('/stock-history', [StockController::class, 'stockView'])->name('stock.view');
 	Route::get('/approvestockorders', [StockController::class, 'approve_order'])->name('approve.stock.orders');
 	Route::post('/stock/approve/{id}', [StockController::class, 'approveOrder'])->name('stock.approve');
 	Route::post('/stock/decline/{id}', [StockController::class, 'declineOrder'])->name('stock.decline');
@@ -108,6 +108,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sell/cart/remove/{index}', [SaleController::class, 'removeFromCart'])->name('sales.cart.remove');
 	Route::post('/sell/checkout', [SaleController::class, 'finalizeSale'])->name('sales.checkout');
 	Route::get('/sell/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+	Route::get('/mdashboard', [SaleController::class, 'salesHistory'])->name('sales.history');
+	Route::get('/sales/receipt/{receipt_number}', [SaleController::class, 'viewReceiptByNumber'])->name('sales.receipt.byNumber');
 	Route::get('/users', [UserController::class, 'index'])->name('user-management');
 	Route::post('/users', [UserController::class, 'store'])->name('users.store');
 	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');

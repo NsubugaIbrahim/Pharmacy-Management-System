@@ -13,6 +13,7 @@ class Sale extends Model
         'drug_id',
         'quantity',
         'total_price',
+        'receipt_number',
         'customer_name'
     ];
 

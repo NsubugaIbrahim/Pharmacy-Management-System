@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
             $table->string('customer_name');
+            $table->string('receipt_number')->unique();
             $table->timestamps();
         
             $table->foreign('drug_id')->references('id')->on('drugs')->onDelete('cascade');

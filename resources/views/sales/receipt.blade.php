@@ -79,13 +79,15 @@
             <div class="text-center">
                 <img src="{{ asset('img/life.png') }}" alt="Logo" style="max-width: 60px; margin-bottom: 5px;">
                 <strong>{{ strtoupper(env('APP_NAME')) }}</strong><br>
-                <small>{{ \Carbon\Carbon::now()->format('Y-m-d H:i') }}</small><br>
+                <p><strong>Receipt Number:</strong> {{ $receiptData['receipt_number'] }}</p><br>
+                <p>{{ \Carbon\Carbon::now()->format('Y-m-d H:i') }}</p><br>
             </div>
             
 
             <hr>
 
-            <p><strong>Customer:</strong> {{ $data['customer_name'] }}</p>
+            <p><strong>Customer:</strong> {{ $receiptData['customer_name'] }}</p>
+
 
             <table class="receipt-table">
                 <thead>
@@ -97,7 +99,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($data['items'] as $item)
+                    @foreach($receiptData['items'] as $item)
+
                         <tr>
                             <td class="text-center">{{ $item['drug_name'] }}</td>
                             <td class="text-center">{{ $item['quantity'] }}</td>
@@ -107,7 +110,7 @@
                     @endforeach
                     <tr>
                         <td colspan="3"><strong>Total</strong></td>
-                        <td class="text-center"><strong>{{ number_format($data['total'], 0) }}</strong></td>
+                        <td class="text-center"><strong>{{ number_format($receiptData['total'], 0) }}</strong></td>
                     </tr>
                 </tbody>
             </table>

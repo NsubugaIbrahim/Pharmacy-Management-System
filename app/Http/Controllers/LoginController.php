@@ -33,9 +33,9 @@ class LoginController extends Controller
             case 'admin':
                 return redirect()->route('admin.dashboard');
             case 'pharmacist':
-                return redirect()->route('pharmacist.dashboard');
+                return redirect()->route('stock.view');
             case 'medical-assistant':
-                return redirect()->route('medical-assistant.dashboard');
+                return redirect()->route('sales.history');
             case 'accountant':
                 return redirect()->route('accountant.dashboard');
             default:

@@ -13,7 +13,7 @@ class SaleController extends Controller
 
     public function show()
     {
-        $sales = Sale::with('drug')->latest()->get(); // eager load related drug data
+        $sales = Sale::with('drug')->latest()->get();
         return view('sales.show', compact('sales'));
     }
     public function index()
@@ -23,7 +23,6 @@ class SaleController extends Controller
     }
 
 
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -76,6 +75,8 @@ class SaleController extends Controller
             return back()->with('error', 'Cart is empty!');
         }
 
+        $receipt_number = 'RCPT-' . strtoupper(uniqid());
+
         DB::beginTransaction();
 
         try {
@@ -117,6 +118,7 @@ class SaleController extends Controller
                     'quantity' => $item['quantity'],
                     'selling_price' => $item['selling_price'],
                     'customer_name' => $request->customer_name,
+                    'receipt_number' => $receipt_number,
                     'total_price' => $item['selling_price'] * $item['quantity'], // ✅ Add this
                 ]);
 
@@ -126,6 +128,7 @@ class SaleController extends Controller
             // Save receipt data
             session(['receipt_data' => [
                 'customer_name' => $request->customer_name,
+                'receipt_number' => $receipt_number,
                 'items' => $cart,
                 'total' => array_sum(array_map(fn($i) => $i['selling_price'] * $i['quantity'], $cart))
             ]]);
@@ -133,7 +136,8 @@ class SaleController extends Controller
             session()->forget('cart');
             DB::commit();
 
-            return redirect()->route('sales.receipt');
+            return view('sales.receipt', ['receiptData' => session('receipt_data')]);
+            
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -162,5 +166,25 @@ class SaleController extends Controller
         ]);
     }
 
+    public function salesHistory()
+    {
+        $sales = Sale::orderBy('created_at', 'desc')->paginate(10);
+        return view('sales.history', compact('sales'));
+    }
     
+    public function viewReceiptByNumber($receipt_number)
+    {
+        $sales = Sale::where('receipt_number', $receipt_number)->with('drug')->get();
+
+        if ($sales->isEmpty()) {
+            return redirect()->route('sales.history')->with('error', 'Receipt not found.');
+        }
+
+        $customer_name = $sales->first()->customer_name;
+        $total = $sales->sum('total_price');
+
+        return view('sales.review', compact('receipt_number', 'customer_name', 'sales', 'total'));
+    }
+
+
 }
