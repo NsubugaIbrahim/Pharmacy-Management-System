@@ -77,9 +77,11 @@
     <div class="card">
         <div class="card-body" id="receipt">
             <div class="text-center">
+                <img src="{{ asset('img/life.png') }}" alt="Logo" style="max-width: 60px; margin-bottom: 5px;">
                 <strong>{{ strtoupper(env('APP_NAME')) }}</strong><br>
                 <small>{{ \Carbon\Carbon::now()->format('Y-m-d H:i') }}</small><br>
             </div>
+            
 
             <hr>
 

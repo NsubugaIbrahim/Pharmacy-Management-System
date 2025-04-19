@@ -9454,7 +9454,7 @@ textarea.form-control-lg {
 }
 
 .bg-primary {
-  background-color: #fb6340 !important;
+  background: linear-gradient(90deg, #2dce89, #17a2b8) !important;
 }
 
 .bg-secondary {

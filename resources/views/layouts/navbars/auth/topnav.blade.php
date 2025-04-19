@@ -1,41 +1,34 @@
 @push('css')
 <style>
-   /* Ensure the search input has enough width */
     .navbar-search-block .input-group {
-        width: 100%; /* Make it take full width of its container */
-        min-width: 250px; /* Ensure a minimum width */
+        width: 100%;
+        min-width: 250px;
     }
     
-    /* Fix the container width */
     .navbar-search-block {
-        width: auto; /* Let it grow based on content */
-        max-width: 400px; /* Maximum width - adjust as needed */
-        margin-right: 20px; /* Add some space on the right */
+        width: auto;
+        max-width: 400px;
+        margin-right: 20px; 
     }
     
-    /* Ensure the form control (input) isn't constrained */
     .navbar-search-block .form-control {
-        width: 100%; /* Take full width of input-group */
+        width: 100%; 
     }
     
-    /* Fix any overflow issues */
     #navbar {
-        overflow: visible !important; /* Ensure dropdowns aren't cut off */
+        overflow: visible
     }
     
-    /* Rest of your existing styles */
     #searchSuggestions .dropdown-item {
         padding: 10px 15px;
         border-bottom: 1px solid rgba(0,0,0,0.05);
-        white-space: normal; /* Allow text to wrap */
-    }
+        white-space: normal; 
+    } 
     
-    
-    /* Rest of your existing styles */
     #searchSuggestions .dropdown-item {
         padding: 10px 15px;
         border-bottom: 1px solid rgba(0,0,0,0.05);
-        white-space: normal; /* Allow text to wrap */
+        white-space: normal;
     }
     
     #searchSuggestions .dropdown-item:last-child {
@@ -59,21 +52,13 @@
 </style>
 @endpush
 
-
-
 <!-- Navbar -->
-<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="false">
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
     <div class="container-fluid py-1 px-3 d-flex justify-content-between align-items-center w-100">
-
-        {{-- Title on the left --}}
         <div class="d-flex align-items-center">
             <h4 class="font-weight-bolder text-white mb-0">{{ $title }}</h4>
         </div>
-
-        {{-- Right side: search + icons + logout --}}
         <div class="d-flex align-items-center justify-content-end flex-grow-1" id="navbar">
-            
-            {{-- Search bar --}}
             <div class="navbar-search-block me-3">
                 <div class="input-group rounded-pill overflow-hidden">
                     <span class="input-group-text text-body bg-white border-0">
@@ -81,17 +66,12 @@
                     </span>
                     <input type="text" class="form-control border-0" id="searchInput" placeholder="Search here..." style="border-radius: 0;">
                 </div>
-                <div class="dropdown-menu" id="searchSuggestions"
-                    style="display: none; max-height: 400px; overflow-y: auto; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 10px; position: absolute; top: calc(100% + 10px); left: 0; width: 600px; z-index: 1050;">
+                <div class="dropdown-menu" id="searchSuggestions" style="display: none; max-height: 400px; overflow-y: auto; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 10px; position: absolute; top: calc(100% + 10px); left: 0; width: 600px; z-index: 1050;">
                 </div>
             </div>
-            
-
-            {{-- Icons and logout --}}
             <ul class="navbar-nav d-flex flex-row align-items-center">
                 <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell cursor-pointer"></i>
                     </a>
                 </li>
