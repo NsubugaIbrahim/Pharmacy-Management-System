@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 
 class UserProfileController extends Controller
 {
     public function show()
     {
-        return view('pages.user-profile');
+        return view('profile.index');
     }
 
     public function update(Request $request)
@@ -37,6 +38,6 @@ class UserProfileController extends Controller
             'postal' => $request->get('postal'),
             'about' => $request->get('about')
         ]);
-        return back()->with('succes', 'Profile succesfully updated');
+        return back()->with('success', 'Profile succesfully updated');
     }
 }

@@ -14,9 +14,9 @@ class SupplierSeeder extends Seeder
     public function run(): void
     {
         DB::table('suppliers')->insert([
-            ['name' => 'Medix Corp', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'PharmaLife Ltd', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Global Meds Inc', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'First Pharmacy Uganda Limited', 'contact' => '+256 200901', 'address' => 'Mulago Road', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Joint Medical Stores Limited', 'contact' => '+256 200902', 'address' => 'Nsambya Road', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Renu Pharmacuticals Limited', 'contact' => '+256 200902', 'address' => 'Lumumba Avenue', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

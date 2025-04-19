@@ -110,6 +110,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    @include('layouts.footers.auth.footer')
 
         {{-- JavaScript to handle form submission --}}
         <script>

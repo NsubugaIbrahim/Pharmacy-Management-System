@@ -2,8 +2,7 @@
 
 @section('content')
 @include('layouts.navbars.auth.topnav', ['title' => 'Sales Details'])
-<div class="container-fluid py-4">
-    <div class="row">
+    <div class="container-fluid py-4">
       <div class="col-12 mx-auto">
         <div class="card mb-4">
           <div class="card-header pb-0">
@@ -60,4 +59,11 @@
                         </tr>
                     @endforelse
                 </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    </div>
+</div> 
+    @include('layouts.footers.auth.footer')
 @endsection

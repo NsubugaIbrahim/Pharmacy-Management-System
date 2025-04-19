@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $users = User::with('role')->get();
         $roles = Role::all();
-        return view('pages.user-management', compact('users', 'roles'));
+        return view('profile.users', compact('users', 'roles'));
     }
 
     /**
@@ -63,24 +63,12 @@ class UserController extends Controller
                 'image' => $imagePath,
             ]);
     
-            return redirect()->route('user-management')->with('success', 'User registered successfully!');
+            return view('profile.users')->with('success', 'User registered successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Show the form for editing the specified user
-     */
-    public function edit(User $user)
-    {
-        $roles = Role::all();
-        return view('pages.user-edit', compact('user', 'roles'));
-    }
-
-    /**
-     * Update the specified user in the database
-     */
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -121,7 +109,7 @@ class UserController extends Controller
         
         $user->save();
         
-        return redirect()->route('user-management')->with('success', 'User updated successfully');
+        return view('profile.users')->with('success', 'User updated successfully');
     }
 
     /**
@@ -130,6 +118,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user-management')->with('success', 'User deleted successfully');
+        return view('profile.users')->with('success', 'User deleted successfully');
     }
 }

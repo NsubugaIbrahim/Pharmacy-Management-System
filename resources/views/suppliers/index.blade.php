@@ -17,6 +17,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Name</th>
+                                    <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Contact</th>
+                                    <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Address</th>
                                     <th class="text-uppercase text-secondary text-xs text-center font-weight-bolder opacity-7">Actions</th>
                                 </tr>
                             </thead>
@@ -24,6 +26,8 @@
                                 @foreach ($suppliers as $supplier)
                                     <tr>
                                         <td class="align-middle text-sm ps-4 text-center">{{ $supplier->name }}</td>
+                                        <td class="align-middle text-sm ps-4 text-center">{{ $supplier->contact }}</td>
+                                        <td class="align-middle text-sm ps-4 text-center">{{ $supplier->address }}</td>
                                         <td class="align-middle text-sm ps-4 text-center">
                                             <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                             <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display:inline;">
@@ -42,6 +46,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    @include('layouts.footers.auth.footer')
 
 
 @endsection

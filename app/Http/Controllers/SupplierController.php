@@ -20,6 +20,8 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
         ]);
 
         Supplier::create($request->all());
@@ -35,6 +37,8 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
         ]);
 
         $supplier = Supplier::findOrFail($id);

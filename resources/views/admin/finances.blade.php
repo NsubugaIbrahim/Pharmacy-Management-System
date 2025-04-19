@@ -226,9 +226,8 @@
                   </div>
               </div>
           </div>
-          
-          @include('layouts.footers.auth.footer')
       </div>
+    @include('layouts.footers.auth.footer')
       
       @push('js')
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

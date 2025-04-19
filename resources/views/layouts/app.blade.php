@@ -25,7 +25,7 @@
             @php
                 $route = request()->route()->getName();
                 $authRoutes = ['login', 'register'];
-                $profileRoutes = ['profile', 'profile-static'];
+                $profileRoutes = ['profile-static'];
                 $role = auth()->user()->role->name ?? '';
             @endphp
 

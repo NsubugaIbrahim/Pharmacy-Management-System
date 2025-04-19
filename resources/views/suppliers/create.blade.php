@@ -27,7 +27,14 @@
                                 <label for="name" class="form-label">Supplier Name</label>
                                 <input type="text" class="form-control" name="name" id="name" required>
                             </div>
-
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">Contact</label>
+                                <input type="text" class="form-control" name="contact" id="contact" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" name="address" id="address" required>
+                            </div>
                             <div class="d-flex justify-content-end">
                                 <a href="{{ route('suppliers.index') }}" class="btn btn-secondary me-2">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Add Supplier</button>
