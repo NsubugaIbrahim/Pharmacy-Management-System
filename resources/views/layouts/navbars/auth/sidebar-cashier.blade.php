@@ -1,5 +1,19 @@
 <head>
     <style>
+        .sidenav {
+        color: white !important;
+    }
+    
+    .sidenav .navbar-nav .nav-link,
+    .sidenav .navbar-nav .nav-link .nav-link-text,
+    .sidenav .sidenav-header .navbar-brand,
+    .sidenav .docs-info h6,
+    .sidenav .docs-info p,
+    .sidenav .card-body,
+    .sidenav .horizontal {
+        color: white !important;
+    }
+
     #sidenav-collapse-main {
     height: 60%;
     overflow-y: auto; /* Enables scrolling if needed */
@@ -41,6 +55,50 @@
         list-style: none;
         padding-left: 0;
     }
+
+    .navbar-nav .nav-item .nav-link.active {
+        background-color: #5e72e4 !important; /* Change to your preferred background color */
+        color: white; /* Text color */
+        font-weight: bold;
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+        border-radius: 0.5rem;
+        transform: translateY(-1px);
+    }
+    
+    /* Style for the icon in active nav items */
+    .navbar-nav .nav-item .nav-link.active .icon-shape {
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    /* Style for the text in active nav items */
+    .navbar-nav .nav-item .nav-link.active .nav-link-text {
+        color: white;
+        font-weight: 600;
+    }
+    
+    /* For active dropdown items */
+    .navbar-nav .nav-item .submenu .nav-link.active {
+        background-color: #5e72e4;
+        color: white;
+    }
+
+    .navbar-nav .nav-item .submenu .nav-link.active {
+    background-color: rgba(94, 190, 228, 0.8) !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    padding: 8px 15px !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.15s ease;
+    
+}
+
+#sidenav-main {
+        background:linear-gradient(#343a40 0%, #000 100%) !important;
+    }
+
     </style>
 </head>
 <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4" id="sidenav-main">
@@ -61,6 +119,22 @@
                         <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-info text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}" href="{{ route('user-management') }}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-bullet-list-67 text-info text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -210,22 +284,6 @@
                         <i class="ni ni-circle-08 text-primary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Roles</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}" href="{{ route('user-management') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
                 </a>
             </li>
         </ul>
