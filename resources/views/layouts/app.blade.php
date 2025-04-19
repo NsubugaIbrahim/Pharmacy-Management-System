@@ -33,7 +33,8 @@
                 @yield('content')
             @else
                 @if (!in_array($route, $profileRoutes))
-                    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+                <div class="min-vh-100 bg-info position-absolute w-100" style="background: linear-gradient(310deg, #2dce89 0%, #17a2b8 100%);"></div>
+            </div>
                 @endif
 
                 {{-- Load sidebar based on user role --}}
