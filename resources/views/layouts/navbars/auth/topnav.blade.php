@@ -19,6 +19,12 @@
         overflow: visible
     }
     
+    #searchSuggestions {
+    background: linear-gradient(135deg,rgb(144, 153, 199) 0%,rgb(216, 118, 156) 100%) !important;
+    
+}
+
+
     #searchSuggestions .dropdown-item {
         padding: 10px 15px;
         border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -66,7 +72,7 @@
                     </span>
                     <input type="text" class="form-control border-0" id="searchInput" placeholder="Search here..." style="border-radius: 0;">
                 </div>
-                <div class="dropdown-menu" id="searchSuggestions" style="display: none; max-height: 400px; overflow-y: auto; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 10px; position: absolute; top: calc(100% + 10px); left: 0; width: 600px; z-index: 1050;">
+                <div class="dropdown-menu" id="searchSuggestions" style="display: none; max-height: 400px; overflow-y: auto; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 10px; position: absolute; top: calc(100% + 10px); left: 0; width: 800px; z-index: 1050;">
                 </div>
             </div>
             <ul class="navbar-nav d-flex flex-row align-items-center">
@@ -102,89 +108,225 @@
 
 @push('js')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsBox = document.getElementById('searchSuggestions');
-    
-    if (!searchInput || !suggestionsBox) {
-        console.error("Search elements not found in the DOM");
-        return;
-    }
-    
-    console.log("Search elements initialized");
-    
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        console.log("Search query:", query);
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsBox = document.getElementById('searchSuggestions');
         
-        if (query.length < 2) {
-            suggestionsBox.style.display = 'none';
+        if (!searchInput || !suggestionsBox) {
+            console.error("Search elements not found in the DOM");
             return;
         }
         
-        // Make AJAX call to search endpoint
-        console.log("Fetching search results for:", query);
-        
-        fetch('/api/search?query=' + encodeURIComponent(query))
-            .then(response => {
-                console.log("Search response status:", response.status);
-                // Log the raw response for debugging
-                response.clone().text().then(text => {
-                    console.log("Raw response:", text);
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Server returned ' + response.status);
-                }
-                return response.json();
-            })
-            .then(results => {
-    console.log("Search results:", results);
-    
-    if (results && results.length > 0) {
-        suggestionsBox.innerHTML = '';
-        
-        results.forEach(result => {
-            // Get the query from the search input
-            const query = searchInput.value.toLowerCase();
+        console.log("Search elements initialized");
+
+ // Prevent scroll events in the suggestions box from propagating to the page
+ suggestionsBox.addEventListener('wheel', function(e) {
+            // Check if the suggestions box is scrollable
+            const isScrollable = this.scrollHeight > this.clientHeight;
             
-            // Highlight the query in the context
-            let context = result.context;
-            if (context && query.length > 1) {
-                // Use a regex with 'gi' flags for global, case-insensitive matching
-                const regex = new RegExp(query, 'gi');
-                context = context.replace(regex, match => `<strong class="text-primary">${match}</strong>`);
+            if (isScrollable) {
+                // Check if we're trying to scroll past the top or bottom
+                const isScrollingPastTop = this.scrollTop === 0 && e.deltaY < 0;
+                const isScrollingPastBottom = 
+                    this.scrollHeight - this.scrollTop <= this.clientHeight + 1 && e.deltaY > 0;
+                
+                // Only prevent default if we're not at the boundaries or trying to scroll within the box
+                if (!isScrollingPastTop && !isScrollingPastBottom) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    
+                    // Manually handle the scroll
+                    this.scrollTop += e.deltaY;
+                }
+            }
+        }, { passive: false });
+        
+        // Function to extract only text from specific HTML tags
+        function extractTextFromHtmlTags(html) {
+            // Create a temporary DOM element
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html || '';
+            
+            // Get all text elements we want to keep
+            const textElements = tempDiv.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, li, td, th, div, label, button');
+            
+            // Extract text from these elements
+            let extractedText = '';
+            textElements.forEach(element => {
+                // Get direct text content of this element (not including child elements)
+                const directText = Array.from(element.childNodes)
+                    .filter(node => node.nodeType === Node.TEXT_NODE)
+                    .map(node => node.textContent.trim())
+                    .join(' ');
+                    
+                if (directText && directText.trim().length > 0) {
+                    extractedText += directText + ' ';
+                }
+            });
+            
+            // If no text elements found, try to get any visible text
+            if (!extractedText.trim()) {
+                extractedText = tempDiv.textContent || tempDiv.innerText || '';
             }
             
-            suggestionsBox.innerHTML += `
-                <a class="dropdown-item" href="${result.url}">
-                    <i class="fas fa-file-alt mr-2"></i>
-                    ${result.title}
-                    <small class="text-muted ml-2">${context}</small>
-                </a>
-            `;
+            return extractedText.trim();
+        }
+        
+        // Function to get only 3 words around the matching text
+        function getContextAroundMatch(text, query) {
+            if (!text || !query) return '';
+            
+            const lowerText = text.toLowerCase();
+            const lowerQuery = query.toLowerCase();
+            const matchIndex = lowerText.indexOf(lowerQuery);
+            
+            if (matchIndex === -1) return text.substring(0, 50) + '...';
+            
+            // Find the start of the current word
+            let startIndex = matchIndex;
+            while (startIndex > 0 && !/\s/.test(text[startIndex - 1])) {
+                startIndex--;
+            }
+            
+            // Go back 3 words
+            let wordCount = 0;
+            let contextStart = startIndex;
+            while (contextStart > 0 && wordCount < 3) {
+                contextStart--;
+                if (contextStart === 0 || (/\s/.test(text[contextStart]) && !/\s/.test(text[contextStart + 1]))) {
+                    wordCount++;
+                }
+            }
+            
+            // Find the end of the current word
+            let endIndex = matchIndex + query.length;
+            while (endIndex < text.length && !/\s/.test(text[endIndex])) {
+                endIndex++;
+            }
+            
+            // Go forward 3 words
+            wordCount = 0;
+            let contextEnd = endIndex;
+            while (contextEnd < text.length && wordCount < 3) {
+                if (contextEnd === text.length - 1 || (/\s/.test(text[contextEnd]) && !/\s/.test(text[contextEnd + 1]))) {
+                    wordCount++;
+                }
+                contextEnd++;
+            }
+            
+            // Add ellipsis if needed
+            const prefix = contextStart > 0 ? '...' : '';
+            const suffix = contextEnd < text.length ? '...' : '';
+            
+            return prefix + text.substring(contextStart, contextEnd).trim() + suffix;
+        }
+        
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            console.log("Search query:", query);
+            
+            if (query.length < 2) {
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+            
+            // Make AJAX call to search endpoint
+            console.log("Fetching search results for:", query);
+            
+            fetch('/api/search?query=' + encodeURIComponent(query))
+                .then(response => {
+                    console.log("Search response status:", response.status);
+                    
+                    if (!response.ok) {
+                        throw new Error('Server returned ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(results => {
+                    console.log("Search results:", results);
+                    
+                    if (results && results.length > 0) {
+                        suggestionsBox.innerHTML = '';
+                        
+                        results.forEach(result => {
+                            // Get the query from the search input
+                            const query = searchInput.value.toLowerCase();
+                            
+                            // Extract only text from HTML tags
+                            let sanitizedContext = extractTextFromHtmlTags(result.context);
+                            
+                            // Remove PHP code and other unwanted content
+                            sanitizedContext = sanitizedContext
+                                .replace(/\<\?php[\s\S]*?\?\>/g, '') // Remove PHP code blocks
+                                .replace(/\{\{[\s\S]*?\}\}/g, '')    // Remove Blade expressions
+                                .replace(/\@[a-zA-Z]+[\s\S]*?\@end[a-zA-Z]+/g, '') // Remove Blade directives
+                                .replace(/\@[a-zA-Z]+\([\s\S]*?\)/g, '') // Remove Blade function calls
+                                .replace(/\$[a-zA-Z_][a-zA-Z0-9_]*/g, '') // Remove PHP variables
+                                .replace(/\s+/g, ' ')               // Normalize whitespace
+                                .trim();
+                            
+                            // Get only 3 words around the matching text
+                            sanitizedContext = getContextAroundMatch(sanitizedContext, query);
+                            
+                            // If context is empty after sanitization, provide a fallback
+                            if (!sanitizedContext) {
+                                sanitizedContext = 'View this page for more information';
+                            }
+                            
+                            // Highlight the query in the sanitized context
+                            if (sanitizedContext && query.length > 1) {
+                                // Use a regex with 'gi' flags for global, case-insensitive matching
+                                const regex = new RegExp(query, 'gi');
+                                sanitizedContext = sanitizedContext.replace(regex, match => `<strong class="text-primary">${match}</strong>`);
+                            }
+                            
+                            // Create a sanitized title
+                            let sanitizedTitle = extractTextFromHtmlTags(result.title);
+                            sanitizedTitle = sanitizedTitle || 'Untitled';
+                            
+                            // Trim title if too long
+                            if (sanitizedTitle.length > 50) {
+                                sanitizedTitle = sanitizedTitle.substring(0, 50) + '...';
+                            }
+                            
+                            suggestionsBox.innerHTML += `
+                                <a class="dropdown-item" href="${result.url}">
+                                    <i class="fas fa-file-alt mr-2"></i>
+                                    ${sanitizedTitle}
+                                    <br>
+                                    <small class="text-muted ml-2">${sanitizedContext}</small>
+                                </a>
+                            `;
+                        });
+                        
+                        suggestionsBox.style.display = 'block';
+                    } else {
+                        suggestionsBox.innerHTML = `
+                            <span class="dropdown-item text-muted">
+                                No results found for "${searchInput.value}"
+                            </span>
+                        `;
+                        suggestionsBox.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error("Search error:", error);
+                    suggestionsBox.innerHTML = `
+                        <span class="dropdown-item text-danger">
+                            Error fetching results: ${error.message}
+                        </span>
+                    `;
+                    suggestionsBox.style.display = 'block';
+                });
         });
         
-        suggestionsBox.style.display = 'block';
-    } else {
-        suggestionsBox.innerHTML = `
-            <span class="dropdown-item text-muted">
-                No results found for "${searchInput.value}"
-            </span>
-        `;
-        suggestionsBox.style.display = 'block';
-    }
-})
-
+        // Close suggestions on click outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.navbar-search-block')) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
     });
-    
-    // Close suggestions on click outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.navbar-search-block')) {
-            suggestionsBox.style.display = 'none';
-        }
-    });
-});
-
 </script>
+
 @endpush
